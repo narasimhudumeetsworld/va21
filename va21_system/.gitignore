@@ -1,0 +1,13 @@
+# Python / virtualenv
+venv/
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# Xcode / Swift build
+.build/
+*.xcodeproj
+*.xcworkspace
+DerivedData/
