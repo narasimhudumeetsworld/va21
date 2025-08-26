@@ -6,3 +6,7 @@ requests==2.28.1
 duckduckgo-search==4.2
 google-generativeai==0.3.1
 ptyprocess==0.7.0
+sentence-transformers==2.2.2
+faiss-cpu==1.7.4
+langchain==0.1.5
+pypdf==4.0.1

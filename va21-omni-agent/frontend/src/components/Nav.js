@@ -15,6 +15,9 @@ function Nav() {
         <li>
           <Link to="/terminal">Terminal</Link>
         </li>
+        <li>
+          <Link to="/documents">Documents</Link>
+        </li>
       </ul>
     </nav>
   );

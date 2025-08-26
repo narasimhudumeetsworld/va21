@@ -7,6 +7,8 @@ import google.generativeai as genai
 import ptyprocess
 import os
 import threading
+from werkzeug.utils import secure_filename
+from rag_manager import RAGManager
 
 app = Flask(__name__, static_folder='frontend/build', static_url_path='')
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -22,6 +24,8 @@ settings = {
 histories = {}
 # Dictionary to store pty processes for each session
 ptys = {}
+
+rag_manager = RAGManager()
 
 SYSTEM_PROMPT = """
 You are a helpful assistant with access to a web search tool.
@@ -127,6 +131,17 @@ class ChatNamespace(Namespace):
         print(f'Received message from {request.sid}: ' + message)
         current_history.append({"role": "user", "content": message})
 
+        # RAG Integration
+        try:
+            search_results = rag_manager.search(message)
+            if search_results:
+                context = "\n\n".join(search_results)
+                # Add the context to the history
+                # Using a system message to provide context is a common pattern
+                current_history.insert(-1, {"role": "system", "content": f"Here is some context from uploaded documents that might be relevant:\n{context}"})
+        except Exception as e:
+            print(f"Error during RAG search: {e}")
+
         try:
             response = get_llm_response(current_history, stream=True)
             response.raise_for_status()
@@ -203,6 +218,26 @@ class TerminalNamespace(Namespace):
 
 socketio.on_namespace(ChatNamespace('/'))
 socketio.on_namespace(TerminalNamespace('/terminal'))
+
+@app.route('/api/documents/upload', methods=['POST'])
+def upload_document():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+    if file:
+        filename = secure_filename(file.filename)
+        # Ensure the data directory exists
+        os.makedirs(rag_manager.data_dir, exist_ok=True)
+        file_path = os.path.join(rag_manager.data_dir, filename)
+        file.save(file_path)
+
+        try:
+            rag_manager.add_document(file_path)
+            return jsonify({'message': f'File "{filename}" uploaded and processed successfully.'})
+        except Exception as e:
+            return jsonify({'error': f'Error processing file: {e}'}), 500
 
 @app.route('/api/settings', methods=['GET'])
 def get_settings_route():
