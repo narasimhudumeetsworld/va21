@@ -11,6 +11,7 @@ from werkzeug.utils import secure_filename
 from rag_manager import RAGManager
 import google_auth
 from backup_manager import BackupManager
+from long_term_memory import LongTermMemoryManager
 
 app = Flask(__name__, static_folder='frontend/build', static_url_path='')
 app.secret_key = os.urandom(24)
@@ -31,11 +32,14 @@ histories = {}
 ptys = {}
 
 rag_manager = RAGManager()
+ltm_manager = LongTermMemoryManager()
 
 SYSTEM_PROMPT = """
 You are a helpful assistant. You have access to the following tools:
 - Web Search: To search the web for information. To use, output: {"tool": "web_search", "query": "your search query"}
-- Backup Conversation: To save the current conversation history to your configured backup location (Local or Google Drive). To use, output: {"tool": "backup_conversation"}
+- Create Backup: To save the current conversation history and long-term memory to your configured backup location. To use, output: {"tool": "create_backup"}
+- Remember: To save a key-value pair to your long-term memory. To use, output: {"tool": "remember", "key": "the key", "value": "the value"}
+- Recall: To recall a value from your long-term memory. To use, output: {"tool": "recall", "key": "the key"}
 When you have the answer, reply to the user.
 """
 
@@ -47,11 +51,28 @@ def perform_web_search(query):
     except Exception as e:
         return f"Error performing web search: {e}"
 
-def backup_conversation(history, sid):
-    """Saves the conversation history using the configured backup provider."""
+def create_backup(sid):
+    """Saves the conversation history and long-term memory using the configured backup provider."""
     backup_manager = BackupManager(settings)
-    file_name = f"omni_agent_chat_{sid}" # The manager will add the .enc extension
-    return backup_manager.backup(history, file_name)
+
+    # Get the data to back up
+    history = histories.get(sid, [])
+    ltm = ltm_manager.get_all()
+    backup_data = {
+        "conversation_history": history,
+        "long_term_memory": ltm
+    }
+
+    file_name = f"omni_agent_backup_{sid}"
+    return backup_manager.backup(backup_data, file_name)
+
+def remember(key, value):
+    """Saves a key-value pair to long-term memory."""
+    return ltm_manager.remember(key, value)
+
+def recall(key):
+    """Recalls a value from long-term memory."""
+    return ltm_manager.recall(key)
 
 @app.route("/")
 def serve_index():
@@ -179,8 +200,39 @@ class ChatNamespace(Namespace):
                                 final_response += token
                                 self.emit('response', {'data': token})
                         current_history.append({"role": "assistant", "content": final_response})
-                    elif tool_call["tool"] == "backup_conversation":
-                        result = backup_conversation(current_history, request.sid)
+                    elif tool_call["tool"] == "remember":
+                        key = tool_call.get("key")
+                        value = tool_call.get("value")
+                        if key and value:
+                            result = remember(key, value)
+                            current_history.append({"role": "tool", "content": result})
+                            response = get_llm_response(current_history, stream=True)
+                            response.raise_for_status()
+                            final_response = ""
+                            for chunk in response.iter_lines():
+                                if chunk:
+                                    data = json.loads(chunk)
+                                    token = data["message"]["content"]
+                                    final_response += token
+                                    self.emit('response', {'data': token})
+                            current_history.append({"role": "assistant", "content": final_response})
+                    elif tool_call["tool"] == "recall":
+                        key = tool_call.get("key")
+                        if key:
+                            result = recall(key)
+                            current_history.append({"role": "tool", "content": result})
+                            response = get_llm_response(current_history, stream=True)
+                            response.raise_for_status()
+                            final_response = ""
+                            for chunk in response.iter_lines():
+                                if chunk:
+                                    data = json.loads(chunk)
+                                    token = data["message"]["content"]
+                                    final_response += token
+                                    self.emit('response', {'data': token})
+                            current_history.append({"role": "assistant", "content": final_response})
+                    elif tool_call["tool"] == "create_backup":
+                        result = create_backup(request.sid)
                         current_history.append({"role": "tool", "content": result})
                         response = get_llm_response(current_history, stream=True)
                         response.raise_for_status()
