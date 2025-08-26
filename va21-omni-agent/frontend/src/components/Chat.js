@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import '../App.css'; // We can reuse the main App.css for now
 
-const socket = io();
+const socket = io('/');
 
 function Chat() {
   const [messages, setMessages] = useState([]);

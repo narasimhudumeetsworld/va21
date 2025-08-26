@@ -1,9 +1,12 @@
 import requests
 import json
 from flask import Flask, send_from_directory, request, jsonify
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, Namespace
 from duckduckgo_search import DDGS
 import google.generativeai as genai
+import ptyprocess
+import os
+import threading
 
 app = Flask(__name__, static_folder='frontend/build', static_url_path='')
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -17,6 +20,8 @@ settings = {
 
 # Use a dictionary to store conversation history for each session
 histories = {}
+# Dictionary to store pty processes for each session
+ptys = {}
 
 SYSTEM_PROMPT = """
 You are a helpful assistant with access to a web search tool.
@@ -41,18 +46,6 @@ def serve_index():
 def serve_static(path):
     return send_from_directory(app.static_folder, path)
 
-@socketio.on('connect')
-def handle_connect():
-    histories[request.sid] = [{"role": "system", "content": SYSTEM_PROMPT}]
-    print(f'Client connected: {request.sid}')
-    emit('response', {'data': 'Connected to server'})
-
-@socketio.on('disconnect')
-def handle_disconnect():
-    if request.sid in histories:
-        del histories[request.sid]
-    print(f'Client disconnected: {request.sid}')
-
 def get_ollama_response(history, stream=False):
     """Gets a response from the Ollama LLM."""
     url = f"{settings['url']}/api/chat"
@@ -70,38 +63,26 @@ def get_ollama_response(history, stream=False):
 def get_gemini_response(history, stream=False):
     """Gets a response from the Gemini LLM."""
     try:
-        # The genai library is already configured in update_settings_route
         model = genai.GenerativeModel('gemini-pro')
-
-        # Format the history for Gemini
         gemini_history = []
         for msg in history:
             role = msg["role"]
             if role == "assistant":
                 role = "model"
-            # Gemini doesn't support the 'system' or 'tool' roles in the same way.
-            # We'll just pass the content for now. A more advanced implementation
-            # might need to handle this differently.
             if role in ["user", "model"]:
                 gemini_history.append({"role": role, "parts": [{"text": msg["content"]}]})
-
         response = model.generate_content(gemini_history, stream=stream)
 
         class GeminiStreamWrapper:
             def __init__(self, stream):
                 self.stream = stream
-
             def iter_lines(self):
                 for chunk in self.stream:
                     yield json.dumps({"message": {"content": chunk.text}, "done": False}).encode('utf-8')
-                # Yield a final "done" message
                 yield json.dumps({"message": {"content": ""}, "done": True}).encode('utf-8')
-
             def raise_for_status(self):
-                pass # The google-generativeai library handles errors with exceptions
-
+                pass
         return GeminiStreamWrapper(response)
-
     except Exception as e:
         print(f"Error communicating with Gemini: {e}")
         class ErrorResponse:
@@ -119,7 +100,6 @@ def get_llm_response(history, stream=False):
     elif provider == "gemini":
         return get_gemini_response(history, stream)
     else:
-        # Should not happen
         class MockResponse:
             def iter_lines(self):
                 yield json.dumps({"message": {"content": "Invalid LLM provider."}, "done": True}).encode('utf-8')
@@ -127,63 +107,102 @@ def get_llm_response(history, stream=False):
                 pass
         return MockResponse()
 
-@socketio.on('message')
-def handle_message(message):
-    current_history = histories.get(request.sid)
-    if not current_history:
-        current_history = histories[request.sid] = [{"role": "system", "content": SYSTEM_PROMPT}]
+class ChatNamespace(Namespace):
+    def on_connect(self):
+        histories[request.sid] = [{"role": "system", "content": SYSTEM_PROMPT}]
+        print(f'Chat client connected: {request.sid}')
+        self.emit('response', {'data': 'Connected to server'})
 
-    print(f'Received message from {request.sid}: ' + message)
-    current_history.append({"role": "user", "content": message})
+    def on_disconnect(self):
+        if request.sid in histories:
+            del histories[request.sid]
+        print(f'Chat client disconnected: {request.sid}')
 
-    try:
-        # First LLM call to get the tool call or final response
-        response = get_llm_response(current_history, stream=True)
-        response.raise_for_status()
+    def on_message(self, message):
+        # ... (same logic as before, but using self.emit)
+        current_history = histories.get(request.sid)
+        if not current_history:
+            current_history = histories[request.sid] = [{"role": "system", "content": SYSTEM_PROMPT}]
 
-        full_response = ""
-        for chunk in response.iter_lines():
-            if chunk:
-                data = json.loads(chunk)
-                full_response += data["message"]["content"]
-                if data.get("done"):
-                    break
-
-        current_history.append({"role": "assistant", "content": full_response})
+        print(f'Received message from {request.sid}: ' + message)
+        current_history.append({"role": "user", "content": message})
 
         try:
-            tool_call = json.loads(full_response)
-            if "tool" in tool_call and tool_call["tool"] == "web_search":
-                query = tool_call["query"]
-                emit('response', {'data': f"Running web search for: \"{query}\"...\n\n"})
-                search_results = perform_web_search(query)
-                current_history.append({"role": "tool", "content": search_results})
+            response = get_llm_response(current_history, stream=True)
+            response.raise_for_status()
+            full_response = ""
+            for chunk in response.iter_lines():
+                if chunk:
+                    data = json.loads(chunk)
+                    full_response += data["message"]["content"]
+                    if data.get("done"):
+                        break
+            current_history.append({"role": "assistant", "content": full_response})
+            try:
+                tool_call = json.loads(full_response)
+                if "tool" in tool_call and tool_call["tool"] == "web_search":
+                    query = tool_call["query"]
+                    self.emit('response', {'data': f"Running web search for: \"{query}\"...\n\n"})
+                    search_results = perform_web_search(query)
+                    current_history.append({"role": "tool", "content": search_results})
+                    response = get_llm_response(current_history, stream=True)
+                    response.raise_for_status()
+                    final_response = ""
+                    for chunk in response.iter_lines():
+                        if chunk:
+                            data = json.loads(chunk)
+                            token = data["message"]["content"]
+                            final_response += token
+                            self.emit('response', {'data': token})
+                    current_history.append({"role": "assistant", "content": final_response})
+                else:
+                    self.emit('response', {'data': full_response})
+            except json.JSONDecodeError:
+                self.emit('response', {'data': full_response})
+        except requests.exceptions.RequestException as e:
+            print(f"Error connecting to Ollama: {e}")
+            self.emit('response', {'data': f"Error connecting to Ollama: {e}"})
+            if current_history:
+                current_history.pop()
 
-                # Second LLM call with the tool results
-                response = get_llm_response(current_history, stream=True)
-                response.raise_for_status()
+class TerminalNamespace(Namespace):
+    def on_connect(self):
+        print(f"Terminal client connected: {request.sid}")
+        pty = ptyprocess.PtyProcess.spawn(['/bin/bash'])
+        ptys[request.sid] = pty
+        thread = threading.Thread(target=self.read_and_forward_pty_output, args=(request.sid, pty))
+        thread.daemon = True
+        thread.start()
 
-                final_response = ""
-                for chunk in response.iter_lines():
-                    if chunk:
-                        data = json.loads(chunk)
-                        token = data["message"]["content"]
-                        final_response += token
-                        emit('response', {'data': token})
+    def on_disconnect(self):
+        print(f"Terminal client disconnected: {request.sid}")
+        if request.sid in ptys:
+            ptys[request.sid].close()
+            del ptys[request.sid]
 
-                current_history.append({"role": "assistant", "content": final_response})
-            else:
-                # Not a valid tool call, send the response
-                emit('response', {'data': full_response})
-        except json.JSONDecodeError:
-            # Not a JSON object, so it's a regular message
-            emit('response', {'data': full_response})
+    def on_terminal_in(self, data):
+        if request.sid in ptys:
+            ptys[request.sid].write(data.encode('utf-8'))
 
-    except requests.exceptions.RequestException as e:
-        print(f"Error connecting to Ollama: {e}")
-        emit('response', {'data': f"Error connecting to Ollama: {e}"})
-        if current_history:
-            current_history.pop()
+    def on_agent_command(self, command):
+        if request.sid in ptys:
+            pty = ptys[request.sid]
+            # For now, just echo the command
+            # We will add the LLM logic in the next step
+            pty.write(f"\r\nAgent Mode: Command received: '{command}'\r\n".encode('utf-8'))
+            # Let's also write a newline to simulate command execution
+            pty.write(b'\n')
+
+    def read_and_forward_pty_output(self, sid, pty):
+        while pty.isalive():
+            try:
+                output = pty.read(1024).decode('utf-8')
+                self.emit('terminal_out', {'output': output}, room=sid)
+            except EOFError:
+                break
+
+socketio.on_namespace(ChatNamespace('/'))
+socketio.on_namespace(TerminalNamespace('/terminal'))
 
 @app.route('/api/settings', methods=['GET'])
 def get_settings_route():
@@ -195,7 +214,6 @@ def update_settings_route():
     data = request.get_json()
     if 'provider' in data:
         settings = data
-        # Configure Gemini if that's the provider
         if settings.get("provider") == "gemini":
             try:
                 genai.configure(api_key=settings.get("api_key"))

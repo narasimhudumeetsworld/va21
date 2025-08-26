@@ -4,6 +4,7 @@ import './App.css';
 import Nav from './components/Nav';
 import Chat from './components/Chat';
 import Settings from './components/Settings';
+import Terminal from './components/Terminal';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Chat />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/terminal" element={<Terminal />} />
           </Routes>
         </main>
       </div>

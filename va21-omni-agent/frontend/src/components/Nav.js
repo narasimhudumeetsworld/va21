@@ -12,6 +12,9 @@ function Nav() {
         <li>
           <Link to="/settings">Settings</Link>
         </li>
+        <li>
+          <Link to="/terminal">Terminal</Link>
+        </li>
       </ul>
     </nav>
   );
