@@ -18,6 +18,9 @@ function Nav() {
         <li>
           <Link to="/documents">Documents</Link>
         </li>
+        <li>
+          <Link to="/workflows">Workflows</Link>
+        </li>
       </ul>
     </nav>
   );
