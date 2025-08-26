@@ -1,0 +1,208 @@
+import requests
+import json
+from flask import Flask, send_from_directory, request, jsonify
+from flask_socketio import SocketIO, emit
+from duckduckgo_search import DDGS
+import google.generativeai as genai
+
+app = Flask(__name__, static_folder='frontend/build', static_url_path='')
+socketio = SocketIO(app, cors_allowed_origins="*")
+
+# Default settings
+settings = {
+    "provider": "ollama",
+    "url": "http://localhost:11434",
+    "api_key": ""
+}
+
+# Use a dictionary to store conversation history for each session
+histories = {}
+
+SYSTEM_PROMPT = """
+You are a helpful assistant with access to a web search tool.
+To use the tool, output a JSON object with the following format:
+{"tool": "web_search", "query": "your search query"}
+When you have the answer, reply to the user.
+"""
+
+def perform_web_search(query):
+    """Performs a web search using DuckDuckGo and returns the results."""
+    try:
+        results = DDGS().text(query, max_results=5)
+        return "\n".join([f"Title: {r['title']}\nSnippet: {r['body']}" for r in results])
+    except Exception as e:
+        return f"Error performing web search: {e}"
+
+@app.route("/")
+def serve_index():
+    return send_from_directory(app.static_folder, 'index.html')
+
+@app.route("/<path:path>")
+def serve_static(path):
+    return send_from_directory(app.static_folder, path)
+
+@socketio.on('connect')
+def handle_connect():
+    histories[request.sid] = [{"role": "system", "content": SYSTEM_PROMPT}]
+    print(f'Client connected: {request.sid}')
+    emit('response', {'data': 'Connected to server'})
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    if request.sid in histories:
+        del histories[request.sid]
+    print(f'Client disconnected: {request.sid}')
+
+def get_ollama_response(history, stream=False):
+    """Gets a response from the Ollama LLM."""
+    url = f"{settings['url']}/api/chat"
+    headers = {}
+    if settings.get('api_key'):
+        headers['Authorization'] = f"Bearer {settings['api_key']}"
+
+    return requests.post(
+        url,
+        headers=headers,
+        json={"model": "gemma:2b", "messages": history, "stream": stream},
+        stream=True
+    )
+
+def get_gemini_response(history, stream=False):
+    """Gets a response from the Gemini LLM."""
+    try:
+        # The genai library is already configured in update_settings_route
+        model = genai.GenerativeModel('gemini-pro')
+
+        # Format the history for Gemini
+        gemini_history = []
+        for msg in history:
+            role = msg["role"]
+            if role == "assistant":
+                role = "model"
+            # Gemini doesn't support the 'system' or 'tool' roles in the same way.
+            # We'll just pass the content for now. A more advanced implementation
+            # might need to handle this differently.
+            if role in ["user", "model"]:
+                gemini_history.append({"role": role, "parts": [{"text": msg["content"]}]})
+
+        response = model.generate_content(gemini_history, stream=stream)
+
+        class GeminiStreamWrapper:
+            def __init__(self, stream):
+                self.stream = stream
+
+            def iter_lines(self):
+                for chunk in self.stream:
+                    yield json.dumps({"message": {"content": chunk.text}, "done": False}).encode('utf-8')
+                # Yield a final "done" message
+                yield json.dumps({"message": {"content": ""}, "done": True}).encode('utf-8')
+
+            def raise_for_status(self):
+                pass # The google-generativeai library handles errors with exceptions
+
+        return GeminiStreamWrapper(response)
+
+    except Exception as e:
+        print(f"Error communicating with Gemini: {e}")
+        class ErrorResponse:
+            def iter_lines(self):
+                yield json.dumps({"message": {"content": f"Error communicating with Gemini: {e}"}, "done": True}).encode('utf-8')
+            def raise_for_status(self):
+                pass
+        return ErrorResponse()
+
+def get_llm_response(history, stream=False):
+    """Dispatcher function to get a response from the selected LLM."""
+    provider = settings.get("provider", "ollama")
+    if provider == "ollama" or provider == "authenticated_ollama":
+        return get_ollama_response(history, stream)
+    elif provider == "gemini":
+        return get_gemini_response(history, stream)
+    else:
+        # Should not happen
+        class MockResponse:
+            def iter_lines(self):
+                yield json.dumps({"message": {"content": "Invalid LLM provider."}, "done": True}).encode('utf-8')
+            def raise_for_status(self):
+                pass
+        return MockResponse()
+
+@socketio.on('message')
+def handle_message(message):
+    current_history = histories.get(request.sid)
+    if not current_history:
+        current_history = histories[request.sid] = [{"role": "system", "content": SYSTEM_PROMPT}]
+
+    print(f'Received message from {request.sid}: ' + message)
+    current_history.append({"role": "user", "content": message})
+
+    try:
+        # First LLM call to get the tool call or final response
+        response = get_llm_response(current_history, stream=True)
+        response.raise_for_status()
+
+        full_response = ""
+        for chunk in response.iter_lines():
+            if chunk:
+                data = json.loads(chunk)
+                full_response += data["message"]["content"]
+                if data.get("done"):
+                    break
+
+        current_history.append({"role": "assistant", "content": full_response})
+
+        try:
+            tool_call = json.loads(full_response)
+            if "tool" in tool_call and tool_call["tool"] == "web_search":
+                query = tool_call["query"]
+                emit('response', {'data': f"Running web search for: \"{query}\"...\n\n"})
+                search_results = perform_web_search(query)
+                current_history.append({"role": "tool", "content": search_results})
+
+                # Second LLM call with the tool results
+                response = get_llm_response(current_history, stream=True)
+                response.raise_for_status()
+
+                final_response = ""
+                for chunk in response.iter_lines():
+                    if chunk:
+                        data = json.loads(chunk)
+                        token = data["message"]["content"]
+                        final_response += token
+                        emit('response', {'data': token})
+
+                current_history.append({"role": "assistant", "content": final_response})
+            else:
+                # Not a valid tool call, send the response
+                emit('response', {'data': full_response})
+        except json.JSONDecodeError:
+            # Not a JSON object, so it's a regular message
+            emit('response', {'data': full_response})
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error connecting to Ollama: {e}")
+        emit('response', {'data': f"Error connecting to Ollama: {e}"})
+        if current_history:
+            current_history.pop()
+
+@app.route('/api/settings', methods=['GET'])
+def get_settings_route():
+    return jsonify(settings)
+
+@app.route('/api/settings', methods=['POST'])
+def update_settings_route():
+    global settings
+    data = request.get_json()
+    if 'provider' in data:
+        settings = data
+        # Configure Gemini if that's the provider
+        if settings.get("provider") == "gemini":
+            try:
+                genai.configure(api_key=settings.get("api_key"))
+            except Exception as e:
+                return jsonify({'error': f'Failed to configure Gemini: {e}'}), 400
+        return jsonify({'message': 'Settings updated successfully'})
+    return jsonify({'error': 'Invalid request'}), 400
+
+if __name__ == '__main__':
+    socketio.run(app, debug=True, port=5000)
