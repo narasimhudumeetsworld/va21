@@ -1,5 +1,6 @@
 import os
 import json
+import re
 from apscheduler.schedulers.background import BackgroundScheduler
 
 class WorkflowEngine:
@@ -35,7 +36,6 @@ class WorkflowEngine:
         if trigger.startswith("cron:"):
             cron_str = trigger.split("cron:")[1].strip()
             try:
-                # Unpack the cron string into arguments for the scheduler
                 cron_parts = cron_str.split()
                 if len(cron_parts) != 5:
                     raise ValueError("Invalid cron string format")
@@ -57,22 +57,41 @@ class WorkflowEngine:
     def execute_workflow(self, steps):
         """Executes the steps of a workflow."""
         print(f"Executing workflow with {len(steps)} steps...")
+        step_outputs = []
         for step in steps:
-            self.execute_step(step)
+            output = self.execute_step(step, step_outputs)
+            step_outputs.append(output)
 
-    def execute_step(self, step):
+    def execute_step(self, step, step_outputs):
         """Executes a single step of a workflow."""
         tool_name = step.get("tool")
         params = step.get("params", {})
 
+        # Resolve templates in params
+        resolved_params = {}
+        for key, value in params.items():
+            if isinstance(value, str):
+                # Use regex to find all template strings
+                matches = re.findall(r"{{steps\[(\d+)\]\.output}}", value)
+                for match in matches:
+                    step_index = int(match)
+                    if step_index < len(step_outputs):
+                        # Replace the template with the actual output
+                        value = value.replace(f"{{{{steps[{step_index}].output}}}}", str(step_outputs[step_index]))
+            resolved_params[key] = value
+
         if tool_name in self.tools:
             try:
-                print(f"Executing tool: {tool_name} with params: {params}")
-                self.tools[tool_name](**params)
+                print(f"Executing tool: {tool_name} with params: {resolved_params}")
+                output = self.tools[tool_name](**resolved_params)
+                print(f"Tool {tool_name} output: {output}")
+                return output
             except Exception as e:
                 print(f"Error executing tool {tool_name}: {e}")
+                return f"Error: {e}"
         else:
             print(f"Unknown tool: {tool_name}")
+            return f"Error: Unknown tool {tool_name}"
 
     def start(self):
         """Starts the workflow engine."""

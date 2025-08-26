@@ -6,7 +6,10 @@ from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 
 # Scopes required for the application. Using drive.file for security.
-SCOPES = ['https://www.googleapis.com/auth/drive.file']
+SCOPES = [
+    'https://www.googleapis.com/auth/drive.file',
+    'https://www.googleapis.com/auth/gmail.readonly'
+]
 CREDENTIALS_FILE = 'data/credentials.json.enc'
 CLIENT_SECRET_FILE = 'client_secret.json' # User needs to provide this in the root of the backend
 ENCRYPTION_KEY_FILE = 'data/encryption.key'

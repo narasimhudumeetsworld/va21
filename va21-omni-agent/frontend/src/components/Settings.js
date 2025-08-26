@@ -8,6 +8,7 @@ function Settings() {
   const [googleConnected, setGoogleConnected] = useState(false);
   const [backupProvider, setBackupProvider] = useState('local');
   const [backupPath, setBackupPath] = useState('');
+  const [githubPat, setGithubPat] = useState('');
 
   useEffect(() => {
     // Fetch app settings
@@ -19,6 +20,7 @@ function Settings() {
         setApiKey(data.api_key || '');
         setBackupProvider(data.backup_provider || 'local');
         setBackupPath(data.backup_path || '');
+        setGithubPat(data.github_pat || '');
       });
 
     // Fetch Google connection status
@@ -36,7 +38,8 @@ function Settings() {
       url,
       api_key: apiKey,
       backup_provider: backupProvider,
-      backup_path: backupPath
+      backup_path: backupPath,
+      github_pat: githubPat
     };
     fetch('/api/settings', {
       method: 'POST',
@@ -59,42 +62,6 @@ function Settings() {
     <div className="settings">
       <h2>Settings</h2>
       <form onSubmit={handleSubmit}>
-        <div className="setting-section">
-          <h3>Backup Settings</h3>
-          <div className="form-group">
-            <label htmlFor="backup-provider">Backup Provider</label>
-            <select
-              id="backup-provider"
-              value={backupProvider}
-              onChange={(e) => setBackupProvider(e.target.value)}
-            >
-              <option value="local">Local</option>
-              <option value="google_drive">Google Drive</option>
-            </select>
-          </div>
-          {backupProvider === 'local' && (
-            <div className="form-group">
-              <label htmlFor="backup-path">Local Backup Path</label>
-              <input
-                type="text"
-                id="backup-path"
-                value={backupPath}
-                onChange={(e) => setBackupPath(e.target.value)}
-                placeholder="/path/to/your/backup/folder"
-              />
-            </div>
-          )}
-          {backupProvider === 'google_drive' && (
-            <div className="form-group">
-              {googleConnected ? (
-                <p>Connected to Google Drive.</p>
-              ) : (
-                <button type="button" onClick={handleGoogleConnect}>Connect to Google</button>
-              )}
-            </div>
-          )}
-        </div>
-
         <div className="setting-section">
           <h3>LLM Provider</h3>
           <div className="form-group">
@@ -131,6 +98,55 @@ function Settings() {
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
               />
+            </div>
+          )}
+        </div>
+
+        <div className="setting-section">
+          <h3>Services</h3>
+          <div className="form-group">
+            <label htmlFor="github-pat">GitHub Personal Access Token</label>
+            <input
+              type="password"
+              id="github-pat"
+              value={githubPat}
+              onChange={(e) => setGithubPat(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="setting-section">
+          <h3>Backup Settings</h3>
+          <div className="form-group">
+            <label htmlFor="backup-provider">Backup Provider</label>
+            <select
+              id="backup-provider"
+              value={backupProvider}
+              onChange={(e) => setBackupProvider(e.target.value)}
+            >
+              <option value="local">Local</option>
+              <option value="google_drive">Google Drive</option>
+            </select>
+          </div>
+          {backupProvider === 'local' && (
+            <div className="form-group">
+              <label htmlFor="backup-path">Local Backup Path</label>
+              <input
+                type="text"
+                id="backup-path"
+                value={backupPath}
+                onChange={(e) => setBackupPath(e.target.value)}
+                placeholder="/path/to/your/backup/folder"
+              />
+            </div>
+          )}
+          {backupProvider === 'google_drive' && (
+            <div className="form-group">
+              {googleConnected ? (
+                <p>Connected to Google Drive.</p>
+              ) : (
+                <button type="button" onClick={handleGoogleConnect}>Connect to Google</button>
+              )}
             </div>
           )}
         </div>

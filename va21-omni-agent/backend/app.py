@@ -13,6 +13,8 @@ import google_auth
 from backup_manager import BackupManager
 from long_term_memory import LongTermMemoryManager
 from workflow_engine import WorkflowEngine
+from gmail_manager import GmailManager
+from github_manager import GitHubManager
 
 app = Flask(__name__, static_folder='frontend/build', static_url_path='')
 app.secret_key = os.urandom(24)
@@ -24,7 +26,8 @@ settings = {
     "url": "http://localhost:11434",
     "api_key": "",
     "backup_provider": "local",
-    "backup_path": "data/backups"
+    "backup_path": "data/backups",
+    "github_pat": ""
 }
 
 # Use a dictionary to store conversation history for each session
@@ -42,6 +45,10 @@ You are a helpful assistant. You have access to the following tools:
 - Remember: To save a key-value pair to your long-term memory. To use, output: {"tool": "remember", "key": "the key", "value": "the value"}
 - Recall: To recall a value from your long-term memory. To use, output: {"tool": "recall", "key": "the key"}
 - Log Message: A simple tool that logs a message to the console. To use, output: {"tool": "log_message", "message": "your message"}
+- Check Email: To search for emails in your Gmail account. To use, output: {"tool": "check_email", "query": "your gmail search query"}
+- List GitHub Repos: To list your GitHub repositories. To use, output: {"tool": "list_github_repos"}
+- Create GitHub Issue: To create an issue in a GitHub repository. To use, output: {"tool": "create_github_issue", "repo_full_name": "user/repo", "title": "Issue Title", "body": "Issue body text"}
+- Summarize Text: To summarize a long piece of text. To use, output: {"tool": "summarize", "text": "the text to summarize"}
 When you have the answer, reply to the user.
 """
 
@@ -69,6 +76,30 @@ def remember(key, value):
 def recall(key):
     """Recalls a value from long-term memory."""
     return ltm_manager.recall(key)
+
+def check_email(query=""):
+    """Searches for emails matching a query."""
+    gmail_manager = GmailManager()
+    return gmail_manager.check_email(query)
+
+def list_github_repos():
+    """Lists the user's GitHub repositories."""
+    github_manager = GitHubManager(settings.get("github_pat"))
+    return github_manager.list_repos()
+
+def create_github_issue(repo_full_name, title, body=""):
+    """Creates an issue in a GitHub repository."""
+    github_manager = GitHubManager(settings.get("github_pat"))
+    return github_manager.create_issue(repo_full_name, title, body)
+
+def summarize(text):
+    """Summarizes a piece of text."""
+    prompt = f"Please summarize the following text:\n\n{text}"
+    try:
+        response = get_llm_response([{"role": "user", "content": prompt}], stream=False)
+        return response.get("message", {}).get("content", "")
+    except Exception as e:
+        return f"Error summarizing text: {e}"
 
 @app.route("/")
 def serve_index():
@@ -174,6 +205,25 @@ class ChatNamespace(Namespace):
             if message:
                 log_message(message)
                 result = f"Message logged: {message}"
+        elif tool_name == "check_email":
+            query = tool_call.get("query", "")
+            self.emit('response', {'data': f"Checking emails with query: \"{query}\"...\n\n"})
+            result = check_email(query)
+        elif tool_name == "list_github_repos":
+            self.emit('response', {'data': "Listing GitHub repositories...\n\n"})
+            result = list_github_repos()
+        elif tool_name == "create_github_issue":
+            repo_full_name = tool_call.get("repo_full_name")
+            title = tool_call.get("title")
+            body = tool_call.get("body", "")
+            if repo_full_name and title:
+                self.emit('response', {'data': f"Creating issue in {repo_full_name}...\n\n"})
+                result = create_github_issue(repo_full_name, title, body)
+        elif tool_name == "summarize":
+            text = tool_call.get("text")
+            if text:
+                self.emit('response', {'data': "Summarizing text...\n\n"})
+                result = summarize(text)
 
         if result:
             current_history.append({"role": "tool", "content": result})
@@ -237,24 +287,48 @@ def plan_workflow_route():
 You are a workflow planning assistant. Your task is to convert a natural language description of a workflow into a structured JSON plan.
 The plan must have a 'name', a 'trigger', and a list of 'steps'.
 The 'trigger' must be a schedule in cron format (e.g., "cron: 0 9 * * *").
-Each 'step' in the plan must be a call to one of the available tools: log_message(message: str).
+Each 'step' in the plan must be a call to one of the available tools.
+
+Available tools:
+- log_message(message: str)
+- check_email(query: str)
+- list_github_repos()
+- create_github_issue(repo_full_name: str, title: str, body: str)
+- summarize(text: str)
+- create_backup()
+- remember(key: str, value: str)
+- recall(key: str)
+
 Example:
-Description: "Every morning at 9, log a hello message"
+Description: "Every morning at 9, check my email for messages from 'boss@example.com' and create a summary."
 JSON:
 ```json
 {{
-  "name": "Morning Greeting",
+  "name": "Daily Boss Email Summary",
   "trigger": "cron: 0 9 * * *",
   "steps": [
     {{
+      "tool": "check_email",
+      "params": {{
+        "query": "from:boss@example.com"
+      }}
+    }},
+    {{
+      "tool": "summarize",
+      "params": {{
+        "text": "{{{{steps[0].output}}}}"
+      }}
+    }},
+    {{
       "tool": "log_message",
       "params": {{
-        "message": "Hello from the scheduled workflow!"
+        "message": "Summary of boss's emails: {{{{steps[1].output}}}}"
       }}
     }}
   ]
 }}
 ```
+Note the use of `{{{{steps[0].output}}}}` to use the output of a previous step as input to the next.
 
 Natural language description: "{description}"
 
@@ -289,7 +363,14 @@ def log_message(message):
 if __name__ == '__main__':
     # Define the tools available to the workflow engine
     workflow_tools = {
-        "log_message": log_message
+        "log_message": log_message,
+        "check_email": check_email,
+        "list_github_repos": list_github_repos,
+        "create_github_issue": create_github_issue,
+        "summarize": summarize,
+        "create_backup": lambda: create_backup(None), # The workflow doesn't have a sid
+        "remember": remember,
+        "recall": recall
     }
 
     # Initialize and start the workflow engine
