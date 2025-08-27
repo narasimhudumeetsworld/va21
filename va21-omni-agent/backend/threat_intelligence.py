@@ -1,54 +1,78 @@
 import feedparser
 import time
+from urllib.parse import urlparse
 
-# A list of security-related RSS feeds.
-# In a real application, this would come from a config file or a database.
+# A stricter, official list of security RSS feeds.
 SECURITY_RSS_FEEDS = [
-    "https://krebsonsecurity.com/feed/",
-    "https://www.schneier.com/feed/",
-    "https://feeds.feedburner.com/TheHackersNews",
-    "https://threatpost.com/feed/"
+    "https://security.googleblog.com/feeds/posts/default",
+    "https://msrc.microsoft.com/blog/feed/",
 ]
 
-def fetch_stories_from_rss(feed_urls):
+def fetch_stories_from_rss(feed_urls, whois_lookup_func, sandbox_func):
     """
-    Fetches the latest stories from a list of RSS feeds.
+    Fetches stories from RSS feeds, performs a WHOIS check on the source,
+    and processes the text in a sandbox.
 
     :param feed_urls: A list of URLs for the RSS feeds.
-    :return: A list of strings, where each string is a combination of
-             the story's title and summary.
+    :param whois_lookup_func: A function that performs a WHOIS lookup on a domain.
+    :param sandbox_func: A function that processes text in a sandbox.
+    :return: A list of processed story strings.
     """
     all_stories = []
     for url in feed_urls:
         try:
-            print(f"Fetching feed: {url}")
+            print(f"[ThreatIntel] Fetching feed: {url}")
             feed = feedparser.parse(url)
 
             for entry in feed.entries:
-                # Combine title and summary for better context in the RAG.
-                title = entry.get("title", "")
-                summary = entry.get("summary", "")
-                story_text = f"Title: {title}\nSummary: {summary}"
-                all_stories.append(story_text)
+                link = entry.get("link")
+                if not link:
+                    continue
 
-            # Be a good internet citizen and don't spam requests.
+                # 1. Perform WHOIS check on the domain
+                domain = urlparse(link).netloc
+                print(f"[ThreatIntel] Verifying domain: {domain}")
+                whois_info = whois_lookup_func(domain)
+
+                # A simple legitimacy check (can be expanded)
+                if "google" in whois_info.lower() or "microsoft" in whois_info.lower():
+                    print(f"[ThreatIntel] Domain {domain} verified as legitimate.")
+
+                    # 2. Process text in sandbox
+                    title = sandbox_func(entry.get("title", ""))
+                    summary = sandbox_func(entry.get("summary", ""))
+
+                    story_text = f"Title: {title}\nSummary: {summary}"
+                    all_stories.append(story_text)
+                else:
+                    print(f"[ThreatIntel] Domain {domain} could not be verified. Skipping. Info: {whois_info}")
+
             time.sleep(1)
 
         except Exception as e:
-            print(f"Error fetching or parsing feed {url}: {e}")
+            print(f"[ThreatIntel] Error processing feed {url}: {e}")
             continue
 
     return all_stories
 
 # Example Usage (for testing purposes)
 if __name__ == '__main__':
-    print("Fetching latest stories from security RSS feeds...")
-    latest_stories = fetch_stories_from_rss(SECURITY_RSS_FEEDS)
+    # Mock functions for testing
+    def mock_whois(domain):
+        if "google" in domain or "microsoft" in domain:
+            return f"Domain: {domain}\nRegistrar: MarkMonitor Inc."
+        return "Domain not found."
+
+    def mock_sandbox(text):
+        print(f"[MockSandbox] Processing: {text[:30]}...")
+        return text
+
+    print("--- Testing RSS Fetching with Zero-Trust Logic ---")
+    latest_stories = fetch_stories_from_rss(SECURITY_RSS_FEEDS, mock_whois, mock_sandbox)
 
     if latest_stories:
-        print(f"\nSuccessfully fetched {len(latest_stories)} total stories.")
-        print("Here are the first 5:")
-        for i, story_text in enumerate(latest_stories[:5], 1):
-            print(f"--- Story {i} ---\n{story_text}\n")
+        print(f"\nSuccessfully fetched and processed {len(latest_stories)} total stories.")
+        print("Here is the first one:")
+        print(latest_stories[0])
     else:
         print("Failed to fetch any stories.")

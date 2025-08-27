@@ -20,6 +20,8 @@ from security_rag_manager import SecurityRAGManager
 from security_prompt_manager import SecurityPromptManager
 from threat_intelligence import fetch_stories_from_rss, SECURITY_RSS_FEEDS
 from local_llm import LocalLLM
+import whois
+from urllib.parse import urlparse
 
 app = Flask(__name__, static_folder='frontend/build', static_url_path='')
 app.secret_key = os.urandom(24)
@@ -121,6 +123,22 @@ def summarize(text):
         return response.get("message", {}).get("content", "")
     except Exception as e:
         return f"Error summarizing text: {e}"
+
+def whois_lookup(url: str):
+    """
+    Performs a WHOIS lookup on the domain of a given URL.
+    Returns a summary of the WHOIS information.
+    """
+    try:
+        domain = urlparse(url).netloc
+        if not domain:
+            return "Error: Could not parse domain from URL."
+
+        w = whois.whois(domain)
+        # Format the result into a readable string
+        return f"Domain: {w.domain_name}\nRegistrar: {w.registrar}\nCreation Date: {w.creation_date}\nExpiration Date: {w.expiration_date}\nEmails: {w.emails}"
+    except Exception as e:
+        return f"Error performing WHOIS lookup: {e}"
 
 @app.route("/")
 def serve_index():
@@ -249,6 +267,11 @@ class ChatNamespace(Namespace):
             if text:
                 self.emit('response', {'data': "Summarizing text...\n\n"})
                 result = summarize(text)
+        elif tool_name == "whois_lookup":
+            url = tool_call.get("url")
+            if url:
+                self.emit('response', {'data': f"Performing WHOIS lookup for {url}...\n\n"})
+                result = whois_lookup(url)
 
         if result:
             if not analyze_tool_output(result):
@@ -381,12 +404,28 @@ def log_message(message):
     """A simple tool that logs a message."""
     print(f"WORKFLOW LOG: {message}")
 
+def sandbox_process_text(text: str) -> str:
+    """
+    A placeholder for a future sandboxing feature.
+    For now, it just logs and returns the text.
+    """
+    print(f"[SANDBOX] Processing text in sandbox...")
+    # In the future, this could involve running analysis in a container or subprocess.
+    return text
+
 security_rag = SecurityRAGManager()
 
 def update_security_rag_from_rss():
-    """Fetches latest stories from RSS feeds and adds them to the security RAG."""
+    """
+    Fetches latest stories from RSS feeds, verifies their source, processes
+    them in a sandbox, and adds them to the security RAG.
+    """
     print("Fetching RSS stories for security RAG...")
-    stories = fetch_stories_from_rss(SECURITY_RSS_FEEDS)
+    stories = fetch_stories_from_rss(
+        feed_urls=SECURITY_RSS_FEEDS,
+        whois_lookup_func=whois_lookup,
+        sandbox_func=sandbox_process_text
+    )
     if stories:
         security_rag.add_texts(stories)
         print(f"Added {len(stories)} new stories to the security RAG.")
@@ -471,7 +510,8 @@ if __name__ == '__main__':
         "summarize": summarize,
         "create_backup": lambda: create_backup(None), # The workflow doesn't have a sid
         "remember": remember,
-        "recall": recall
+        "recall": recall,
+        "whois_lookup": whois_lookup
     }
 
     # Initialize the workflow engine

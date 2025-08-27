@@ -19,3 +19,4 @@ poml
 feedparser
 onnx
 onnxruntime
+python-whois
