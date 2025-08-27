@@ -1,0 +1,21 @@
+{
+  "name": "va21-omni-agent-desktop",
+  "version": "1.0.0",
+  "description": "A secure, AI-powered desktop browser.",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "npx concurrently \"npm:start-backend\" \"npm:start-react\" \"npm:start-electron\"",
+    "start-backend": "cd va21-omni-agent/backend && python app.py",
+    "start-react": "cd va21-omni-agent/frontend && npm start",
+    "start-electron": "npx wait-on http://localhost:3000 && npx electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "electron": "^31.2.1",
+    "wait-on": "^7.2.0"
+  }
+}

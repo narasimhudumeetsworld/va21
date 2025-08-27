@@ -1,0 +1,36 @@
+# Dependencies
+/node_modules
+/va21-omni-agent/backend/node_modules
+/va21-omni-agent/frontend/node_modules
+
+# Build artifacts
+/build
+/dist
+/out
+/electron/dist
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Data files
+/va21-omni-agent/backend/data/
+/va21-omni-agent/backend/workflows/
+*.onnx
+*.gguf
+*.db
+
+# Temp files from test scripts
+/va21-omni-agent/backend/phi3-qa.py

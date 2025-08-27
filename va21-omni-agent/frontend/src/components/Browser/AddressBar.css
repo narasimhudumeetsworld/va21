@@ -1,0 +1,41 @@
+.address-bar {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  background-color: #3c3c3c;
+  position: fixed;
+  top: 30px; /* Below the title bar */
+  left: 0;
+  right: 0;
+  z-index: 9998;
+}
+
+.nav-button, .agent-button {
+  background: none;
+  border: 1px solid #555;
+  color: white;
+  border-radius: 4px;
+  margin: 0 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.nav-button:hover, .agent-button:hover {
+  background-color: #555;
+}
+
+.address-input {
+  flex-grow: 1;
+  background-color: #2e2e2e;
+  border: 1px solid #555;
+  color: white;
+  border-radius: 4px;
+  padding: 6px 10px;
+  margin: 0 8px;
+  font-family: sans-serif;
+}
+
+.agent-button {
+  font-weight: bold;
+  background-color: #4a4a4a;
+}

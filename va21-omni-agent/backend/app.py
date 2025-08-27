@@ -304,7 +304,45 @@ class ChatNamespace(Namespace):
             self.emit('response', {'data': f"Error: {e}"})
             if current_history: current_history.pop()
 
-# ... (TerminalNamespace and other routes)
+class TerminalNamespace(Namespace):
+    def on_connect(self):
+        print(f'Terminal client connected: {request.sid}')
+        # Start a new pty process for the session
+        pid, fd = ptyprocess.fork()
+        if pid == 0:
+            # Child process
+            os.execv('/bin/bash', ['/bin/bash'])
+        else:
+            # Parent process
+            ptys[request.sid] = fd
+            # Start a thread to read from the pty and forward to the client
+            threading.Thread(target=self.read_and_forward, args=[request.sid, fd]).start()
+
+    def on_disconnect(self):
+        print(f'Terminal client disconnected: {request.sid}')
+        if request.sid in ptys:
+            os.close(ptys[request.sid])
+            del ptys[request.sid]
+
+    def on_terminal_in(self, data):
+        if request.sid in ptys:
+            os.write(ptys[request.sid], data.encode())
+
+    def read_and_forward(self, sid, fd):
+        """Reads from the pty and forwards to the client."""
+        while True:
+            try:
+                data = os.read(fd, 1024).decode()
+                if data:
+                    self.emit('terminal_out', {'data': data}, to=sid)
+                else:
+                    # PTY has been closed
+                    break
+            except OSError:
+                break
+
+socketio.on_namespace(ChatNamespace('/chat'))
+socketio.on_namespace(TerminalNamespace('/terminal'))
 
 @app.route('/api/workflows/plan', methods=['POST'])
 def plan_workflow_route():

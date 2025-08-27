@@ -1,27 +1,29 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import './App.css';
-import Nav from './components/Nav';
-import Chat from './components/Chat';
-import Settings from './components/Settings';
-import Terminal from './components/Terminal';
-import Documents from './components/Documents';
-import Workflows from './components/Workflows';
+import TitleBar from './components/Browser/TitleBar';
+import AddressBar from './components/Browser/AddressBar';
+import SidePanel from './components/SidePanel/SidePanel';
 
 function App() {
+  const [isSidePanelOpen, setSidePanelOpen] = useState(false);
+
+  const toggleSidePanel = () => {
+    setSidePanelOpen(!isSidePanelOpen);
+    // Notify the main process that the panel state has changed
+    if (window.electronAPI && window.electronAPI.toggleSidePanel) {
+      window.electronAPI.toggleSidePanel(!isSidePanelOpen);
+    }
+  };
+
   return (
     <Router>
       <div className="App">
-        <Nav />
-        <main>
-          <Routes>
-            <Route path="/" element={<Chat />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/terminal" element={<Terminal />} />
-            <Route path="/documents" element={<Documents />} />
-            <Route path="/workflows" element={<Workflows />} />
-          </Routes>
-        </main>
+        <TitleBar />
+        <AddressBar onToggleSidePanel={toggleSidePanel} />
+        <SidePanel isOpen={isSidePanelOpen} />
+        {/* The main browser view will be managed by Electron and will occupy
+            the space not taken by the side panel. */}
       </div>
     </Router>
   );
