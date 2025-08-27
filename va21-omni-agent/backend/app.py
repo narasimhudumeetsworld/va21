@@ -15,6 +15,11 @@ from long_term_memory import LongTermMemoryManager
 from workflow_engine import WorkflowEngine
 from gmail_manager import GmailManager
 from github_manager import GitHubManager
+from prompt_manager import PromptManager
+from security_rag_manager import SecurityRAGManager
+from security_prompt_manager import SecurityPromptManager
+from threat_intelligence import fetch_stories_from_rss, SECURITY_RSS_FEEDS
+from local_llm import LocalLLM
 
 app = Flask(__name__, static_folder='frontend/build', static_url_path='')
 app.secret_key = os.urandom(24)
@@ -37,20 +42,36 @@ ptys = {}
 
 rag_manager = RAGManager()
 ltm_manager = LongTermMemoryManager()
+prompt_manager = PromptManager()
+security_prompt_manager = SecurityPromptManager()
+local_llm = LocalLLM()
 
-SYSTEM_PROMPT = """
-You are a helpful assistant. You have access to the following tools:
-- Web Search: To search the web for information. To use, output: {"tool": "web_search", "query": "your search query"}
-- Create Backup: To save the current conversation history and long-term memory to your configured backup location. To use, output: {"tool": "create_backup"}
-- Remember: To save a key-value pair to your long-term memory. To use, output: {"tool": "remember", "key": "the key", "value": "the value"}
-- Recall: To recall a value from your long-term memory. To use, output: {"tool": "recall", "key": "the key"}
-- Log Message: A simple tool that logs a message to the console. To use, output: {"tool": "log_message", "message": "your message"}
-- Check Email: To search for emails in your Gmail account. To use, output: {"tool": "check_email", "query": "your gmail search query"}
-- List GitHub Repos: To list your GitHub repositories. To use, output: {"tool": "list_github_repos"}
-- Create GitHub Issue: To create an issue in a GitHub repository. To use, output: {"tool": "create_github_issue", "repo_full_name": "user/repo", "title": "Issue Title", "body": "Issue body text"}
-- Summarize Text: To summarize a long piece of text. To use, output: {"tool": "summarize", "text": "the text to summarize"}
-When you have the answer, reply to the user.
-"""
+def analyze_tool_output(output: str) -> bool:
+    """
+    Analyzes tool output for security risks using the local LLM.
+    Returns True if the output is safe, False otherwise.
+    """
+    if not output:
+        return True # Nothing to analyze
+
+    print("--- Running Security Guardian Analysis ---")
+    try:
+        guardian_prompt = security_prompt_manager.render_prompt(
+            'security_guardian',
+            {'tool_output': str(output)}
+        )
+        analysis_result = local_llm.generate(guardian_prompt).strip().upper()
+
+        print(f"Security Guardian Result: {analysis_result}")
+
+        if analysis_result.startswith("UNSAFE"):
+            return False
+
+        return True
+
+    except Exception as e:
+        print(f"Error during security analysis: {e}")
+        return False
 
 def perform_web_search(query):
     """Performs a web search using DuckDuckGo and returns the results."""
@@ -170,7 +191,8 @@ def get_llm_response(history, stream=False):
 
 class ChatNamespace(Namespace):
     def on_connect(self):
-        histories[request.sid] = [{"role": "system", "content": SYSTEM_PROMPT}]
+        system_prompt = prompt_manager.render_prompt('system_prompt.poml')
+        histories[request.sid] = [{"role": "system", "content": system_prompt}]
         print(f'Chat client connected: {request.sid}')
         self.emit('response', {'data': 'Connected to server'})
 
@@ -181,6 +203,9 @@ class ChatNamespace(Namespace):
 
     def _handle_tool_call(self, tool_call, current_history):
         """Helper function to handle tool calls."""
+        if ltm_manager.is_in_observation_mode():
+            self.emit('response', {'data': "\n\n[OBSERVATION MODE]: Agent is in a 5-day observation period due to a recent self-correction. Tool use is being monitored."})
+
         tool_name = tool_call.get("tool")
         result = None
 
@@ -226,6 +251,11 @@ class ChatNamespace(Namespace):
                 result = summarize(text)
 
         if result:
+            if not analyze_tool_output(result):
+                self.emit('response', {'data': "\n\n[Security Guardian: Potentially unsafe tool output detected and blocked.]"})
+                # We do not append the unsafe result to history or process it further.
+                return
+
             current_history.append({"role": "tool", "content": result})
             response = get_llm_response(current_history, stream=True)
             response.raise_for_status()
@@ -283,59 +313,12 @@ def plan_workflow_route():
     if not description:
         return jsonify({'error': 'No description provided'}), 400
 
-    planner_prompt = f"""
-You are a workflow planning assistant. Your task is to convert a natural language description of a workflow into a structured JSON plan.
-The plan must have a 'name', a 'trigger', and a list of 'steps'.
-The 'trigger' must be a schedule in cron format (e.g., "cron: 0 9 * * *").
-Each 'step' in the plan must be a call to one of the available tools.
-
-Available tools:
-- log_message(message: str)
-- check_email(query: str)
-- list_github_repos()
-- create_github_issue(repo_full_name: str, title: str, body: str)
-- summarize(text: str)
-- create_backup()
-- remember(key: str, value: str)
-- recall(key: str)
-
-Example:
-Description: "Every morning at 9, check my email for messages from 'boss@example.com' and create a summary."
-JSON:
-```json
-{{
-  "name": "Daily Boss Email Summary",
-  "trigger": "cron: 0 9 * * *",
-  "steps": [
-    {{
-      "tool": "check_email",
-      "params": {{
-        "query": "from:boss@example.com"
-      }}
-    }},
-    {{
-      "tool": "summarize",
-      "params": {{
-        "text": "{{{{steps[0].output}}}}"
-      }}
-    }},
-    {{
-      "tool": "log_message",
-      "params": {{
-        "message": "Summary of boss's emails: {{{{steps[1].output}}}}"
-      }}
-    }}
-  ]
-}}
-```
-Note the use of `{{{{steps[0].output}}}}` to use the output of a previous step as input to the next.
-
-Natural language description: "{description}"
-
-JSON plan:
-"""
-
     try:
+        planner_prompt = prompt_manager.render_prompt(
+            'workflow_planner.poml',
+            {'description': description}
+        )
+
         response_data = get_llm_response([{"role": "user", "content": planner_prompt}], stream=False)
         plan_text = response_data.get("message", {}).get("content", "")
 
@@ -360,7 +343,87 @@ def log_message(message):
     """A simple tool that logs a message."""
     print(f"WORKFLOW LOG: {message}")
 
+security_rag = SecurityRAGManager()
+
+def update_security_rag_from_rss():
+    """Fetches latest stories from RSS feeds and adds them to the security RAG."""
+    print("Fetching RSS stories for security RAG...")
+    stories = fetch_stories_from_rss(SECURITY_RSS_FEEDS)
+    if stories:
+        security_rag.add_texts(stories)
+        print(f"Added {len(stories)} new stories to the security RAG.")
+
+def seed_good_code_rag():
+    """
+    Scans the good_code_examples directory and adds the content of each
+    file to the security RAG. This is a one-time operation.
+    """
+    if ltm_manager.recall("good_code_seeded") == "True":
+        print("Good code examples already seeded in Security RAG.")
+        return
+
+    print("Seeding Security RAG with good code examples...")
+    code_examples_dir = "good_code_examples"
+    all_code_texts = []
+
+    if not os.path.exists(code_examples_dir):
+        print(f"Directory not found: {code_examples_dir}")
+        return
+
+    for filename in os.listdir(code_examples_dir):
+        if filename.endswith(".py"):
+            file_path = os.path.join(code_examples_dir, filename)
+            with open(file_path, 'r', encoding='utf-8') as f:
+                all_code_texts.append(f.read())
+
+    if all_code_texts:
+        security_rag.add_texts(all_code_texts)
+        ltm_manager.remember("good_code_seeded", "True")
+        print(f"Successfully seeded {len(all_code_texts)} good code examples.")
+
+def perform_self_analysis():
+    """
+    Performs a self-analysis of the agent's own code by checking it
+    against good code examples in the security RAG.
+    """
+    print("[SELF-ANALYSIS] Starting self-analysis cycle.")
+    files_to_analyze = ["app.py", "prompt_manager.py", "security_prompt_manager.py"]
+
+    for filename in files_to_analyze:
+        try:
+            with open(filename, 'r', encoding='utf-8') as f:
+                file_content = f.read()
+
+            # Use the file content to find relevant good code examples
+            rag_context = "\n---\n".join(security_rag.search(file_content, k=3))
+
+            analysis_prompt = security_prompt_manager.render_prompt(
+                'code_analysis',
+                {
+                    'file_content': file_content,
+                    'rag_context': rag_context
+                }
+            )
+
+            # Use the local LLM for the analysis.
+            analysis_result = local_llm.generate(analysis_prompt).strip()
+
+            if "NO ISSUES FOUND" not in analysis_result.upper():
+                print(f"[SELF-ANALYSIS] Potential issues found in {filename}:\n{analysis_result}")
+                # Trigger the 5-day observation mode
+                ltm_manager.set_observation_mode(5)
+            else:
+                print(f"[SELF-ANALYSIS] No issues found in {filename}.")
+
+        except FileNotFoundError:
+            print(f"[SELF-ANALYSIS] Could not find file {filename} to analyze.")
+        except Exception as e:
+            print(f"[SELF-ANALYSIS] An error occurred during analysis of {filename}: {e}")
+
 if __name__ == '__main__':
+    # Perform one-time seeding of the security RAG with good code examples.
+    seed_good_code_rag()
+
     # Define the tools available to the workflow engine
     workflow_tools = {
         "log_message": log_message,
@@ -373,8 +436,29 @@ if __name__ == '__main__':
         "recall": recall
     }
 
-    # Initialize and start the workflow engine
+    # Initialize the workflow engine
     workflow_engine = WorkflowEngine(tools=workflow_tools)
+
+    # Schedule the threat intelligence gathering job
+    workflow_engine.scheduler.add_job(
+        update_security_rag_from_rss,
+        'interval',
+        hours=1,
+        id='update_rss_stories',
+        replace_existing=True
+    )
+
+    # Schedule the self-analysis job to run daily at 2 AM
+    workflow_engine.scheduler.add_job(
+        perform_self_analysis,
+        'cron',
+        hour=2,
+        minute=0,
+        id='self_analysis_job',
+        replace_existing=True
+    )
+
+    # Start the workflow engine (which also starts the scheduler)
     workflow_engine.start()
 
     # Use allow_unsafe_werkzeug=True for development with Flask 2.3+ and Socket.IO

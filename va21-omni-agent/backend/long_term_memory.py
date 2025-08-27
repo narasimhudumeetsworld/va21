@@ -1,6 +1,7 @@
 import os
 import json
 import secrets
+from datetime import datetime, timedelta
 
 class LongTermMemoryManager:
     def __init__(self, data_dir="data"):
@@ -46,3 +47,39 @@ class LongTermMemoryManager:
     def get_all(self):
         """Returns the entire long-term memory."""
         return self.memory
+
+    def set_observation_mode(self, days=5):
+        """Sets the agent to be in observation mode for a number of days."""
+        end_time = datetime.now() + timedelta(days=days)
+        self.remember("observation_mode_until", end_time.isoformat())
+        print(f"[OBSERVATION MODE] Activated until {end_time.isoformat()}")
+
+    def is_in_observation_mode(self):
+        """Checks if the agent is currently in observation mode."""
+        end_time_str = self.memory.get("observation_mode_until")
+        if not end_time_str:
+            return False
+
+        try:
+            end_time = datetime.fromisoformat(end_time_str)
+            if datetime.now() < end_time:
+                return True
+            else:
+                # The observation period has expired, so clear the flag.
+                self.remember("observation_mode_until", None)
+                return False
+        except ValueError:
+            # Handle cases where the timestamp is invalid.
+            return False
+
+if __name__ == '__main__':
+    import time
+    ltm = LongTermMemoryManager()
+    print("--- Testing Observation Mode ---")
+    print(f"Initially in observation mode: {ltm.is_in_observation_mode()}")
+    ltm.set_observation_mode(days=0.00001) # Set for a very short time
+    print(f"After setting, in observation mode: {ltm.is_in_observation_mode()}")
+    time.sleep(1) # Wait for the mode to expire
+    print(f"After waiting, in observation mode: {ltm.is_in_observation_mode()}")
+    # Check that the key was cleared
+    print(f"Value of observation_mode_until key: {ltm.recall('observation_mode_until')}")
