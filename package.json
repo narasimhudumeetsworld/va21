@@ -8,14 +8,29 @@
     "dev": "npx concurrently \"npm:start-backend\" \"npm:start-react\" \"npm:start-electron\"",
     "start-backend": "cd va21-omni-agent/backend && python app.py",
     "start-react": "cd va21-omni-agent/frontend && npm start",
-    "start-electron": "npx wait-on http://localhost:3000 && npx electron ."
+    "start-electron": "npx wait-on http://localhost:3000 && npx electron .",
+    "package": "npx electron-builder"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "concurrently": "^8.2.2",
-    "electron": "^31.2.1",
-    "wait-on": "^7.2.0"
+    "electron": "31.2.1",
+    "wait-on": "^7.2.0",
+    "electron-builder": "^25.0.0"
+  },
+  "build": {
+    "appId": "com.va21.omni-agent",
+    "productName": "VA21 Omni Agent",
+    "files": [
+      "electron/**/*",
+      "va21-omni-agent/frontend/build/**/*",
+      "va21-omni-agent/backend/**/*",
+      "node_modules/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.developer-tools"
+    }
   }
 }
