@@ -1,35 +1,47 @@
-  import SwiftUI
+import SwiftUI
 
-  struct ContentView: View {
-      @StateObject private var vm = ViewModel()
+struct ContentView: View {
+    @StateObject private var vm = ViewModel()
 
-      var body: some View {
-          VStack(alignment: .leading) {
-              Text("VA21 Cockpit")
-                  .font(.largeTitle)
-                  .padding(.bottom)
+    var body: some View {
+        VStack {
+            HStack {
+                Button("Settings") {
+                    vm.isSettingsPresented = true
+                }
 
-              HStack {
-                  Button("Start Engine") { vm.startEngine() }
-                      .padding(.trailing)
-                  Button("Stop Engine") { vm.stopEngine() }
-              }
-              .padding(.bottom)
+                TextField("Enter URL", text: $vm.urlString)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .onSubmit {
+                        vm.loadURL()
+                    }
 
-              Text("Engine Output Log:")
-                  .padding(.bottom, 2)
+                Button("Go") {
+                    vm.loadURL()
+                }
 
-              ScrollView {
-                  Text(vm.log)
-                      .font(.system(.body, design: .monospaced))
-                      .frame(maxWidth: .infinity, alignment: .leading)
-                      .padding()
-              }
-              .frame(maxHeight: 400)
+                Spacer()
 
-              Spacer()
-          }
-          .frame(minWidth: 600, minHeight: 500)
-          .padding()
-      }
-  }
+                Button("Assistant") {
+                    vm.isChatPresented = true
+                }
+            }
+            .padding()
+
+            if let url = vm.currentURL {
+                WebView(url: url)
+            } else {
+                Spacer()
+                Text("Enter a URL to begin.")
+                    .font(.largeTitle)
+                Spacer()
+            }
+        }
+        .sheet(isPresented: $vm.isChatPresented) {
+            ChatView(vm: vm)
+        }
+        .sheet(isPresented: $vm.isSettingsPresented) {
+            SettingsView()
+        }
+    }
+}
