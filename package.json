@@ -30,8 +30,7 @@
       "node_modules/**/*"
     ],
     "mac": {
-      "category": "public.app-category.developer-tools",
-      "icon": "assets/logo.svg"
+      "category": "public.app-category.developer-tools"
     }
   }
 }

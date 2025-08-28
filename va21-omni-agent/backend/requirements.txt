@@ -20,3 +20,4 @@ feedparser
 onnx
 onnxruntime
 python-whois
+onnxruntime-genai

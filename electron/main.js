@@ -9,6 +9,7 @@ function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
+    frame: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -59,7 +60,7 @@ app.whenReady().then(() => {
 
   // Start the Python backend
   const backendPath = path.join(__dirname, '..', 'va21-omni-agent', 'backend', 'app.py');
-  pythonProcess = spawn('python', [backendPath]);
+  pythonProcess = spawn('python3', [backendPath]);
 
   pythonProcess.stdout.on('data', (data) => {
     console.log(`Python Backend: ${data}`);
