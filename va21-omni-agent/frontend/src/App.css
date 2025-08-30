@@ -1,86 +1,36 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent scrollbars on the main window */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: #202124; /* This will be the background of the content area */
+}
+
 .App {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  width: 100vw;
+  background-color: transparent; /* The window itself is transparent */
 }
 
-.App-header {
-  background-color: #282c34;
-  padding: 20px;
-  color: white;
-  text-align: center;
-}
-
-.chat-window {
-  flex-grow: 1;
+.browser-chrome {
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  overflow-y: auto;
-  background-color: #f5f5f5;
+  flex-shrink: 0;
+  -webkit-app-region: drag; /* Allows dragging the window from the chrome area */
 }
 
-.message-list {
-  flex-grow: 1;
-  overflow-y: auto;
-  padding: 10px;
+/* We need to make sure buttons and inputs in the chrome are not draggable */
+.browser-chrome input, .browser-chrome button, .browser-chrome a {
+  -webkit-app-region: no-drag;
 }
 
-.message {
-  padding: 10px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  max-width: 80%;
-  word-wrap: break-word;
-}
-
-.message.user {
-  background-color: #dcf8c6;
-  align-self: flex-end;
-  text-align: right;
-}
-
-.message.agent {
-  background-color: #fff;
-  align-self: flex-start;
-  text-align: left;
-}
-
-.message-form {
+/* The main content area is now just a flex-grow container, as the
+   BrowserView is managed entirely by Electron and sits behind the window */
+.main-content-area {
   display: flex;
-  padding: 10px;
-  background-color: #fff;
-  border-top: 1px solid #ddd;
-}
-
-.message-form input {
   flex-grow: 1;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.message-form button {
-  padding: 10px 20px;
-  border: none;
-  background-color: #282c34;
-  color: white;
-  border-radius: 5px;
-  margin-left: 10px;
-  cursor: pointer;
-}
-
-.main-content {
-  display: flex;
-  height: 100vh;
-  padding-top: 78px; /* Height of TitleBar (30px) + AddressBar (48px) */
-  box-sizing: border-box;
-}
-
-main {
-  flex-grow: 1;
-  padding: 20px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
+  position: relative;
 }

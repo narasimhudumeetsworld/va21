@@ -1,143 +1,174 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, BrowserView, ipcMain, protocol, dialog } = require('electron');
 const path = require('path');
+const fs = require('fs');
 const { spawn } = require('child_process');
+const { download } = require('electron-dl');
+const extract = require('extract-zip');
+const tar = require('tar');
 
 let pythonProcess = null;
+let mainWindow = null;
+const views = {};
+let activeViewId = null;
 
-function createWindow() {
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
-    frame: false,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      contextIsolation: true,
-      sandbox: true
-    }
-  });
+let CHROME_HEIGHT = 90; // Default value
 
-  // Load the React app (the browser's UI)
-  const startUrl = process.env.ELECTRON_START_URL || 'http://localhost:3000';
-  mainWindow.loadURL(startUrl);
+// --- Path Configurations ---
+const USER_DATA_PATH = app.getPath('userData');
+const SETTINGS_PATH = path.join(USER_DATA_PATH, 'settings.json');
 
-  // Create and set the BrowserView for web content
-  const { BrowserView } = require('electron');
-  const view = new BrowserView();
-  mainWindow.setBrowserView(view);
+const MODEL_BASE_URL = 'https://huggingface.co/microsoft/Phi-4-mini-reasoning-onnx/resolve/main/cpu_and_mobile/cpu-int4-rtn-block-32-acc-level-4';
+const MODEL_FILES = [ 'added_tokens.json', 'config.json', 'configuration_phi3.py', 'genai_config.json', 'merges.txt', 'model.onnx', 'model.onnx.data', 'special_tokens_map.json', 'tokenizer.json', 'tokenizer_config.json', 'vocab.json' ];
+const MODEL_PATH = path.join(__dirname, '..', 'va21-omni-agent', 'backend');
 
-  const contentTopOffset = 78; // Height of title bar + address bar
-  view.setBounds({ x: 0, y: contentTopOffset, width: 1200, height: 800 - contentTopOffset });
-  view.setAutoResize({ width: true, height: true });
-  view.webContents.loadURL('https://www.google.com');
+const VENDOR_PATH = path.join(__dirname, '..', 'vendor');
+const PYTHON_WIN_URL = 'https://www.python.org/ftp/python/3.11.12/python-3.11.12-embed-amd64.zip';
+const PYTHON_WIN_PATH = path.join(VENDOR_PATH, 'python-win');
+const PYTHON_MAC_URL = ''; // Still need this
+const PYTHON_MAC_PATH = path.join(VENDOR_PATH, 'python-mac');
+const PYTHON_LINUX_PATH = path.join(VENDOR_PATH, 'python-linux');
 
-  // Open DevTools for the BrowserView for debugging
-  // view.webContents.openDevTools();
+// --- Helper Functions ---
+
+async function showDownloaderWindow(title, message) {
+    const downloaderWindow = new BrowserWindow({ width: 450, height: 220, frame: false, resizable: false, movable: true, webPreferences: { nodeIntegration: true, contextIsolation: false } });
+    downloaderWindow.loadFile(path.join(__dirname, 'downloader.html'));
+    await new Promise(resolve => downloaderWindow.once('ready-to-show', resolve));
+    downloaderWindow.webContents.executeJavaScript(`document.querySelector('h1').innerText = '${title}'; document.querySelector('p:nth-of-type(1)').innerText = '${message}';`);
+    return downloaderWindow;
 }
 
-const { ipcMain } = require('electron');
+async function ensureModelExists() {
+    if (fs.existsSync(path.join(MODEL_PATH, 'model.onnx.data'))) return;
+    const downloader = await showDownloaderWindow('Preparing Guardian AI...', 'Downloading necessary security models...');
+    for (let i = 0; i < MODEL_FILES.length; i++) {
+        await download(downloader, `${MODEL_BASE_URL}/${MODEL_FILES[i]}`, { directory: MODEL_PATH, onProgress: p => downloader.webContents.send('download-progress', { percent: (i + p.percent) / MODEL_FILES.length }) });
+    }
+    downloader.close();
+}
 
-app.whenReady().then(() => {
-  // Security Hardening: Disable extensions and dev tools
-  app.on('web-contents-created', (event, contents) => {
-    contents.on('will-attach-webview', (event, webPreferences, params) => {
-      // Strip away preload scripts if unused
-      delete webPreferences.preload;
-      delete webPreferences.preloadURL;
+async function ensurePythonExists() {
+    const platform = process.platform;
+    let pythonExe;
+    if (platform === 'win32') {
+        pythonExe = path.join(PYTHON_WIN_PATH, 'python.exe');
+    } else if (platform === 'darwin') {
+        pythonExe = path.join(PYTHON_MAC_PATH, 'bin', 'python3');
+    } else if (platform === 'linux') {
+        pythonExe = path.join(PYTHON_LINUX_PATH, 'bin', 'python');
+    }
 
-      // Disable Node.js integration
-      webPreferences.nodeIntegration = false;
-    });
+    if (!pythonExe || !fs.existsSync(pythonExe)) {
+        dialog.showErrorBox('Python Not Found', 'Python executable not found. Please run the setup script or install Python manually.');
+        app.quit();
+    }
+}
 
-    // Prevent opening new windows (e.g., popups)
-    contents.setWindowOpenHandler(() => ({ action: 'deny' }));
+function getPythonExecutablePath() {
+    const platform = process.platform;
+    if (platform === 'win32') return path.join(PYTHON_WIN_PATH, 'python.exe');
+    if (platform === 'darwin') return path.join(PYTHON_MAC_PATH, 'bin', 'python3');
+    if (platform === 'linux') return path.join(PYTHON_LINUX_PATH, 'bin', 'python');
+    return 'python3'; // Fallback
+}
 
-    // Disable DevTools
-    contents.on('devtools-opened', () => {
-      contents.closeDevTools();
-    });
+function createWindow() {
+  mainWindow = new BrowserWindow({ width: 1200, height: 800, frame: false, titleBarStyle: 'hidden', webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, sandbox: true } });
+  mainWindow.loadFile(path.join(__dirname, '..', 'va21-omni-agent', 'frontend', 'build', 'index.html'));
+  mainWindow.on('resize', () => {
+    const activeView = getActiveView();
+    if (activeView) {
+        const [width, height] = mainWindow.getSize();
+        activeView.setBounds({ x: 0, y: CHROME_HEIGHT, width, height: height - CHROME_HEIGHT });
+    }
+  });
+}
+
+function getActiveView() { return views[activeViewId]; }
+
+// --- App Lifecycle & IPC ---
+
+app.whenReady().then(async () => {
+  await ensureModelExists();
+  await ensurePythonExists();
+
+  protocol.registerFileProtocol('app', (request, callback) => {
+    const url = request.url.substring(6);
+    callback({ path: path.normalize(path.join(__dirname, '..', 'va21-omni-agent', 'frontend', 'public', `${url}.html`)) });
   });
 
-  // Start the Python backend
-  const backendPath = path.join(__dirname, '..', 'va21-omni-agent', 'backend', 'app.py');
-  pythonProcess = spawn('python3', [backendPath]);
+  const pythonExecutable = getPythonExecutablePath();
+  const backendScript = path.join(MODEL_PATH, 'app.py');
 
-  pythonProcess.stdout.on('data', (data) => {
-    console.log(`Python Backend: ${data}`);
-  });
-
-  pythonProcess.stderr.on('data', (data) => {
-    console.error(`Python Backend Error: ${data}`);
-  });
-
-  pythonProcess.on('close', (code) => {
-    console.log(`Python backend process exited with code ${code}`);
-  });
+  console.log(`Spawning backend: ${pythonExecutable} ${backendScript} --settings_path ${SETTINGS_PATH}`);
+  pythonProcess = spawn(pythonExecutable, [backendScript, '--settings_path', SETTINGS_PATH], { cwd: MODEL_PATH });
+  pythonProcess.stdout.on('data', (data) => console.log(`Python Backend: ${data}`));
+  pythonProcess.stderr.on('data', (data) => console.error(`Python Backend Error: ${data}`));
+  pythonProcess.on('close', (code) => console.log(`Python backend process exited with code ${code}`));
 
   createWindow();
-
-  // IPC handlers for browser navigation
-  ipcMain.handle('navigate:to', (event, url) => {
-    const win = BrowserWindow.getAllWindows()[0];
-    const view = win.getBrowserView();
-    if (view) {
-      view.webContents.loadURL(url);
-    }
-  });
-
-  ipcMain.handle('navigate:back', () => {
-    const win = BrowserWindow.getAllWindows()[0];
-    const view = win.getBrowserView();
-    if (view && view.webContents.canGoBack()) {
-      view.webContents.goBack();
-    }
-  });
-
-  ipcMain.handle('navigate:forward', () => {
-    const win = BrowserWindow.getAllWindows()[0];
-    const view = win.getBrowserView();
-    if (view && view.webContents.canGoForward()) {
-      view.webContents.goForward();
-    }
-  });
-
-  ipcMain.handle('navigate:reload', () => {
-    const win = BrowserWindow.getAllWindows()[0];
-    const view = win.getBrowserView();
-    if (view) {
-      view.webContents.reload();
-    }
-  });
-
-  const sidePanelWidth = 500;
-  ipcMain.handle('sidepanel:toggle', (event, isOpen) => {
-    const win = BrowserWindow.getAllWindows()[0];
-    const view = win.getBrowserView();
-    const [width, height] = win.getSize();
-    const contentTopOffset = 78;
-
-    if (view) {
-      if (isOpen) {
-        view.setBounds({ x: 0, y: contentTopOffset, width: width - sidePanelWidth, height: height - contentTopOffset });
-      } else {
-        view.setBounds({ x: 0, y: contentTopOffset, width: width, height: height - contentTopOffset });
-      }
-    }
-  });
-
-  app.on('activate', function () {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
-  });
 });
 
-app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') app.quit();
+app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
+
+app.on('will-quit', () => { if (pythonProcess) pythonProcess.kill(); });
+
+// --- Settings IPC ---
+ipcMain.handle('settings:get', async () => {
+    try {
+        if (fs.existsSync(SETTINGS_PATH)) {
+            const settings = fs.readFileSync(SETTINGS_PATH, 'utf-8');
+            return JSON.parse(settings);
+        }
+    } catch (error) {
+        console.error('Error reading settings file:', error);
+    }
+    // Return defaults if file doesn't exist or is invalid
+    return { provider: 'ollama', url: 'http://localhost:11434', api_key: '', backup_provider: 'local', backup_path: '', github_pat: '' };
+});
+ipcMain.on('settings:save', (event, settings) => {
+    try {
+        fs.writeFileSync(SETTINGS_PATH, JSON.stringify(settings, null, 2));
+    } catch (error) {
+        console.error('Error saving settings file:', error);
+    }
 });
 
-app.on('will-quit', () => {
-  // Kill the python process before quitting
-  if (pythonProcess) {
-    console.log('Killing Python backend process...');
-    pythonProcess.kill();
-  }
+// --- Tab & Chrome IPC ---
+ipcMain.on('chrome:set-height', (event, height) => {
+    CHROME_HEIGHT = height;
+    for (const id in views) {
+        const [winWidth, winHeight] = mainWindow.getSize();
+        views[id].setBounds({ x: 0, y: CHROME_HEIGHT, width: winWidth, height: winHeight - CHROME_HEIGHT });
+    }
 });
+ipcMain.on('tabs:new', (event, tab) => {
+    const { id, url } = tab;
+    const [width, height] = mainWindow.getSize();
+    const view = new BrowserView({ webPreferences: { nodeIntegration: false, contextIsolation: true, sandbox: true } });
+    views[id] = view;
+    view.setBounds({ x: 0, y: CHROME_HEIGHT, width, height: height - CHROME_HEIGHT });
+    view.setAutoResize({ width: true, height: true });
+    view.webContents.loadURL(url);
+    const wc = view.webContents;
+    wc.on('page-title-updated', (evt, title) => mainWindow.webContents.send('tabs:update', { id: id, title: title }));
+    wc.on('did-navigate', (evt, newUrl) => mainWindow.webContents.send('tabs:update', { id: id, url: newUrl }));
+    mainWindow.addBrowserView(view);
+    mainWindow.setBrowserView(view);
+    activeViewId = id;
+});
+ipcMain.on('tabs:select', (event, id) => { const view = views[id]; if (view) { mainWindow.setBrowserView(view); activeViewId = id; } });
+ipcMain.on('tabs:close', (event, id) => { const view = views[id]; if (view) { mainWindow.removeBrowserView(view); view.webContents.destroy(); delete views[id]; if (activeViewId === id) activeViewId = null; } });
+ipcMain.on('tabs:navigate', (event, url) => getActiveView()?.webContents.loadURL(url));
+ipcMain.on('tabs:go-back', () => getActiveView()?.webContents.canGoBack() && getActiveView().webContents.goBack());
+ipcMain.on('tabs:go-forward', () => getActiveView()?.webContents.canGoForward() && getActiveView().webContents.goForward());
+ipcMain.on('tabs:reload', () => getActiveView()?.webContents.reload());
+ipcMain.handle('sidepanel:toggle', (event, isOpen) => {
+    const view = getActiveView();
+    if (view) {
+        const [width, height] = mainWindow.getSize();
+        const panelWidth = isOpen ? 500 : 0;
+        view.setBounds({ x: 0, y: CHROME_HEIGHT, width: width - panelWidth, height: height - CHROME_HEIGHT });
+    }
+});
+app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });

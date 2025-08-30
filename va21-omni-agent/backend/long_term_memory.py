@@ -72,6 +72,38 @@ class LongTermMemoryManager:
             # Handle cases where the timestamp is invalid.
             return False
 
+    def set_lockdown_mode(self, enable: bool):
+        """
+        Enables or disables lockdown mode.
+        This is a persistent state until explicitly disabled.
+        """
+        self.remember("lockdown_mode_active", enable)
+        if enable:
+            print("[LOCKDOWN MODE] Activated.")
+        else:
+            print("[LOCKDOWN MODE] Deactivated.")
+
+    def is_in_lockdown_mode(self):
+        """Checks if the agent is currently in lockdown mode."""
+        return self.memory.get("lockdown_mode_active", False)
+
+    def set_awaiting_intervention(self, issue_url: str = None):
+        """
+        Sets or clears the intervention flag.
+        :param issue_url: The URL of the GitHub issue to wait on, or None to clear.
+        """
+        self.remember("awaiting_intervention_on_issue", issue_url)
+        if issue_url:
+            print(f"[INTERVENTION] Flag set. Awaiting resolution on {issue_url}")
+        else:
+            print("[INTERVENTION] Flag cleared.")
+
+    def get_awaiting_intervention_url(self):
+        """
+        Returns the GitHub issue URL the agent is waiting on, or None if not waiting.
+        """
+        return self.memory.get("awaiting_intervention_on_issue")
+
 if __name__ == '__main__':
     import time
     ltm = LongTermMemoryManager()

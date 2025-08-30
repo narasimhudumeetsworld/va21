@@ -1,0 +1,68 @@
+.tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 8px 0 12px;
+  height: 34px;
+  background-color: #3c3c3c;
+  margin-right: 1px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  cursor: pointer;
+  color: #d7d7d7;
+  min-width: 180px;
+  max-width: 220px;
+  transition: background-color 0.2s;
+}
+
+.tab:hover {
+  background-color: #4a4a4a;
+}
+
+.tab.active {
+  background-color: #202124; /* Match the address bar color */
+  color: #ffffff;
+}
+
+.tab-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  /* background-image: url(...); will be set dynamically */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.tab-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+  font-size: 13px;
+}
+
+.close-tab-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #d7d7d7;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-left: 4px;
+  flex-shrink: 0;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.close-tab-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.tab.active .close-tab-button {
+  color: #ffffff;
+}

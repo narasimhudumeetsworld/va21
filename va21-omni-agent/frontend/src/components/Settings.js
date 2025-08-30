@@ -5,30 +5,24 @@ function Settings() {
   const [provider, setProvider] = useState('ollama');
   const [url, setUrl] = useState('');
   const [apiKey, setApiKey] = useState('');
-  const [googleConnected, setGoogleConnected] = useState(false);
   const [backupProvider, setBackupProvider] = useState('local');
   const [backupPath, setBackupPath] = useState('');
   const [githubPat, setGithubPat] = useState('');
+  const [githubRepo, setGithubRepo] = useState('');
 
   useEffect(() => {
-    // Fetch app settings
-    fetch('/api/settings')
-      .then((res) => res.json())
-      .then((data) => {
-        setProvider(data.provider || 'ollama');
-        setUrl(data.url || '');
-        setApiKey(data.api_key || '');
-        setBackupProvider(data.backup_provider || 'local');
-        setBackupPath(data.backup_path || '');
-        setGithubPat(data.github_pat || '');
-      });
-
-    // Fetch Google connection status
-    fetch('/api/google/status')
-      .then((res) => res.json())
-      .then((data) => {
-        setGoogleConnected(data.status === 'connected');
-      });
+    // Fetch app settings via Electron IPC
+    window.electronAPI.getSettings().then(data => {
+        if (data) {
+            setProvider(data.provider || 'ollama');
+            setUrl(data.url || '');
+            setApiKey(data.api_key || '');
+            setBackupProvider(data.backup_provider || 'local');
+            setBackupPath(data.backup_path || '');
+            setGithubPat(data.github_pat || '');
+            setGithubRepo(data.github_repo || '');
+        }
+    });
   }, []);
 
   const handleSubmit = (e) => {
@@ -39,23 +33,12 @@ function Settings() {
       api_key: apiKey,
       backup_provider: backupProvider,
       backup_path: backupPath,
-      github_pat: githubPat
+      github_pat: githubPat,
+      github_repo: githubRepo
     };
-    fetch('/api/settings', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(settings),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        alert(data.message || data.error);
-      });
-  };
-
-  const handleGoogleConnect = () => {
-    window.location.href = '/api/google/auth';
+    // Save app settings via Electron IPC
+    window.electronAPI.saveSettings(settings);
+    alert('Settings saved!');
   };
 
   return (
@@ -113,6 +96,16 @@ function Settings() {
               onChange={(e) => setGithubPat(e.target.value)}
             />
           </div>
+          <div className="form-group">
+            <label htmlFor="github-repo">GitHub Repository for Guardian</label>
+            <input
+              type="text"
+              id="github-repo"
+              value={githubRepo}
+              onChange={(e) => setGithubRepo(e.target.value)}
+              placeholder="e.g., owner/repo-name"
+            />
+          </div>
         </div>
 
         <div className="setting-section">
@@ -125,7 +118,8 @@ function Settings() {
               onChange={(e) => setBackupProvider(e.target.value)}
             >
               <option value="local">Local</option>
-              <option value="google_drive">Google Drive</option>
+              {/* Google Drive backup is disabled as it requires backend auth routes */}
+              {/* <option value="google_drive">Google Drive</option> */}
             </select>
           </div>
           {backupProvider === 'local' && (
@@ -138,15 +132,6 @@ function Settings() {
                 onChange={(e) => setBackupPath(e.target.value)}
                 placeholder="/path/to/your/backup/folder"
               />
-            </div>
-          )}
-          {backupProvider === 'google_drive' && (
-            <div className="form-group">
-              {googleConnected ? (
-                <p>Connected to Google Drive.</p>
-              ) : (
-                <button type="button" onClick={handleGoogleConnect}>Connect to Google</button>
-              )}
             </div>
           )}
         </div>

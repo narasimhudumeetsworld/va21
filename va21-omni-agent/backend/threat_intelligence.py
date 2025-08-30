@@ -6,6 +6,7 @@ from urllib.parse import urlparse
 SECURITY_RSS_FEEDS = [
     "https://security.googleblog.com/feeds/posts/default",
     "https://msrc.microsoft.com/blog/feed/",
+    "https://googleprojectzero.blogspot.com/feeds/posts/default",
 ]
 
 def fetch_stories_from_rss(feed_urls, whois_lookup_func, sandbox_func):
@@ -35,7 +36,7 @@ def fetch_stories_from_rss(feed_urls, whois_lookup_func, sandbox_func):
                 whois_info = whois_lookup_func(domain)
 
                 # A simple legitimacy check (can be expanded)
-                if "google" in whois_info.lower() or "microsoft" in whois_info.lower():
+                if "google" in whois_info.lower() or "microsoft" in whois_info.lower() or "blogspot.com" in whois_info.lower():
                     print(f"[ThreatIntel] Domain {domain} verified as legitimate.")
 
                     # 2. Process text in sandbox
