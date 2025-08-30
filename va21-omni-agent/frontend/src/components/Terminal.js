@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { XTerm } from 'xterm-react';
+import { Xterm as XTerm } from 'xterm-react';
 import 'xterm/css/xterm.css';
 import './Terminal.css';
 import io from 'socket.io-client';

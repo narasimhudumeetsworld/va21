@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Downloading Resources</title>
+    <style>
+        body {
+            background-color: #202124;
+            color: #e8eaed;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            -webkit-app-region: drag;
+        }
+        h1 {
+            font-weight: 300;
+        }
+        .progress-bar-container {
+            width: 80%;
+            height: 20px;
+            background-color: #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #4285f4;
+            transition: width 0.2s ease-in-out;
+        }
+        p {
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Preparing Guardian AI...</h1>
+    <p>Downloading necessary security models. This may take a few moments.</p>
+    <div class="progress-bar-container">
+        <div id="progressBar" class="progress-bar"></div>
+    </div>
+    <p id="progressText">0%</p>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+        ipcRenderer.on('download-progress', (event, progress) => {
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            if(progressBar && progressText) {
+                const percent = Math.round(progress.percent * 100);
+                progressBar.style.width = `${percent}%`;
+                progressText.innerText = `${percent}%`;
+            }
+        });
+    </script>
+</body>
+</html>

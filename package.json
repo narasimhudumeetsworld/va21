@@ -9,14 +9,20 @@
     "start-backend": "cd va21-omni-agent/backend && python app.py",
     "start-react": "cd va21-omni-agent/frontend && npm start",
     "start-electron": "npx wait-on http://localhost:3000 && npx electron .",
-    "package": "npx electron-builder"
+    "generate-icons": "node scripts/generate-icons.js",
+    "package": "npm run generate-icons && npx electron-builder"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
+  "dependencies": {
+    "uuid": "^9.0.1"
+  },
   "devDependencies": {
     "concurrently": "^8.2.2",
     "electron": "31.2.1",
+    "electron-dl": "^3.5.0",
+    "icon-gen": "^3.0.1",
     "wait-on": "^7.2.0",
     "electron-builder": "^25.0.0"
   },
@@ -29,8 +35,31 @@
       "va21-omni-agent/backend/**/*",
       "node_modules/**/*"
     ],
+    "extraResources": [
+      {
+        "from": "vendor/",
+        "to": "vendor",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
     "mac": {
-      "category": "public.app-category.developer-tools"
+      "category": "public.app-category.developer-tools",
+      "icon": "build/icons/icon.icns",
+      "target": "dmg"
+    },
+    "win": {
+      "icon": "build/icons/icon.ico",
+      "target": "msix"
+    },
+    "msix": {
+      "identityName": "VA21.OmniAgent",
+      "publisher": "CN=VA21",
+      "publisherDisplayName": "VA21"
+    },
+    "publish": {
+      "provider": "github"
     }
   }
 }

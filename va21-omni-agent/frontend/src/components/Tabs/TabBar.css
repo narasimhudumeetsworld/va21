@@ -1,0 +1,31 @@
+.tab-bar {
+  display: flex;
+  align-items: center;
+  background-color: #2d2d2d; /* Slightly lighter than pure black */
+  height: 42px;
+  padding: 0 8px;
+  flex-shrink: 0; /* Prevent the bar from shrinking */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.new-tab-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #a9a9a9;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  margin-left: 6px;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 28px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.new-tab-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
