@@ -1,0 +1,125 @@
+--- a/va21-omni-agent/backend/github_manager.py
++++ b/va21-omni-agent/backend/github_manager.py
+@@ -1,29 +1,34 @@
+ from github import Github
+-from github.GithubException import UnknownObjectException
++from github.GithubException import UnknownObjectException, BadCredentialsException
+ 
+ class GitHubManager:
+     def __init__(self, pat):
++        # SECURITY WARNING: Storing PATs in plaintext is a risk.
++        # It is strongly recommended to load this from a secure source,
++        # such as an environment variable or a system credential manager.
+         if not pat:
+             raise ValueError("GitHub Personal Access Token is required.")
+         self.github = Github(pat)
+ 
+     def list_repos(self):
+         """Lists the user's repositories."""
+         try:
+             repos = self.github.get_user().get_repos()
+             return [repo.full_name for repo in repos]
+-        except Exception as e:
+-            return f"Error listing repositories: {e}"
++        except BadCredentialsException:
++            return "Error: Invalid GitHub Personal Access Token. Please check your settings."
++        except Exception as e:
++            return f"Error listing repositories: {e}"
+ 
+-    def create_issue(self, repo_full_name, title, body=""):
+-        """Creates an issue in a repository."""
++    def create_issue(self, repo_full_name, title, body=""):
++        """Creates an issue in a repository and returns its URL."""
+         try:
+             repo = self.github.get_repo(repo_full_name)
+             issue = repo.create_issue(title=title, body=body)
+-            return f"Successfully created issue #{issue.number} in {repo_full_name}."
+-        except UnknownObjectException:
+-            return f"Error: Repository '{repo_full_name}' not found or you don't have access."
++            print(f"Successfully created issue: {issue.html_url}")
++            return issue.html_url
++        except BadCredentialsException:
++            return "Error: Invalid GitHub Personal Access Token. Please check your settings."
++        except UnknownObjectException:
++            return f"Error: Repository '{repo_full_name}' not found or you don't have access."
+         except Exception as e:
+             return f"Error creating issue: {e}"
+--- a/va21-omni-agent/frontend/src/components/Settings.js
++++ b/va21-omni-agent/frontend/src/components/Settings.js
+@@ -5,6 +5,10 @@
+   const [backupProvider, setBackupProvider] = useState('local');
+   const [backupPath, setBackupPath] = useState('');
+   const [githubPat, setGithubPat] = useState('');
+-  const [githubRepo, setGithubRepo] = useState('');
++  const [githubRepo, setGithubRepo] = useState('');
++
++  const [isApiKeyVisible, setApiKeyVisible] = useState(false);
++  const [isPatVisible, setPatVisible] = useState(false);
++  const [saveStatus, setSaveStatus] = useState('');
+ 
+   useEffect(() => {
+     // Fetch app settings via Electron IPC
+@@ -34,8 +38,9 @@
+       github_repo: githubRepo
+     };
+     // Save app settings via Electron IPC
+-    window.electronAPI.saveSettings(settings);
+-    alert('Settings saved!');
++    window.electronAPI.saveSettings(settings);
++    setSaveStatus('Settings Saved!');
++    setTimeout(() => setSaveStatus(''), 3000);
+   };
+ 
+   return (
+@@ -70,23 +75,31 @@
+           )}
+ 
+           {(provider === 'authenticated_ollama' || provider === 'gemini') && (
+-            <div className="form-group">
++            <div className="form-group password-group">
+               <label htmlFor="api-key">API Key</label>
+               <input
+-                type="password"
++                type={isApiKeyVisible ? 'text' : 'password'}
+                 id="api-key"
+                 value={apiKey}
+                 onChange={(e) => setApiKey(e.target.value)}
+               />
++              <button type="button" onClick={() => setApiKeyVisible(!isApiKeyVisible)} className="toggle-vis">
++                {isApiKeyVisible ? 'Hide' : 'Show'}
++              </button>
+             </div>
+           )}
+         </div>
+ 
+         <div className="setting-section">
+           <h3>Services</h3>
+-          <div className="form-group">
++          <div className="form-group password-group">
+             <label htmlFor="github-pat">GitHub Personal Access Token</label>
+             <input
+-              type="password"
++              type={isPatVisible ? 'text' : 'password'}
+               id="github-pat"
+               value={githubPat}
+               onChange={(e) => setGithubPat(e.target.value)}
+             />
++            <button type="button" onClick={() => setPatVisible(!isPatVisible)} className="toggle-vis">
++                {isPatVisible ? 'Hide' : 'Show'}
++            </button>
+           </div>
+           <div className="form-group">
+             <label htmlFor="github-repo">GitHub Repository for Guardian</label>
+@@ -123,7 +136,10 @@
+           )}
+         </div>
+ 
+-        <button type="submit">Save All Settings</button>
++        <div className="save-section">
++          <button type="submit">Save All Settings</button>
++          {saveStatus && <span className="save-status">{saveStatus}</span>}
++        </div>
+       </form>
+     </div>
+   );
+

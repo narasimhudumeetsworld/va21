@@ -1,0 +1,269 @@
+--- a/package.json
++++ b/package.json
+@@ -28,12 +28,7 @@
+       "filter": [
+         "**/*"
+       ]
+-    }]
+-  }
+-}
++    }],
++    "mac": {
++      "category": "public.app-category.developer-tools",
++      "icon": "build/icons/icon.icns",
++      "target": "dmg"
++    },
++    "publish": {
++      "provider": "github"
++    }
++  }
++}
+--- a/electron/main.js
++++ b/electron/main.js
+@@ -15,11 +15,43 @@
+ 
+ const VENDOR_PATH = path.join(__dirname, '..', 'vendor');
+ const PYTHON_WIN_URL = 'https://www.python.org/ftp/python/3.11.12/python-3.11.12-embed-amd64.zip';
+ const PYTHON_WIN_PATH = path.join(VENDOR_PATH, 'python-win');
+-const PYTHON_MAC_URL = ''; // Still need this
++const PYTHON_MAC_URL = 'https://github.com/astral-sh/python-build-standalone/releases/download/20240107/cpython-3.11.7+20240107-aarch64-apple-darwin-install_only.tar.gz';
+ const PYTHON_MAC_PATH = path.join(VENDOR_PATH, 'python-mac');
+ const PYTHON_LINUX_PATH = path.join(VENDOR_PATH, 'python-linux');
+ 
+ // --- Helper Functions ---
+@@ -43,22 +75,49 @@
+     downloader.close();
+ }
+ 
+-async function ensurePythonExists() {
+-    const platform = process.platform;
+-    let pythonExe;
+-    if (platform === 'win32') {
+-        pythonExe = path.join(PYTHON_WIN_PATH, 'python.exe');
+-    } else if (platform === 'darwin') {
+-        pythonExe = path.join(PYTHON_MAC_PATH, 'bin', 'python3');
+-    } else if (platform === 'linux') {
+-        pythonExe = path.join(PYTHON_LINUX_PATH, 'bin', 'python');
++async function ensurePythonExists() {
++    const platform = process.platform;
++    let pythonExe, pythonUrl, pythonPath;
++
++    if (platform === 'win32') {
++        pythonExe = path.join(PYTHON_WIN_PATH, 'python.exe');
++        pythonUrl = PYTHON_WIN_URL;
++        pythonPath = PYTHON_WIN_PATH;
++    } else if (platform === 'darwin') {
++        pythonExe = path.join(PYTHON_MAC_PATH, 'python', 'bin', 'python3');
++        pythonUrl = PYTHON_MAC_URL;
++        pythonPath = PYTHON_MAC_PATH;
++    } else if (platform === 'linux') {
++        // Assuming a similar structure for Linux
++        pythonExe = path.join(PYTHON_LINUX_PATH, 'python', 'bin', 'python3');
++        // pythonUrl = PYTHON_LINUX_URL; // Need to add this URL
++        pythonPath = PYTHON_LINUX_PATH;
+     }
+ 
+-    if (!pythonExe || !fs.existsSync(pythonExe)) {
+-        dialog.showErrorBox('Python Not Found', 'Python executable not found. Please run the setup script or install Python manually.');
+-        app.quit();
++    if (fs.existsSync(pythonExe)) {
++        console.log('Python executable found.');
++        return;
+     }
++
++    // If Python is not found, download and extract it
++    if (!pythonUrl) {
++        dialog.showErrorBox('Python Not Found', `A portable Python environment for your platform (${platform}) is not configured.`);
++        app.quit();
++        return;
++    }
++
++    const downloader = await showDownloaderWindow('Setting up Environment...', 'Downloading portable Python environment...');
++    const downloadedFile = await download(downloader, pythonUrl, { directory: VENDOR_PATH });
++
++    console.log(`Downloaded Python to: ${downloadedFile.path}`);
++
++    try {
++        if (pythonUrl.endsWith('.zip')) {
++            await extract(downloadedFile.path, { dir: pythonPath });
++        } else if (pythonUrl.endsWith('.tar.gz')) {
++            if (!fs.existsSync(pythonPath)) fs.mkdirSync(pythonPath, { recursive: true });
++            await tar.x({
++                file: downloadedFile.path,
++                cwd: pythonPath,
++                strip: 1 // Strips the top-level directory from the tarball
++            });
++        }
++        console.log('Extraction complete.');
++        fs.unlinkSync(downloadedFile.path); // Clean up the archive
++    } catch (err) {
++        console.error('Extraction failed:', err);
++        dialog.showErrorBox('Setup Error', 'Failed to set up the Python environment.');
++        app.quit();
++    } finally {
++        downloader.close();
++    }
++
++    if (!fs.existsSync(pythonExe)) {
++        dialog.showErrorBox('Python Not Found', 'Python executable not found even after setup. Please check the archive structure.');
++        app.quit();
++    }
+ }
+ 
+ function getPythonExecutablePath() {
+--- a/va21-omni-agent/backend/requirements.txt
++++ b/va21-omni-agent/backend/requirements.txt
+@@ -21,3 +21,4 @@
+ onnxruntime
+ python-whois
+ onnxruntime-genai
++flake8
+--- a/va21-omni-agent/backend/security_prompt_manager.py
++++ b/va21-omni-agent/backend/security_prompt_manager.py
+@@ -45,6 +45,23 @@
+                 p.output_format("Provide your analysis below.")
+             return p.render(chat=False)
+ 
++        elif prompt_name == 'code_patch_generation':
++            file_content = variables.get('file_content', '')
++            analysis_result = variables.get('analysis_result', '')
++            with p:
++                p.role("You are an expert AI programmer specializing in code correction and security patching. You are a machine of pure logic and code.")
++                p.task("""You will be given a Python code file and an analysis of a vulnerability or bug found within it. Your task is to rewrite the entire code file to fix the issue.
++- You MUST output the complete, corrected Python code for the entire file.
++- Do NOT output anything else: no explanations, no apologies, no comments, no markdown, just the raw, corrected code.
++- Ensure the corrected code is a valid Python script."""
++                with p.captioned_paragraph(caption="Vulnerability Analysis"):
++                    with p.paragraph():
++                        p.text(analysis_result)
++                with p.captioned_paragraph(caption="Original Code File"):
++                    with p.code():
++                        p.text(file_content)
++                p.output_format("The complete, corrected Python code file.")
++            return p.render(chat=False)
++
+         else:
+             raise ValueError(f"Unknown security prompt name: {prompt_name}")
+ 
+--- a/va21-omni-agent/backend/app.py
++++ b/va21-omni-agent/backend/app.py
+@@ -16,7 +16,9 @@
+ from github_code_fetcher import fetch_repo_contents # Import the new fetcher
+ from local_llm import LocalLLM
+ import whois
+-from urllib.parse import urlparse
++from urllib.parse import urlparse
++import subprocess
++import tempfile
+ 
+ app = Flask(__name__)
+ app.secret_key = os.urandom(24)
+@@ -218,38 +220,75 @@
+         except Exception as e:
+             print(f"[SELF-ANALYSIS] An error occurred during analysis of {filename}: {e}")
+ 
++def test_patch(patched_code: str) -> bool:
++    """
++    Tests a generated code patch by writing it to a temporary file
++    and running a linter (flake8) against it.
++    """
++    # Ensure the patched code is not empty
++    if not patched_code.strip():
++        print("[SELF-HEAL] Patch is empty. Test failed.")
++        return False
++        
++    tmp_file_path = ''
++    try:
++        with tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=False) as tmp_file:
++            tmp_file.write(patched_code)
++            tmp_file_path = tmp_file.name
++
++        # Run flake8 linter
++        result = subprocess.run(['flake8', tmp_file_path], capture_output=True, text=True, check=False)
++
++        # flake8 returns 0 if there are no errors
++        if result.returncode == 0:
++            print(f"[SELF-HEAL] Patch passed syntax and style checks.")
++            return True
++        else:
++            print(f"[SELF-HEAL] Patch failed linting check with errors:\n{result.stdout}\n{result.stderr}")
++            return False
++    except Exception as e:
++        print(f"[SELF-HEAL] An error occurred during patch testing: {e}")
++        return False
++    finally:
++        # Clean up the temporary file
++        if tmp_file_path and os.path.exists(tmp_file_path):
++            os.unlink(tmp_file_path)
++            
+def log_message(message):
+     print(f"WORKFLOW LOG: {message}")
++
+def perform_self_analysis():
+     print("[SELF-ANALYSIS] Starting self-analysis cycle.")
+-    files_to_analyze = ["app.py", "prompt_manager.py", "security_prompt_manager.py"]
++    files_to_analyze = ["app.py", "prompt_manager.py", "security_prompt_manager.py"]
+     for filename in files_to_analyze:
+         try:
+             with open(filename, 'r', encoding='utf-8') as f:
+                 file_content = f.read()
+ 
+-            rag_context = "\n---\n".join(security_rag.search(file_content, k=3))
+-            analysis_prompt = security_prompt_manager.render_prompt('code_analysis', {'file_content': file_content, 'rag_context': rag_context})
++            rag_context = "\n---\n".join(security_rag.search(file_content, k=3))
++            analysis_prompt = security_prompt_manager.render_prompt('code_analysis', {'file_content': file_content, 'rag_context': rag_context})
+             analysis_result = local_llm.generate(analysis_prompt).strip()
+ 
+             if "NO ISSUES FOUND" not in analysis_result.upper():
+                 print(f"[SELF-ANALYSIS] Potential issues found in {filename}:\n{analysis_result}")
+ 
++                # --- Self-Healing Attempt ---
++                patch_applied = False
++                for attempt in range(5):
++                    print(f"[SELF-HEAL] Attempt {attempt + 1}/5 to generate a patch for {filename}...")
++                    patch_prompt = security_prompt_manager.render_prompt(
++                        'code_patch_generation',
++                        {'file_content': file_content, 'analysis_result': analysis_result}
++                    )
++                    # Increased max_length for code generation and stripped potential markdown
++                    generated_patch = local_llm.generate(patch_prompt, max_length=4096).strip().replace('```python', '').replace('```', '').strip()
++
++
++                    if test_patch(generated_patch):
++                        print(f"[SELF-HEAL] Successfully generated and verified patch for {filename}.")
++                        # As a final safeguard, create a backup of the original file
++                        os.rename(filename, f"{filename}.bak")
++                        print(f"[SELF-HEAL] Created backup: {filename}.bak")
++                        with open(filename, 'w', encoding='utf-8') as f:
++                            f.write(generated_patch)
++                        patch_applied = True
++                        break # Exit the loop on success
++                    else:
++                        print(f"[SELF-HEAL] Attempt {attempt + 1} failed. Retrying...")
++
++                # --- Escalation if Self-Healing Fails ---
++                if not patch_applied:
++                    print(f"[SELF-HEAL] All 5 attempts to self-heal {filename} failed. Escalating to human intervention.")
++                    # Restore the original file from backup if all attempts failed
++                    if os.path.exists(f"{filename}.bak"):
++                        os.rename(f"{filename}.bak", filename)
++
++                    if filename == 'app.py':
++                        print("[SELF-ANALYSIS] Critical issue found in app.py. Activating lockdown and requesting intervention.")
++                        ltm_manager.set_lockdown_mode(True)
++
++                        repo_name = settings.get("github_repo")
++                        if repo_name:
++                            issue_title = f"Guardian Alert: Critical Issue Detected in {filename}"
++                            issue_body = f"The Guardian AI has detected a potential critical issue during self-analysis and failed to self-heal after 5 attempts.\n\n**File:** `{filename}`\n\n**Guardian's Analysis:**\n```\n{analysis_result}\n```\n\nThe agent is now in lockdown mode and awaits human intervention."
++                            issue_url = create_github_issue(repo_name, issue_title, issue_body)
++                            if issue_url:
++                                ltm_manager.set_awaiting_intervention(issue_url)
++                    else:
++                        ltm_manager.set_observation_mode(5)
+             else:
+                 print(f"[SELF-ANALYSIS] No issues found in {filename}.")
+         except FileNotFoundError:
+             print(f"[SELF-ANALYSIS] Could not find file {filename} to analyze.")
+         except Exception as e:
+             print(f"[SELF-ANALYSIS] An error occurred during analysis of {filename}: {e}")
