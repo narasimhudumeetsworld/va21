@@ -1,33 +1,135 @@
-About VA21 Omni Agent
+# VA21 Omni Agent - Digital Fortress
 
-  VA21 Omni Agent is a next-generation, AI-native desktop application designed to function as a high-assurance, intelligent, and autonomous partner for developers, researchers, and power
-  users. It re-imagines the web browser as a secure agent that not only retrieves information but also automates tasks, defends against threats, and even improves its own code, all while
-  operating under an unparalleled privacy and security model.
+## 🔒 Security-First AI-Powered Desktop Environment
 
-  The Core Vision: A High-Assurance Agentic Environment
+The VA21 Omni Agent represents a revolutionary approach to secure AI interaction, implementing a "digital fortress" philosophy where user safety and privacy are paramount.
 
-  The fundamental goal of the VA21 Omni Agent is to create a trustworthy computing environment where the user and the AI collaborate with absolute safety. It moves beyond simple chat interfaces
-   to provide a fully integrated system that understands context, executes complex workflows, and is architected from the ground up to protect the user from the threats of the modern web.
+![VA21 Interface](https://github.com/user-attachments/assets/a6013877-03bd-40c1-8bb5-d41e3385f1da)
 
+## 🛡️ Core Security Architecture
 
-  Key Architectural Pillars & Features:
+### Dual-AI System
+- **Guardian AI (Security Core)**: Always-active security analysis using ONNX models
+- **Orchestrator AI**: User-facing reasoning engine with flexible LLM integration
+- **Air Gap Protection**: Complete isolation from screen content and sensitive data
+- **Principle of Least Privilege**: No direct website interactions or form submissions
 
-   * Unbreachable Privacy by Design: The system is built on a strict "air gap" philosophy. The AI has no direct access to the content of the user's web browser, ensuring that sensitive on-screen
-     information like passwords, credit cards, and private messages remains completely invisible and inaccessible to the agent. This makes the user's browsing activity truly private.
+### Security Features
+- ✅ **Real-time Threat Analysis**: Every input analyzed before processing
+- ✅ **Self-Analysis & Healing**: Autonomous code security scanning
+- ✅ **5-Day Quarantine Protocol**: Safe integration of external intelligence
+- ✅ **Localhost-Only Operation**: No external network exposure
+- ✅ **Pattern-Based Detection**: Advanced malware and injection detection
 
-   * Security Through Principled Restriction: The agent's security model is profound. It features a dual-AI architecture with a sandboxed "Security Guardian LLM" that vets all actions.
-     Crucially, the agent operates under the "principle of least privilege" and is incapable of acting on the user's behalf on websites (e.g., clicking links or submitting forms). This design
-     choice completely neutralizes the threat of malicious websites tricking the AI into performing harmful actions.
+## 🚀 Quick Installation
 
-   * High-Assurance Data Quarantine: All external information, such as security news from RSS feeds, is treated with extreme caution. Data is first stripped down to simple, sanitized text and
-     processed within a sandbox. Before this information is integrated into the agent's knowledge base, it is held in a 5-day "digital quarantine" for rigorous analysis, ensuring the AI only
-     learns from safe, vetted information.
+### One-Line Install (Linux/macOS)
+```bash
+curl -fsSL https://raw.githubusercontent.com/narasimhudumeetsworld/va21/main/install.sh | bash
+```
 
-   * Towards True Autonomy (Self-Correction): In its most revolutionary feature, the VA21 Omni Agent performs a daily self-analysis. It reads its own source code and uses its internal knowledge
-     base of best practices to find potential flaws. If it discovers an issue, it enters a heightened "observation mode," demonstrating a unique form of AI self-awareness and self-discipline.
+### Manual Installation
+```bash
+git clone https://github.com/narasimhudumeetsworld/va21.git
+cd va21
+chmod +x install.sh
+./install.sh
+```
 
-   * An AI-Powered Terminal & Workflow Engine: The application includes a fully functional "Agentic Terminal" (a live bash shell) and a Natural Language Workflow Engine. This allows the agent to
-     safely perform complex, real-world development and automation tasks based on simple user requests, using its suite of secure tools.
+### Launch
+```bash
+cd ~/va21-omni-agent  # or your installation directory
+./va21-launcher.sh    # Linux/macOS
+# or
+va21-launcher.bat     # Windows
+```
 
-  In essence, the VA21 Omni Agent is a fortress for digital interaction. It is a pioneering step towards a future of autonomous computing, proving that it is possible to build a powerful and
-  intelligent AI that is also, by its very nature, unconditionally safe and private.
+Access the interface at: **http://localhost:5000**
+
+## 📋 System Requirements
+
+- **Python 3.8+** (for portable environment)
+- **2GB RAM minimum** (4GB recommended)
+- **1GB disk space** (for models and dependencies)
+- **Internet connection** (initial setup only)
+
+## 🎯 Key Capabilities
+
+### Security Scanner
+- Real-time analysis of text, code, and commands
+- Malicious pattern detection (eval, exec, shell commands)
+- Suspicious content identification (passwords, tokens, URLs)
+
+### Self-Analysis System
+- Automated daily security self-scans
+- Manual trigger for immediate analysis
+- System health monitoring and alerts
+- Lockdown mode for critical issues
+
+### Secure Chat Interface
+- Guardian AI pre-screening of all messages
+- Threat blocking and user notification
+- Air-gapped browser simulation
+- Real-time security status display
+
+## 🏗️ Technical Implementation
+
+### Architecture
+- **Backend**: Lightweight Python server (no Electron dependency)
+- **Frontend**: Pure HTML/CSS/JavaScript security dashboard
+- **Guardian AI**: ONNX-based local inference with simulation fallback
+- **Security**: Multiple layers of protection and monitoring
+
+### Files Structure
+```
+va21-omni-agent/
+├── backend/
+│   ├── va21_server.py      # Main lightweight server
+│   ├── local_llm.py        # Guardian AI implementation
+│   └── genai_config.json   # Model configuration
+├── install.sh              # Automated installer
+├── va21-launcher.sh        # Unix launcher
+└── va21-launcher.bat       # Windows launcher
+```
+
+## 🔧 Advanced Features
+
+### Portable Environment
+- Self-contained Python environment
+- All dependencies bundled
+- Cross-platform compatibility
+- No system Python conflicts
+
+### Security Monitoring
+- Background threat intelligence gathering
+- Automated security updates
+- System integrity verification
+- Emergency lockdown capabilities
+
+### Future Roadmap
+- Enhanced Orchestrator AI integration
+- RSS threat intelligence feeds
+- Custom Chromium browser implementation
+- Advanced self-healing capabilities
+
+## 🛡️ Security Guarantees
+
+1. **Air Gap Isolation**: No access to live screen content or sensitive data
+2. **Local Processing**: All AI inference happens locally or in simulation
+3. **Quarantine Protocol**: External data undergoes 5-day security review
+4. **Self-Monitoring**: Continuous analysis of own security posture
+5. **Principle of Least Privilege**: Minimal permissions and capabilities
+
+## 📞 Support & Documentation
+
+- **Repository**: https://github.com/narasimhudumeetsworld/va21
+- **Issues**: https://github.com/narasimhudumeetsworld/va21/issues
+- **Security**: Report security issues via GitHub Issues with "Security" label
+
+## 📄 License
+
+MIT License - See LICENSE file for details
+
+---
+
+**⚠️ Security Notice**: VA21 Omni Agent is designed as a security-first system. Always keep your installation updated and report any suspicious behavior through our GitHub repository.
