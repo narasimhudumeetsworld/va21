@@ -5,7 +5,9 @@ By downloading, installing, or using the VA21 Omni Agent ("the Application"), yo
 
 1. License to Use
 
-The Application is licensed to you under the Apache License 2.0. Your use of the Application must comply with the terms of that license, a copy of which is available in the LICENSE file distributed with the Application.
+The Application is licensed to you under the Prayaga Vaibhav Proprietary License - All Rights Reserved. Your use of the Application must comply with the terms of that license. The full license terms are available at: https://github.com/narasimhudumeetsworld/Om-vinayaka-prayaga-vaibhav-inventions-Copy-Right-License/blob/main/LICENSE
+
+Copyright (c) 2024-2025 Prayaga Vaibhav. All rights reserved.
 
 2. User Responsibilities and Conduct
 

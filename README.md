@@ -128,7 +128,11 @@ va21-omni-agent/
 
 ## 📄 License
 
-MIT License - See LICENSE file for details
+This project is licensed under the Prayaga Vaibhav Proprietary License - All Rights Reserved.
+Protected under comprehensive intellectual property terms covering 218+ inventions.
+See the full license terms at: https://github.com/narasimhudumeetsworld/Om-vinayaka-prayaga-vaibhav-inventions-Copy-Right-License/blob/main/LICENSE
+
+Copyright (c) 2024-2025 Prayaga Vaibhav. All rights reserved.
 
 ---
 
