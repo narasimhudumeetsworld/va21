@@ -1,0 +1,51 @@
+# VA21 Research OS Configuration
+# This file configures the VA21 Research OS environment
+
+# System Settings
+system:
+  name: "VA21 Research OS"
+  version: "1.0.0"
+  codename: "Vinayaka"
+
+# Guardian AI Settings
+guardian:
+  enabled: true
+  security_level: "standard"  # permissive, standard, strict, lockdown
+  log_level: "info"           # debug, info, warning, error
+
+# ClamAV Integration
+clamav:
+  enabled: true
+  auto_update: true
+  update_interval_hours: 24
+  quarantine_path: "/va21/quarantine"
+  scan_on_access: false  # Enable for real-time scanning (resource intensive)
+
+# SearXNG Settings
+searxng:
+  enabled: true
+  # Default instance (public)
+  instance_url: "https://searx.be"
+  # For local instance, use:
+  # instance_url: "http://localhost:8888"
+  timeout: 10
+  max_results: 20
+  cache_ttl: 300
+
+# Interface Settings
+interface:
+  hints_enabled: true  # Show helper hints for newcomers
+  theme: "dark"
+  prompt_style: "adventure"  # adventure, minimal, classic
+
+# Research Settings
+research:
+  default_directory: "/home/researcher/research"
+  notes_directory: "/home/researcher/notes"
+  vault_directory: "/va21/vault"
+  
+# Logging
+logging:
+  directory: "/va21/logs"
+  max_size_mb: 100
+  retention_days: 30
