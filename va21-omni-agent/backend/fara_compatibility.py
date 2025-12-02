@@ -121,8 +121,9 @@ class ContextAwareModelManager:
     APP_BUFFER_MB = 1024        # Buffer for running apps
     
     # Calculated available for AI models:
-    # Minimum (7GB): 7168 - 768 - 384 - 512 - 1024 = ~4480MB for AI + apps
-    # Maximum (10GB): 10240 - 768 - 384 - 512 - 1024 = ~7552MB for AI + apps
+    # Minimum (7GB): TOTAL_RAM_MIN_MB - OS_OVERHEAD_MB - UI_FRAMEWORK_MB - FLATPAK_RUNTIME_MB - APP_BUFFER_MB
+    # Maximum (10GB): TOTAL_RAM_MAX_MB - OS_OVERHEAD_MB - UI_FRAMEWORK_MB - FLATPAK_RUNTIME_MB - APP_BUFFER_MB
+    # These are computed dynamically in __init__ based on constants above
     
     def __init__(self, config_path: str = "data/fara"):
         self.config_path = config_path
@@ -159,7 +160,7 @@ class ContextAwareModelManager:
         # Initialize model configurations
         self._init_model_configs()
         
-        print(f"[ContextAwareModelManager] Initialized with {self.memory_limit_mb}MB budget (7GB target)")
+        print(f"[ContextAwareModelManager] Initialized with {self.memory_limit_mb}MB budget ({self.TOTAL_RAM_MIN_MB // 1024}GB target)")
     
     def set_memory_mode(self, mode: str) -> Dict:
         """

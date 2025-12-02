@@ -10,19 +10,23 @@ Provides intelligent, dynamic management of multiple AI/LLM backends with:
 - Support for multiple LLM providers including IBM Granite models
 
 Supported LLM Backends:
-- IBM Granite 4.0 (Micro, Dense, Hybrid variants)
-- Ollama (local models)
-- ONNX Runtime (Guardian AI)
+- IBM Granite 4.0 (Micro, Dense, Hybrid variants) - Apache License 2.0
+- Ollama (local models) - MIT License
+- ONNX Runtime (Guardian AI) - MIT License
 - Gemini API
 - Custom local models
 
 Om Vinayaka - Intelligence flows where it is needed most.
 
-Acknowledgments:
-- IBM Research for Granite models
+Acknowledgments and Licenses:
+- IBM Research for Granite models (Apache License 2.0)
+  https://huggingface.co/collections/ibm-granite/granite-40-language-models
+- Microsoft for ONNX Runtime (MIT License)
+  https://github.com/microsoft/onnxruntime
+- Microsoft for FARA technology (MIT License)
+  https://github.com/microsoft/fara
 - Hugging Face for model hosting
-- ONNX Runtime team
-- Ollama project
+- Ollama project (MIT License)
 """
 
 import os
