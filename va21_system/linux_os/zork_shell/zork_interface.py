@@ -184,9 +184,11 @@ class VA21ZorkInterface:
     - ClamAV for antivirus protection
     - SearXNG for privacy-respecting internet search
     - Guardian AI for intelligent security
+    - Obsidian vault for knowledge management
+    - Writing suite for researchers and journalists
     """
     
-    VERSION = "1.1.0"
+    VERSION = "1.2.0"
     
     def __init__(self):
         self.console = Console() if RICH_AVAILABLE else None
@@ -204,7 +206,6 @@ class VA21ZorkInterface:
             self.clamav = get_clamav()
         except ImportError:
             try:
-                # Try relative import
                 import sys
                 sys.path.insert(0, '/va21/guardian')
                 from clamav_integration import get_clamav
@@ -223,6 +224,34 @@ class VA21ZorkInterface:
                 sys.path.insert(0, '/va21/searxng')
                 from searxng_client import get_searxng
                 self.searxng = get_searxng()
+            except ImportError:
+                pass
+        
+        # Initialize Obsidian vault integration
+        self.vault = None
+        try:
+            from obsidian.vault_manager import get_vault
+            self.vault = get_vault()
+        except ImportError:
+            try:
+                import sys
+                sys.path.insert(0, '/va21/obsidian')
+                from vault_manager import get_vault
+                self.vault = get_vault()
+            except ImportError:
+                pass
+        
+        # Initialize Writing suite
+        self.writing = None
+        try:
+            from writing.writing_suite import get_writing_suite
+            self.writing = get_writing_suite()
+        except ImportError:
+            try:
+                import sys
+                sys.path.insert(0, '/va21/writing')
+                from writing_suite import get_writing_suite
+                self.writing = get_writing_suite()
             except ImportError:
                 pass
         
@@ -1268,6 +1297,240 @@ Time exploring: {minutes} minutes
             hint = HintsSystem.get_hint(self.state.current_room, self.state.moves)
             if hint:
                 self.print(f"\n{hint}", "dim italic")
+    
+    # ═══════════════════════════════════════════════════════════════════════════
+    # VAULT AND WRITING COMMANDS
+    # ═══════════════════════════════════════════════════════════════════════════
+    
+    def cmd_note(self, args: List[str]) -> str:
+        """Create or view notes in the Knowledge Vault."""
+        if not self.vault:
+            return "The Knowledge Vault is not available."
+        
+        if not args:
+            return """Usage:
+  note create <title> - Create a new note
+  note list           - List all notes
+  note search <query> - Search notes
+  note view <title>   - View a note
+  note sensitive <title> - Mark note as sensitive"""
+        
+        action = args[0].lower()
+        
+        if action == "create":
+            if len(args) < 2:
+                return "What would you like to call this note?"
+            title = " ".join(args[1:])
+            note = self.vault.create_note(title=title)
+            self.print_guardian(f"A new scroll has been created: '{title}'. You may now inscribe your knowledge.")
+            self.state.score += 5
+            return f"Note created: {note.path}"
+        
+        elif action == "list":
+            notes = list(self.vault.notes_index.values())
+            if not notes:
+                return "The Knowledge Vault is empty. Create your first note with 'note create <title>'."
+            
+            self.print("\n📚 KNOWLEDGE VAULT CONTENTS:", "bold cyan")
+            for note in notes[:20]:
+                sens_icon = "🔒" if note.sensitivity.value in ["sensitive", "confidential"] else "📄"
+                tags = f" [{', '.join(note.tags[:3])}]" if note.tags else ""
+                self.print(f"  {sens_icon} {note.title}{tags}", "white")
+            if len(notes) > 20:
+                self.print(f"\n  ... and {len(notes) - 20} more notes", "dim")
+            return ""
+        
+        elif action == "search":
+            if len(args) < 2:
+                return "What would you like to search for?"
+            query = " ".join(args[1:])
+            results = self.vault.search(query)
+            if not results:
+                return f"No notes found matching '{query}'."
+            
+            self.print(f"\n🔍 Search results for '{query}':", "bold cyan")
+            for note in results[:10]:
+                self.print(f"  📄 {note.title}", "white")
+            return ""
+        
+        elif action == "view":
+            if len(args) < 2:
+                return "Which note would you like to view?"
+            title = " ".join(args[1:])
+            for note in self.vault.notes_index.values():
+                if title.lower() in note.title.lower():
+                    self.print(f"\n═══ {note.title} ═══", "bold cyan")
+                    self.print(f"Tags: {', '.join(note.tags)}", "dim")
+                    self.print(f"Sensitivity: {note.sensitivity.value}", "dim")
+                    self.print("─" * 40, "dim")
+                    self.print(note.content[:500], "white")
+                    if len(note.content) > 500:
+                        self.print("\n[Content truncated...]", "dim")
+                    return ""
+            return f"Note '{title}' not found."
+        
+        elif action == "sensitive":
+            if len(args) < 2:
+                return "Which note should be marked as sensitive?"
+            title = " ".join(args[1:])
+            for note in self.vault.notes_index.values():
+                if title.lower() in note.title.lower():
+                    from obsidian.vault_manager import SensitivityLevel
+                    self.vault.mark_sensitive(note.id, SensitivityLevel.SENSITIVE)
+                    self.print_guardian(f"The scroll '{note.title}' has been sealed. Its contents are now protected.")
+                    return ""
+            return f"Note '{title}' not found."
+        
+        return "Unknown note command. Type 'note' for usage."
+    
+    def cmd_write(self, args: List[str]) -> str:
+        """Writing suite commands for documents."""
+        if not self.writing:
+            return "The Writing Suite is not available."
+        
+        if not args:
+            return """Usage:
+  write article <title>  - Create a new article
+  write paper <title>    - Create a research paper
+  write news <title>     - Create a news article
+  write blog <title>     - Create a blog post
+  write list             - List all documents
+  write export <id> <format> - Export document (md, html, txt)"""
+        
+        action = args[0].lower()
+        
+        if action in ["article", "paper", "news", "blog"]:
+            if len(args) < 2:
+                return f"What would you like to title your {action}?"
+            title = " ".join(args[1:])
+            
+            from writing.writing_suite import DocumentType
+            type_map = {
+                "article": DocumentType.ARTICLE,
+                "paper": DocumentType.RESEARCH_PAPER,
+                "news": DocumentType.NEWS_ARTICLE,
+                "blog": DocumentType.BLOG_POST
+            }
+            
+            doc = self.writing.create_document(
+                title=title,
+                doc_type=type_map[action]
+            )
+            self.print_guardian(f"A new {action} has been prepared: '{title}'. May your words flow with wisdom.")
+            self.state.score += 10
+            return f"Document created: {doc.id}"
+        
+        elif action == "list":
+            docs = self.writing.list_documents()
+            if not docs:
+                return "No documents yet. Create one with 'write article <title>'."
+            
+            self.print("\n📝 WRITING SUITE DOCUMENTS:", "bold cyan")
+            for doc in docs[:15]:
+                self.print(f"  [{doc.id}] {doc.title} ({doc.doc_type.value}) - {doc.status.value}", "white")
+                self.print(f"      Words: {doc.word_count}", "dim")
+            return ""
+        
+        elif action == "export":
+            if len(args) < 2:
+                return "Which document ID to export?"
+            doc_id = args[1]
+            format = args[2] if len(args) > 2 else "md"
+            
+            filepath = self.writing.export_document(doc_id, format)
+            if filepath:
+                return f"Document exported to: {filepath}"
+            return "Export failed. Check document ID."
+        
+        return "Unknown write command. Type 'write' for usage."
+    
+    def cmd_cite(self, args: List[str]) -> str:
+        """Citation management."""
+        if not self.writing:
+            return "The Writing Suite is not available for citations."
+        
+        if not args:
+            return """Usage:
+  cite add <type> <title> by <author> (<year>) - Add citation
+  cite list                                    - List citations
+  cite format <id> <style>                     - Format citation (apa, mla, chicago)"""
+        
+        action = args[0].lower()
+        
+        if action == "list":
+            if not self.writing.citations:
+                return "No citations yet. Add one with 'cite add'."
+            
+            self.print("\n📖 CITATIONS:", "bold cyan")
+            for cite_id, cite in self.writing.citations.items():
+                self.print(f"  [{cite_id}] {cite.title}", "white")
+                self.print(f"      {', '.join(cite.authors)} ({cite.year})", "dim")
+            return ""
+        
+        elif action == "format":
+            if len(args) < 2:
+                return "Which citation ID to format?"
+            cite_id = args[1]
+            style = args[2] if len(args) > 2 else "apa"
+            
+            formatted = self.writing.format_citation(cite_id, style)
+            if formatted:
+                self.print(f"\n{style.upper()} format:", "bold")
+                self.print(formatted, "white")
+                return ""
+            return "Citation not found."
+        
+        return "Use 'cite add' to add a new citation."
+    
+    def cmd_about(self, args: List[str]) -> str:
+        """Show about and license information."""
+        try:
+            from licenses.license_acceptance import get_license_acceptance
+            get_license_acceptance().show_about()
+        except ImportError:
+            self.print("""
+═══ VA21 RESEARCH OS v1.0.0 (Vinayaka) ═══
+
+A secure, privacy-first research operating system.
+
+Copyright (c) 2024-2025 Prayaga Vaibhav. All rights reserved.
+
+Incorporating open-source software:
+- Alpine Linux
+- ClamAV (Antivirus)
+- SearXNG (Privacy Search)
+- BusyBox
+- Python Libraries
+
+Type 'licenses' for full acknowledgments.
+""", "cyan")
+        return ""
+    
+    def cmd_licenses(self, args: List[str]) -> str:
+        """Show open-source licenses and acknowledgments."""
+        license_file = "/va21/licenses/ACKNOWLEDGMENTS.md"
+        if os.path.exists(license_file):
+            with open(license_file, 'r') as f:
+                content = f.read()
+            # Show summary
+            self.print("\n═══ OPEN-SOURCE ACKNOWLEDGMENTS ═══", "bold cyan")
+            self.print("""
+VA21 Research OS gratefully acknowledges these open-source projects:
+
+🏔️ Alpine Linux - Operating system base
+🛡️ ClamAV - Antivirus protection (GPLv2)
+🔍 SearXNG - Privacy search (AGPL-3.0)
+📦 BusyBox - Unix utilities (GPLv2)
+🐍 Python - Programming language (PSF)
+📝 Rich, prompt_toolkit, PyYAML, Requests - Python libraries
+
+Full acknowledgments available at:
+  /va21/licenses/ACKNOWLEDGMENTS.md
+
+Thank you to all open-source contributors!
+""", "white")
+            return ""
+        return "License file not found."
     
     # ═══════════════════════════════════════════════════════════════════════════
     # MAIN LOOP

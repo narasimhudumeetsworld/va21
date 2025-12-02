@@ -1,13 +1,15 @@
-# VA21 Research OS - Real Linux-Based Secure Research Environment
+# VA21 Research OS - The Ultimate Research Operating System
 
 ## Overview
 
-VA21 Research OS is a **real**, stripped-down Linux-based operating system designed for secure research. It runs alongside your host OS via **Docker, Podman, or VirtualBox** and provides a unique **Zork-style text adventure interface** for system interaction.
+VA21 Research OS is a **real**, stripped-down Linux-based operating system designed for secure research. It runs alongside your host OS via **Docker, Podman, QEMU, or VirtualBox** and provides a unique **Zork-style text adventure interface** with a **Spotlight-like launcher** for keyboard-driven control.
+
+**The go-to OS for Researchers, Writers, Journalists, and Security Experts.**
 
 ## Philosophy
 
 > "Om Vinayaka" - Named after Lord Ganesha, the remover of obstacles, 
-> VA21 removes the obstacles between researchers and secure computing.
+> VA21 removes the obstacles between professionals and secure computing.
 
 ### Design Principles
 
@@ -16,7 +18,41 @@ VA21 Research OS is a **real**, stripped-down Linux-based operating system desig
 3. **ClamAV Integration** - Open-source antivirus for threat detection
 4. **SearXNG Search** - Privacy-respecting internet research
 5. **Zork-Style Interface** - Text adventure command interaction
-6. **Toggleable Hints** - Help for newcomers, disable for experts
+6. **Spotlight Launcher** - Cmd/Ctrl+Space for universal access
+7. **Tiling Window Manager** - Full keyboard control
+8. **Professional Toolkits** - Research, Journalism, Security, Writing
+
+## Features by Audience
+
+### 🔬 For Researchers
+- **Research Suite** - Literature management, citation generation (20+ styles)
+- **Obsidian Vault** - Knowledge management with wiki-links
+- **Data Analysis** - Experiment tracking, data visualization
+- **Collaboration** - Project management, team features
+- **Ethics Checklist** - Built-in research ethics guidelines
+
+### ✍️ For Writers
+- **Writing Suite** - Document creation, templates
+- **Citation Manager** - APA, MLA, Chicago, Harvard, IEEE...
+- **Export Options** - Markdown, HTML, PDF, DOCX
+- **Distraction-free** - Focus mode for writing
+- **AI Assistance** - Writing suggestions, improvements
+
+### 📰 For Journalists
+- **Source Protection** - Secure source management
+- **Fact-Checking** - Verification workflow
+- **FOIA Manager** - Track public records requests
+- **Deadline Tracker** - Never miss a deadline
+- **Story Pipeline** - Idea to publication workflow
+- **Legal Checklist** - Pre-publication review
+
+### 🔒 For Security Experts
+- **Security Toolkit** - Hash analysis, cryptography tools
+- **Forensics** - File analysis, log parsing
+- **Vulnerability Management** - Track and document findings
+- **Incident Response** - IR checklist and workflow
+- **CTF Tools** - Hints and utilities for competitions
+- **Network Analysis** - Port scanning, URL analysis
 
 ## Quick Start
 
