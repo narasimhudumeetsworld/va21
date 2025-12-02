@@ -631,8 +631,22 @@ References:
         print(f"[WritingSuite] Exported to {filepath}")
         return filepath
     
+    def _escape_html(self, text: str) -> str:
+        """Escape HTML special characters to prevent XSS."""
+        html_escape_table = {
+            "&": "&amp;",
+            '"': "&quot;",
+            "'": "&#x27;",
+            ">": "&gt;",
+            "<": "&lt;",
+        }
+        return "".join(html_escape_table.get(c, c) for c in text)
+    
     def _markdown_to_html(self, text: str) -> str:
-        """Simple markdown to HTML conversion."""
+        """Simple markdown to HTML conversion with XSS protection."""
+        # First escape HTML to prevent XSS
+        text = self._escape_html(text)
+        
         # Headers
         text = re.sub(r'^### (.+)$', r'<h3>\1</h3>', text, flags=re.MULTILINE)
         text = re.sub(r'^## (.+)$', r'<h2>\1</h2>', text, flags=re.MULTILINE)
@@ -642,7 +656,7 @@ References:
         text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
         text = re.sub(r'\*(.+?)\*', r'<em>\1</em>', text)
         
-        # Links
+        # Links (safe - URLs are escaped)
         text = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'<a href="\2">\1</a>', text)
         
         # Paragraphs

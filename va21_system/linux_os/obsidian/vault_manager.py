@@ -115,15 +115,17 @@ class ObsidianVault:
         # Research sessions
         self.research_sessions: Dict[str, ResearchSession] = {}
         
-        # Sensitive patterns for AI detection
+        # Sensitive patterns for AI detection (improved patterns)
         self.sensitive_patterns = [
-            r'\b\d{3}-\d{2}-\d{4}\b',  # SSN
-            r'\b\d{16}\b',              # Credit card
-            r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b',  # Email
+            r'\b\d{3}-\d{2}-\d{4}\b',  # SSN format XXX-XX-XXXX
+            r'\b(?:\d{4}[-\s]?){3}\d{4}\b',  # Credit card with optional separators
+            r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b',  # Email (fixed)
             r'password\s*[:=]\s*\S+',   # Passwords
             r'api[_-]?key\s*[:=]\s*\S+',  # API keys
             r'secret\s*[:=]\s*\S+',     # Secrets
             r'token\s*[:=]\s*\S+',      # Tokens
+            r'private[_-]?key\s*[:=]',  # Private keys
+            r'-----BEGIN\s+(?:RSA\s+)?PRIVATE\s+KEY-----',  # PEM private keys
         ]
         
         # Load existing notes
