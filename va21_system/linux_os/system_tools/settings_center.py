@@ -570,30 +570,48 @@ class DisplayManager:
         level = max(10, min(100, level))  # Clamp between 10-100
         
         try:
-            # Try xrandr first
-            brightness = level / 100.0
-            result = subprocess.run(
-                ["xrandr", "--output", "eDP-1", "--brightness", str(brightness)],
-                capture_output=True, text=True, timeout=10
-            )
-            if result.returncode == 0:
-                return True, f"Brightness set to {level}%"
-        except:
+            # Try xrandr first - detect primary display dynamically
+            displays = self.get_displays()
+            display_name = None
+            for d in displays:
+                if d.is_primary:
+                    display_name = d.name
+                    break
+            if not display_name and displays:
+                display_name = displays[0].name
+            
+            if display_name:
+                brightness = level / 100.0
+                result = subprocess.run(
+                    ["xrandr", "--output", display_name, "--brightness", str(brightness)],
+                    capture_output=True, text=True, timeout=10
+                )
+                if result.returncode == 0:
+                    return True, f"Brightness set to {level}%"
+        except Exception:
             pass
         
         try:
-            # Try backlight
-            brightness_file = "/sys/class/backlight/intel_backlight/brightness"
-            max_file = "/sys/class/backlight/intel_backlight/max_brightness"
-            
-            if os.path.exists(brightness_file) and os.path.exists(max_file):
-                with open(max_file) as f:
-                    maximum = int(f.read().strip())
-                new_value = int((level / 100.0) * maximum)
-                with open(brightness_file, 'w') as f:
-                    f.write(str(new_value))
-                return True, f"Brightness set to {level}%"
-        except:
+            # Try backlight - search for available backlight device
+            backlight_base = "/sys/class/backlight"
+            if os.path.exists(backlight_base):
+                devices = os.listdir(backlight_base)
+                for device in devices:
+                    brightness_file = os.path.join(backlight_base, device, "brightness")
+                    max_file = os.path.join(backlight_base, device, "max_brightness")
+                    
+                    if os.path.exists(brightness_file) and os.path.exists(max_file):
+                        # Check if writable
+                        if os.access(brightness_file, os.W_OK):
+                            with open(max_file) as f:
+                                maximum = int(f.read().strip())
+                            new_value = int((level / 100.0) * maximum)
+                            with open(brightness_file, 'w') as f:
+                                f.write(str(new_value))
+                            return True, f"Brightness set to {level}%"
+        except PermissionError:
+            return False, "Permission denied - need root access for brightness control"
+        except Exception:
             pass
         
         return False, "Could not set brightness"

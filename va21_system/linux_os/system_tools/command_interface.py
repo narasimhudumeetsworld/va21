@@ -929,13 +929,29 @@ class VA21CommandInterface:
             
             elif action == "screenshot":
                 import subprocess
+                import shutil
                 try:
                     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                     filepath = f"/home/researcher/Pictures/screenshot_{timestamp}.png"
-                    subprocess.run(["gnome-screenshot", "-f", filepath], timeout=10)
-                    return CommandResult(True, f"Screenshot saved to {filepath}")
-                except:
-                    return CommandResult(False, "Screenshot failed")
+                    
+                    # Try multiple screenshot tools in order of preference
+                    screenshot_tools = [
+                        ["scrot", filepath],
+                        ["gnome-screenshot", "-f", filepath],
+                        ["import", "-window", "root", filepath],  # ImageMagick
+                        ["xwd", "-root", "-out", filepath.replace(".png", ".xwd")],
+                    ]
+                    
+                    for tool_cmd in screenshot_tools:
+                        tool = tool_cmd[0]
+                        if shutil.which(tool):
+                            result = subprocess.run(tool_cmd, capture_output=True, timeout=10)
+                            if result.returncode == 0:
+                                return CommandResult(True, f"Screenshot saved to {filepath}")
+                    
+                    return CommandResult(False, "No screenshot tool available. Install scrot, gnome-screenshot, or imagemagick.")
+                except Exception as e:
+                    return CommandResult(False, f"Screenshot failed: {e}")
             
             # ═══════════════════════════════════════════════════════════════════
             # DATETIME ACTIONS

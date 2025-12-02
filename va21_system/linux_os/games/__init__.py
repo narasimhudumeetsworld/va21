@@ -389,12 +389,12 @@ down from above. A passage leads south into darkness.""",
             self.grue_warning += 1
             if self.grue_warning >= 3:
                 self.game_over = True
-                return """It is pitch dark. You are likely to be eaten by a grue.
+                return f"""It is pitch dark. You are likely to be eaten by a grue.
 
 *** You have been eaten by a grue ***
 
-Your score is {} in {} moves.
-Would you like to RESTART?""".format(self.score, self.moves)
+Your score is {self.score} in {self.moves} moves.
+Would you like to RESTART?"""
             return """It is pitch dark. You are likely to be eaten by a grue.
 (You should find a light source!)"""
         
