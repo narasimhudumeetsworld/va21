@@ -10,7 +10,10 @@ function Nav() {
           <Link to="/">Chat</Link>
         </li>
         <li>
-          <Link to="/settings">Settings</Link>
+          <Link to="/research">Research</Link>
+        </li>
+        <li>
+          <Link to="/terminals">Terminals</Link>
         </li>
         <li>
           <Link to="/terminal">Terminal</Link>
@@ -20,6 +23,9 @@ function Nav() {
         </li>
         <li>
           <Link to="/workflows">Workflows</Link>
+        </li>
+        <li>
+          <Link to="/settings">Settings</Link>
         </li>
       </ul>
     </nav>

@@ -5,13 +5,16 @@ from langchain.vectorstores import FAISS
 from langchain.embeddings import HuggingFaceEmbeddings
 
 class RAGManager:
-    def __init__(self, data_dir="data"):
+    def __init__(self, data_dir="data", db_path=None):
         self.data_dir = data_dir
-        self.index_path = os.path.join(data_dir, "faiss_index")
+        self.index_path = os.path.join(data_dir, db_path or "faiss_index")
         self.embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
+        # Ensure the data directory exists
+        os.makedirs(self.data_dir, exist_ok=True)
+
         if os.path.exists(self.index_path):
-            self.vector_store = FAISS.load_local(self.index_path, self.embeddings)
+            self.vector_store = FAISS.load_local(self.index_path, self.embeddings, allow_dangerous_deserialization=True)
         else:
             # Create a dummy index to start with
             # This is necessary because FAISS.from_documents requires a list of documents
@@ -37,6 +40,22 @@ class RAGManager:
 
         self.vector_store.add_documents(chunks)
         self.vector_store.save_local(self.index_path)
+
+    def create_new_index(self, texts: list):
+        """Create a new FAISS index from a list of texts, replacing the existing one."""
+        if not texts:
+            return
+        
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+        all_chunks = []
+        
+        for text in texts:
+            chunks = text_splitter.split_text(text)
+            all_chunks.extend(chunks)
+        
+        if all_chunks:
+            self.vector_store = FAISS.from_texts(all_chunks, self.embeddings)
+            self.vector_store.save_local(self.index_path)
 
     def search(self, query, k=5):
         """Performs a similarity search on the vector store."""
