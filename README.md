@@ -139,16 +139,34 @@ VA21 uses **dynamic context-aware AI activation** to minimize RAM usage:
 - **AI Models**: IBM Granite, Microsoft ONNX/FARA, Meta LLaMA
 - **Security**: Multi-layer protection with Guardian AI
 
+### 🔧 AI Runtime Architecture
+
+| AI System | Runtime | License | Purpose |
+|-----------|---------|---------|---------|
+| **Guardian AI** | ONNX Runtime | MIT | Security analysis (always active) |
+| **Helper AI** | Ollama / Transformers | MIT / Apache 2.0 | User assistance |
+| **FARA Agent** | Ollama / Transformers | MIT / Apache 2.0 | UI automation |
+
+> **Note**: Guardian AI uses ONNX for fast, reliable security. Helper AI uses Ollama/Transformers because IBM Granite and many models don't have official ONNX versions.
+
+### 🧠 Anti-Hallucination System
+
+VA21 includes a built-in anti-hallucination system to ensure AI responses are accurate:
+- Timestamped unique IDs for all AI-generated content
+- Cross-validation with version history
+- Confidence scoring for responses
+- Automatic hallucination detection alerts
+
 ## 🙏 Acknowledgments
 
 VA21 OS is built on the shoulders of giants:
 
 ### AI & Machine Learning
-- **IBM Research** - For [Granite language models](https://huggingface.co/collections/ibm-granite/granite-40-language-models) powering intelligent features
-- **Microsoft** - For [ONNX Runtime](https://onnxruntime.ai/), [FARA technology](https://github.com/microsoft/fara), and Phi models
+- **IBM Research** - For [Granite language models](https://huggingface.co/collections/ibm-granite/granite-40-language-models) powering intelligent features (Apache 2.0)
+- **Microsoft** - For [ONNX Runtime](https://onnxruntime.ai/) (MIT), [FARA technology](https://github.com/microsoft/fara), and Phi models
 - **Meta AI** - For LLaMA models and PyTorch
-- **Hugging Face** - For democratizing AI model access
-- **Ollama** - For simple local LLM deployment
+- **Hugging Face** - For [Transformers](https://github.com/huggingface/transformers) library (Apache 2.0)
+- **Ollama** - For [simple local LLM deployment](https://github.com/ollama/ollama) (MIT)
 
 ### Open Source Foundation
 
@@ -167,3 +185,5 @@ Copyright (c) 2024-2025 Prayaga Vaibhav. All rights reserved.
 ---
 
 **🛡️ VA21 OS - Secure by Design, Intelligent by Nature** 🐧
+
+*Om Vinayaka - First Alpha Release*

@@ -31,7 +31,37 @@ This is the first public alpha release of VA21 OS, a revolutionary Debian-based 
 - **Context-Aware Model Loading** - Dynamic memory management
 - **INT8 Quantization** - 50% model size reduction
 
-### 🔌 FARA App Compatibility Layer (NEW)
+### 🧠 Anti-Hallucination System (NEW in Alpha)
+- **Timestamped Unique IDs** - Every AI-generated ID is verified
+- **Cross-Validation Checks** - Multiple verification layers
+- **Obsidian Knowledge Vault Integration** - Visual verification via mind maps
+- **Confidence Scoring** - Know how reliable each response is
+- **Hallucination Detection Alerts** - Automatic notification of suspicious outputs
+
+### 🔄 Synced Helper AI Memory (NEW in Alpha)
+- **Shared Memory Across Instances** - All Helper AI instances share knowledge
+- **Anti-Hallucination Verified Storage** - Memory entries are cryptographically verified
+- **Persistent Storage** - Memory survives restarts
+- **Integrity Validation** - Checksum-based integrity checks
+
+### 🔧 AI Runtime Architecture (NEW in Alpha)
+**Guardian AI (Security Core)**
+- Runtime: ONNX Runtime (Microsoft)
+- License: MIT License
+- Status: Always active, dedicated to security
+- Why ONNX: Fast inference, small footprint, enterprise-grade reliability
+
+**Helper AI (User Assistant)**
+- Runtime: Ollama or Hugging Face Transformers
+- License: MIT / Apache 2.0 (permissive open-source)
+- Supported Models:
+  - IBM Granite 4.0 (via Transformers) - Apache 2.0
+  - Llama 3 (via Ollama) - Meta License
+  - Phi-3 (via Ollama) - MIT License
+  - Code Llama (via Ollama) - Meta License
+- Why not ONNX for Helper AI: IBM Granite and many models don't have official ONNX versions
+
+### 🔌 FARA App Compatibility Layer
 - Microsoft FARA-inspired technology for legacy app support
 - Screenshot-based UI analysis for automated interaction
 - Legacy GTK2/Qt4 application compatibility
