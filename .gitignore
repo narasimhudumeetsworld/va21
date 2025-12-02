@@ -17,6 +17,8 @@ yarn-error.log*
 
 # OS-specific
 .DS_Store
+.AppleDouble
+.LSOverride
 Thumbs.db
 
 # Python cache
@@ -34,3 +36,26 @@ __pycache__/
 
 # Temp files from test scripts
 /va21-omni-agent/backend/phi3-qa.py
+
+# Security - Never commit private keys or certificates
+*.key
+*.pem
+*.crt
+*.cer
+*.p12
+*.pfx
+certs/
+
+# Electron (if ever re-added, keep local only)
+electron/
+
+# Swift (not used - VA21 is Python/JavaScript)
+.build/
+Packages/
+*.xcodeproj
+*.xcworkspace
+Package.swift
+
+# Patch files (archive separately)
+*.diff
+*.patch
