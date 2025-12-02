@@ -3,10 +3,13 @@ Sandboxed Terminal Manager - Multiple Sandboxed Terminal Support
 
 This module provides management for multiple sandboxed terminal sessions,
 including isolation, security controls, and session logging.
+
+Note: PTY-based terminal functionality requires Unix-like systems (Linux, macOS).
+Windows users should use alternative terminal solutions.
 """
 
 import os
-import pty
+import sys
 import select
 import subprocess
 import threading
@@ -16,6 +19,11 @@ from datetime import datetime
 from typing import Dict, List, Optional, Callable
 from enum import Enum
 import signal
+
+# Platform-specific imports
+IS_UNIX = sys.platform != 'win32'
+if IS_UNIX:
+    import pty
 
 
 class TerminalStatus(Enum):
@@ -133,6 +141,13 @@ class SandboxedTerminalManager:
         
         if session.status == TerminalStatus.RUNNING:
             return True
+        
+        # Check platform compatibility
+        if not IS_UNIX:
+            print(f"[TerminalManager] PTY terminals not supported on Windows. Session {session_id} will run in limited mode.")
+            session.status = TerminalStatus.ERROR
+            session.metadata['error'] = 'Platform not supported'
+            return False
         
         try:
             # Create a pseudo-terminal

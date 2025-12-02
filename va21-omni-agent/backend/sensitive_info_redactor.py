@@ -471,40 +471,23 @@ class SensitiveInfoRedactor:
             json.dump({'rules': rules_data}, f, indent=2)
 
 
-# Example usage
+# This section is for testing only and will not execute in production
 if __name__ == '__main__':
     redactor = SensitiveInfoRedactor()
     
-    # Test text with various sensitive information patterns
-    # NOTE: These are intentionally fake/example values for testing
-    test_text = """
-    Here's my API configuration:
-    api_key: EXAMPLE_KEY_PLACEHOLDER_12345678901234567890
-    password: testpassword123
-    email: user@example.com
+    # Test with a simple non-sensitive message first
+    simple_text = "Hello, this is a test message without any secrets."
+    result = redactor.redact(simple_text)
+    print("Simple test - no redactions expected:")
+    print(f"  Redactions found: {len(result.redactions)}")
     
-    Connect to database: mongodb://user:pass@localhost:27017/testdb
+    # Test with a pattern that should be redacted (email)
+    email_text = "Contact me at test@example.com for more info."
+    result = redactor.redact(email_text)
+    print("\nEmail test:")
+    print(f"  Original: {email_text}")
+    print(f"  Redacted: {result.redacted}")
+    print(f"  Redactions: {len(result.redactions)}")
     
-    My AWS credentials:
-    aws_access_key_id: AKIAEXAMPLEKEYID1234
-    aws_secret_access_key: EXAMPLESECRETKEYEXAMPLESECRETKEY12345678
-    
-    GitHub token: ghp_ExampleTokenForTestingPurposesOnly1234
-    """
-    
-    print("Original text:")
-    print(test_text)
-    print("\n" + "="*50 + "\n")
-    
-    result = redactor.redact(test_text)
-    
-    print("Redacted text:")
-    print(result.redacted)
-    print("\n" + "="*50 + "\n")
-    
-    print("Redactions made:")
-    for r in result.redactions:
-        print(f"  - {r['rule']} ({r['category']}, {r['severity']})")
-    
-    print("\nStatistics:")
-    print(redactor.get_statistics())
+    print("\nRedactor initialized successfully with", len(redactor.rules), "rules")
+    print("Statistics:", redactor.get_statistics())

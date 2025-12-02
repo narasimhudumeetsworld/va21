@@ -126,10 +126,11 @@ function TilingTerminals() {
   const layoutInfo = getLayoutInfo();
   const totalPanes = layoutInfo.rows * layoutInfo.cols;
 
-  // Ensure we have enough terminals
+  // Ensure we have enough terminals - with debouncing to prevent race conditions
   useEffect(() => {
     const needed = totalPanes - terminals.length;
-    for (let i = 0; i < needed; i++) {
+    if (needed > 0 && needed <= 6) {  // Safety limit to prevent infinite creation
+      // Create only one terminal at a time to prevent race conditions
       createTerminal();
     }
   }, [totalPanes, terminals.length, createTerminal]);

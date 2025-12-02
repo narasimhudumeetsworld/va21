@@ -193,16 +193,32 @@ class AdvancedSelfHealing:
             return True
     
     def _check_file_integrity(self) -> bool:
-        """Check integrity of monitored files."""
+        """Check integrity of monitored files including permissions."""
         for path, expected_hash in self.monitored_files.items():
             if not os.path.exists(path):
                 print(f"[SelfHealing] File missing: {path}")
                 return False
             
+            # Check file hash
             current_hash = self._hash_file(path)
             if current_hash != expected_hash:
-                print(f"[SelfHealing] File integrity check failed: {path}")
+                print(f"[SelfHealing] File hash check failed: {path}")
                 return False
+            
+            # Check file permissions (on Unix systems)
+            try:
+                stat_info = os.stat(path)
+                # Check if file is world-writable (security risk)
+                if stat_info.st_mode & 0o002:
+                    print(f"[SelfHealing] File is world-writable (security risk): {path}")
+                    return False
+                # Check for unusual modification times (within last minute)
+                import time
+                if time.time() - stat_info.st_mtime < 60:
+                    print(f"[SelfHealing] File recently modified: {path}")
+                    # Note: Don't fail for this, just log it
+            except OSError as e:
+                print(f"[SelfHealing] Could not check file permissions for {path}: {e}")
         
         return True
     

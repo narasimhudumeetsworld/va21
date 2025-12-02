@@ -19,16 +19,13 @@ services:
       - VA21_VAULT_PATH=/app/data/research_vault
       - FLASK_ENV=production
     security_opt:
-      # Security options for sandboxed terminals
+      # Security options for container isolation
       - no-new-privileges:true
     cap_drop:
       - ALL
-    cap_add:
-      # Required for PTY operations in sandboxed terminals
-      - CHOWN
-      - SETGID
-      - SETUID
-      - SYS_CHROOT
+    # Note: PTY-based terminals require specific capabilities.
+    # For maximum security, use the subprocess-based terminal alternative
+    # or run terminals in a separate, more privileged container.
     networks:
       - va21-network
     healthcheck:
