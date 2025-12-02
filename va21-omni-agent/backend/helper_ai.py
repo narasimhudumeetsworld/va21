@@ -1017,16 +1017,16 @@ Feel free to ask me anything! 🚀
                 except Exception as e:
                     print(f"[HelperAI] Anti-hallucination verification failed: {e}")
             
+            # Get existing entry's created_at time, or use current time for new entries
+            existing_entry = HelperAI._synced_memory.get(key)
+            created_at = existing_entry.created_at if existing_entry else now
+            
             # Create or update the memory entry
             entry = SyncedMemoryEntry(
                 memory_id=memory_id,
                 key=key,
                 value=value,
-                created_at=HelperAI._synced_memory.get(key, SyncedMemoryEntry(
-                    memory_id='', key='', value=None, 
-                    created_at=now, updated_at=now, 
-                    source='', verified=False, checksum=''
-                )).created_at,
+                created_at=created_at,
                 updated_at=now,
                 source=self.instance_id,
                 verified=verified,
@@ -1065,8 +1065,19 @@ Feel free to ask me anything! 🚀
             entry = HelperAI._synced_memory[key]
             
             # Verify integrity with checksum
+            # Note: Checksums include instance_id, so entries from other instances
+            # will have different checksums. We verify the stored checksum format
+            # is valid (16 hex chars) rather than recalculating for cross-instance entries.
             current_checksum = self._generate_checksum(entry.key, entry.value)
-            integrity_valid = entry.checksum == current_checksum or entry.source != self.instance_id
+            if entry.source == self.instance_id:
+                # Same instance: direct checksum comparison
+                integrity_valid = entry.checksum == current_checksum
+            else:
+                # Different instance: verify checksum format is valid (16 hex chars)
+                integrity_valid = (
+                    len(entry.checksum) == 16 and 
+                    all(c in '0123456789abcdef' for c in entry.checksum.lower())
+                )
             
             # Validate with anti-hallucination system if available
             ah_valid = True

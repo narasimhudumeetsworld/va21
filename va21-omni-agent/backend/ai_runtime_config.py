@@ -239,21 +239,35 @@ class AIRuntimeManager:
             }
         
         # Check Ollama
+        # Security: Only check for 'ollama' executable, don't run arbitrary commands
         try:
             import subprocess
-            result = subprocess.run(
-                ['ollama', '--version'],
-                capture_output=True, text=True, timeout=5
-            )
-            self.runtime_status[RuntimeType.OLLAMA] = {
-                "available": result.returncode == 0,
-                "version": result.stdout.strip() if result.returncode == 0 else None,
-                "error": result.stderr if result.returncode != 0 else None
-            }
-        except (subprocess.SubprocessError, FileNotFoundError):
+            import shutil
+            
+            # First verify ollama exists in PATH using shutil.which (safe)
+            ollama_path = shutil.which('ollama')
+            if ollama_path is None:
+                self.runtime_status[RuntimeType.OLLAMA] = {
+                    "available": False,
+                    "error": "ollama not found in PATH"
+                }
+            else:
+                # Ollama found, run version check with explicit path
+                result = subprocess.run(
+                    [ollama_path, '--version'],
+                    capture_output=True, text=True, timeout=5,
+                    env={"PATH": ""}  # Clear PATH to prevent injection
+                )
+                self.runtime_status[RuntimeType.OLLAMA] = {
+                    "available": result.returncode == 0,
+                    "version": result.stdout.strip() if result.returncode == 0 else None,
+                    "error": result.stderr if result.returncode != 0 else None,
+                    "path": ollama_path
+                }
+        except (subprocess.SubprocessError, FileNotFoundError, OSError) as e:
             self.runtime_status[RuntimeType.OLLAMA] = {
                 "available": False,
-                "error": "ollama not installed or not in PATH"
+                "error": f"ollama check failed: {str(e)}"
             }
         
         # Check Transformers
