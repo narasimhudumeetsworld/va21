@@ -1,0 +1,299 @@
+# VA21 Research OS - Debian Desktop Edition
+# ===========================================
+# Full Desktop OS based on Debian GNU/Linux
+# Uses VA21's own advanced interface (no external DE needed)
+#
+# Features:
+#   - VA21 Zork-style text adventure interface
+#   - Spotlight-like launcher (Ctrl+Space)
+#   - Tiling window manager
+#   - AI-powered command interface (chat to control)
+#   - WiFi, Audio, Display, Time settings
+#   - Guardian AI security
+#
+# Installation targets:
+#   - Docker / Podman (containerized)
+#   - VirtualBox / VMware (virtual machine)
+#   - Physical Hardware (bare metal installation)
+#
+# Om Vinayaka - Full GNU/Linux Desktop Power.
+#
+# Build: docker build -f Dockerfile.debian -t va21-desktop-os:debian .
+# Run:   docker run -it --rm va21-desktop-os:debian
+
+# ============================================
+# Stage 1: Base System
+# ============================================
+FROM debian:bookworm AS base
+
+LABEL maintainer="Prayaga Vaibhav"
+LABEL description="VA21 Desktop OS - Debian Edition with Full GNU Toolkit"
+LABEL version="1.0.0"
+LABEL base="debian"
+LABEL type="desktop"
+
+# Environment setup
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+
+# ============================================
+# GNU TOOLKIT - Complete GNU/Linux Userland
+# ============================================
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    # ----------------------------------------
+    # Core GNU Utilities (GNU Coreutils)
+    # ----------------------------------------
+    coreutils \
+    binutils \
+    # ----------------------------------------
+    # GNU C Library (glibc)
+    # ----------------------------------------
+    libc6 \
+    libc-bin \
+    # ----------------------------------------
+    # GNU Text Processing Tools
+    # ----------------------------------------
+    grep \
+    sed \
+    gawk \
+    diffutils \
+    patch \
+    less \
+    # ----------------------------------------
+    # GNU File Utilities
+    # ----------------------------------------
+    findutils \
+    file \
+    tree \
+    rsync \
+    # ----------------------------------------
+    # GNU Shell and Terminal
+    # ----------------------------------------
+    bash \
+    bash-completion \
+    readline-common \
+    ncurses-base \
+    ncurses-bin \
+    # ----------------------------------------
+    # GNU Compression Tools
+    # ----------------------------------------
+    gzip \
+    bzip2 \
+    xz-utils \
+    tar \
+    zip \
+    unzip \
+    p7zip-full \
+    # ----------------------------------------
+    # GNU Build Tools
+    # ----------------------------------------
+    make \
+    # ----------------------------------------
+    # Essential System Utilities
+    # ----------------------------------------
+    procps \
+    psmisc \
+    util-linux \
+    mount \
+    kmod \
+    udev \
+    dbus \
+    # ----------------------------------------
+    # Networking Tools & WiFi
+    # ----------------------------------------
+    iproute2 \
+    iputils-ping \
+    net-tools \
+    netcat-openbsd \
+    curl \
+    wget \
+    dnsutils \
+    openssh-client \
+    openssh-server \
+    # WiFi tools
+    wireless-tools \
+    wpasupplicant \
+    network-manager \
+    # ----------------------------------------
+    # Audio Tools
+    # ----------------------------------------
+    pulseaudio \
+    pulseaudio-utils \
+    alsa-utils \
+    # ----------------------------------------
+    # Display Tools
+    # ----------------------------------------
+    x11-xserver-utils \
+    x11-utils \
+    xterm \
+    # ----------------------------------------
+    # Time & Date
+    # ----------------------------------------
+    chrony \
+    tzdata \
+    # ----------------------------------------
+    # Development and Debugging
+    # ----------------------------------------
+    strace \
+    ltrace \
+    # ----------------------------------------
+    # Security Tools
+    # ----------------------------------------
+    nmap \
+    gnupg \
+    # ----------------------------------------
+    # Text Editors
+    # ----------------------------------------
+    vim \
+    nano \
+    # ----------------------------------------
+    # Terminal Multiplexer
+    # ----------------------------------------
+    tmux \
+    screen \
+    # ----------------------------------------
+    # System Monitoring
+    # ----------------------------------------
+    htop \
+    # ----------------------------------------
+    # JSON/YAML Processing
+    # ----------------------------------------
+    jq \
+    # ----------------------------------------
+    # Version Control
+    # ----------------------------------------
+    git \
+    # ----------------------------------------
+    # Games (Z-Machine interpreter for Zork)
+    # ----------------------------------------
+    frotz \
+    # ----------------------------------------
+    # Python (for VA21 interface and tools)
+    # ----------------------------------------
+    python3 \
+    python3-pip \
+    python3-venv \
+    python3-dev \
+    python3-psutil \
+    python3-yaml \
+    python3-requests \
+    # ----------------------------------------
+    # ClamAV - Open Source Antivirus
+    # ----------------------------------------
+    clamav \
+    clamav-daemon \
+    clamav-freshclam \
+    # ----------------------------------------
+    # CA Certificates (for HTTPS)
+    # ----------------------------------------
+    ca-certificates \
+    # ----------------------------------------
+    # Locales support
+    # ----------------------------------------
+    locales \
+    locales-all \
+    # ----------------------------------------
+    # Fonts (for terminal)
+    # ----------------------------------------
+    fonts-dejavu-core \
+    fonts-liberation \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+# ============================================
+# System Configuration
+# ============================================
+
+# Configure locales
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
+    locale-gen
+
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+
+# Initialize ClamAV database directory
+RUN mkdir -p /var/lib/clamav && \
+    chown clamav:clamav /var/lib/clamav
+
+# ============================================
+# VA21 User and Directory Setup
+# ============================================
+
+RUN useradd -m -s /bin/bash -u 1000 -G sudo,audio,video,plugdev,netdev researcher && \
+    echo "researcher:va21" | chpasswd && \
+    mkdir -p /va21/{guardian,vault,research,sandbox,logs,config,desktop,games} && \
+    mkdir -p /home/researcher/{research,notes,tools,Desktop,Documents,Downloads,Pictures} && \
+    chown -R researcher:researcher /va21 /home/researcher
+
+# ============================================
+# Python Dependencies for VA21
+# ============================================
+
+COPY requirements.txt /tmp/requirements.txt
+RUN pip3 install --no-cache-dir --break-system-packages -r /tmp/requirements.txt && \
+    rm /tmp/requirements.txt
+
+# ============================================
+# Copy VA21 Components
+# ============================================
+
+COPY guardian/ /va21/guardian/
+COPY zork_shell/ /va21/zork_shell/
+COPY searxng/ /va21/searxng/
+COPY window_manager/ /va21/window_manager/
+COPY launcher/ /va21/launcher/
+COPY system_tools/ /va21/system_tools/
+COPY games/ /va21/games/
+COPY scripts/entrypoint.sh /va21/entrypoint.sh
+COPY config/ /va21/config/
+
+# Make scripts executable
+RUN chmod +x /va21/entrypoint.sh && \
+    find /va21 -name "*.py" -exec chmod +x {} \; && \
+    find /va21 -name "*.sh" -exec chmod +x {} \;
+
+# Set up the VA21 shell command
+RUN echo '#!/bin/bash' > /usr/local/bin/va21 && \
+    echo 'cd /va21 && python3 /va21/zork_shell/zork_interface.py' >> /usr/local/bin/va21 && \
+    chmod +x /usr/local/bin/va21
+
+# ============================================
+# Environment Variables
+# ============================================
+
+ENV VA21_HOME=/va21
+ENV VA21_USER=researcher
+ENV VA21_BASE=debian
+ENV VA21_TYPE=desktop
+ENV PYTHONUNBUFFERED=1
+ENV TERM=xterm-256color
+
+# ============================================
+# Working Directory
+# ============================================
+
+WORKDIR /home/researcher
+
+# ============================================
+# Health Check
+# ============================================
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD python3 -c "import sys; sys.exit(0)"
+
+# ============================================
+# Expose Ports
+# ============================================
+
+EXPOSE 22
+EXPOSE 5000
+
+# ============================================
+# Entrypoint
+# ============================================
+
+ENTRYPOINT ["/va21/entrypoint.sh"]
+CMD ["zork"]

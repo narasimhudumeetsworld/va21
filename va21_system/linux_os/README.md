@@ -2,7 +2,7 @@
 
 ## Overview
 
-VA21 Research OS is a **real**, stripped-down Linux-based operating system designed for secure research. It runs alongside your host OS via **Docker, Podman, QEMU, or VirtualBox** and provides a unique **Zork-style text adventure interface** with a **Spotlight-like launcher** for keyboard-driven control.
+VA21 Research OS is a **real**, stripped-down Linux-based operating system designed for secure research. It features its own **advanced desktop environment** that's more powerful than traditional DEs, with everything controllable via **natural language AI chat** or **keyboard shortcuts**.
 
 **The go-to OS for Researchers, Writers, Journalists, and Security Experts.**
 
@@ -13,14 +13,157 @@ VA21 Research OS is a **real**, stripped-down Linux-based operating system desig
 
 ### Design Principles
 
-1. **Real Linux Base** - Built on Alpine Linux, stripped to essentials
-2. **Guardian AI Protection** - AI-powered security at system level
-3. **ClamAV Integration** - Open-source antivirus for threat detection
-4. **SearXNG Search** - Privacy-respecting internet research
-5. **Zork-Style Interface** - Text adventure command interaction
-6. **Spotlight Launcher** - Cmd/Ctrl+Space for universal access
-7. **Tiling Window Manager** - Full keyboard control
-8. **Professional Toolkits** - Research, Journalism, Security, Writing
+1. **Real Linux Base** - Available in both Debian and Alpine editions
+2. **Full GNU Toolkit** - Complete GNU/Linux userland with glibc support
+3. **AI-Powered Control** - Chat with Helper AI to control everything
+4. **Keyboard-Driven** - Every action has a keyboard shortcut
+5. **Guardian AI Protection** - AI-powered security at system level
+6. **Zork-Style Interface** - Unique text adventure command interaction
+7. **Spotlight Launcher** - Cmd/Ctrl+Space for universal access
+8. **Tiling Window Manager** - Full keyboard control
+
+## 🎮 Control Everything with Chat or Keyboard
+
+VA21's revolutionary interface lets you control **everything** through natural language:
+
+### Chat with Helper AI
+```
+You: "turn on wifi"
+AI: WiFi enabled ✓
+
+You: "connect to MyNetwork"
+AI: Connected to MyNetwork with 85% signal ✓
+
+You: "set volume to 50"
+AI: Volume: 50% ✓
+
+You: "what time is it"
+AI: The time is 3:45 PM ✓
+
+You: "dark mode"
+AI: Switched to dark theme ✓
+
+You: "battery status"
+AI: Battery is at 78% (on battery) ✓
+```
+
+### Or Use Keyboard Shortcuts
+
+| Action | Shortcut |
+|--------|----------|
+| Open Launcher | `Ctrl+Space` |
+| Command Palette | `Ctrl+K` |
+| Toggle Theme | `Ctrl+Shift+T` |
+| Volume Up/Down | `Ctrl+Up/Down` |
+| Brightness Up/Down | `Ctrl+Shift+Up/Down` |
+| Mute | `Ctrl+M` |
+| New Terminal | `Ctrl+T` |
+| Lock Screen | `Super+L` |
+| Take Screenshot | `Print` or `Ctrl+Shift+S` |
+| Toggle WiFi | `Ctrl+Alt+W` |
+| System Status | `Ctrl+Alt+S` |
+| Open Settings | `Ctrl+,` |
+| Help | `F1` |
+
+## 📦 Two Editions
+
+### Debian Edition (Full GNU)
+- Complete GNU toolkit with glibc
+- Maximum compatibility with Linux software
+- Ideal for desktop installation
+- ~500MB base image
+
+```bash
+docker build -f Dockerfile.debian -t va21-os:debian .
+docker run -it --rm va21-os:debian
+```
+
+### Alpine Edition (Lightweight)
+- musl libc + BusyBox
+- Minimal footprint (~100MB)
+- Perfect for containers and VMs
+- Fast boot times
+
+```bash
+docker build -f Dockerfile.alpine-desktop -t va21-os:alpine .
+docker run -it --rm va21-os:alpine
+```
+
+## ⚙️ Built-in Settings
+
+All settings are accessible via chat or the Settings Center:
+
+### 📶 WiFi & Network
+- Scan and connect to networks
+- View signal strength
+- Forget saved networks
+- Toggle WiFi on/off
+
+### 🕐 Date & Time
+- Set timezone
+- Sync with NTP
+- View current time/date
+
+### 🔊 Sound
+- Volume control (0-100%)
+- Mute/unmute
+- Audio device selection
+
+### 🔆 Display
+- Brightness control
+- Resolution settings
+- Multi-monitor support
+
+### 🎨 Appearance
+- Dark/Light theme
+- Accent colors
+- Font settings
+
+### 🔋 Power
+- Battery status
+- Power profiles (Performance/Balanced/Saver)
+- Sleep/Suspend settings
+
+## 🎮 Bundled Games
+
+VA21 comes with classic text adventure games, just like Windows used to bundle games!
+
+### Mini Zork (Built-in)
+A Zork-inspired adventure written in Python - no setup needed!
+
+```
+> play mini_zork
+
+West of House
+You are standing in an open field west of a white house,
+with a boarded front door. There is a small mailbox here.
+
+> open mailbox
+Opening the mailbox reveals a leaflet...
+```
+
+### Classic Zork Trilogy (Optional)
+The legendary games that inspired VA21's interface:
+
+| Game | Year | Description |
+|------|------|-------------|
+| 🏰 Zork I | 1980 | The Great Underground Empire |
+| 🧙 Zork II | 1981 | The Wizard of Frobozz |
+| 👑 Zork III | 1982 | The Dungeon Master |
+
+Historical source available at:
+- https://github.com/historicalsource/zork1
+- https://github.com/historicalsource/zork2
+- https://github.com/historicalsource/zork3
+
+### Play Games
+```
+> games                    # Show games menu
+> play mini_zork          # Start built-in adventure
+> play zork1              # Play Zork I (if installed)
+```
+
+Or ask the AI: *"let's play zork"*
 
 ## Features by Audience
 
@@ -63,12 +206,12 @@ VA21 Research OS is a **real**, stripped-down Linux-based operating system desig
 git clone https://github.com/narasimhudumeetsworld/va21.git
 cd va21/va21_system/linux_os
 
-# Run VA21 Research OS
+# Run VA21 Research OS (Alpine - lightweight)
 ./run.sh
 
-# Or manually with docker:
-docker build -t va21-research-os .
-docker run -it --rm va21-research-os
+# Or run Debian edition
+docker build -f Dockerfile.debian -t va21-os:debian .
+docker run -it --rm va21-os:debian
 ```
 
 ### Using Podman
