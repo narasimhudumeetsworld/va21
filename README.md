@@ -27,6 +27,13 @@ VA21 OS is a revolutionary Debian-based operating system that combines enterpris
 - **Debian Packages**: Full access to the vast Debian repository
 - **Spotlight-Like Search**: Find and install apps right from the command palette
 
+### 🔌 FARA App Compatibility Layer (Alpha)
+- **Microsoft FARA-Inspired Technology**: Intelligent UI automation for legacy apps
+- **Screenshot-Based Analysis**: Visual understanding of application interfaces
+- **Legacy GTK2/Qt4 Support**: Seamless integration with older applications
+- **Wine Compatibility**: Run Windows applications with FARA assistance
+- **Context-Aware Automation**: AI-driven action planning for complex workflows
+
 ### 🤖 Intelligent Helper AI
 - **Backup Knowledge**: AI knows your version history (sanitized for security)
 - **Natural Language Restoration**: Just ask "restore from yesterday"
@@ -81,11 +88,32 @@ Access the interface at: **http://localhost:5000**
 
 ## 📋 System Requirements
 
-- **Debian-based Linux** (Debian, Ubuntu, Linux Mint, etc.)
+### Minimum Requirements (7GB RAM)
+- **Debian-based Linux** (Debian 12+, Ubuntu 22.04+, Linux Mint 21+)
 - **Python 3.8+**
-- **4GB RAM** (8GB recommended)
-- **2GB disk space**
+- **7GB RAM** (for standard usage with AI features)
+- **2GB disk space** for models and dependencies
 - **Flatpak** (optional, for App Center)
+
+### Recommended Requirements (10GB RAM)
+- **8-10GB RAM** (for heavy multitasking with all AI models)
+- **4GB disk space** for full model suite
+- **Modern CPU** (Intel Core i5/AMD Ryzen 5 or better)
+- **SSD storage** for faster model loading
+
+### Memory Optimization
+VA21 uses **dynamic context-aware AI activation** to minimize RAM usage:
+- 🧠 **Lazy Loading** - Models loaded only when needed
+- 📦 **INT8 Quantization** - 50% model size reduction
+- 🔄 **Context-Aware Unloading** - Automatic memory management
+- 💾 **Memory Mapping** - Efficient large file handling
+
+| Usage Scenario | RAM Required | Description |
+|---------------|--------------|-------------|
+| Minimal | ~3GB | Basic browsing, text editing |
+| Standard | ~5GB | Multiple apps, AI chat |
+| Heavy Multitasking | ~7GB | Many apps, FARA compatibility |
+| Full Development | ~9GB | All AI features, IDE, Docker |
 
 ## ⌨️ Keyboard Shortcuts
 
@@ -108,12 +136,21 @@ Access the interface at: **http://localhost:5000**
 - **Backend**: Flask + Socket.IO Python server
 - **Frontend**: React.js with custom theming
 - **Package Management**: Flatpak + APT integration
-- **AI**: ONNX-based local inference
-- **Security**: Multi-layer protection system
+- **AI Models**: IBM Granite, Microsoft ONNX/FARA, Meta LLaMA
+- **Security**: Multi-layer protection with Guardian AI
 
 ## 🙏 Acknowledgments
 
 VA21 OS is built on the shoulders of giants:
+
+### AI & Machine Learning
+- **IBM Research** - For [Granite language models](https://huggingface.co/collections/ibm-granite/granite-40-language-models) powering intelligent features
+- **Microsoft** - For [ONNX Runtime](https://onnxruntime.ai/), [FARA technology](https://github.com/microsoft/fara), and Phi models
+- **Meta AI** - For LLaMA models and PyTorch
+- **Hugging Face** - For democratizing AI model access
+- **Ollama** - For simple local LLM deployment
+
+### Open Source Foundation
 
 - **Debian Project** - For creating the most stable and versatile Linux distribution
 - **Linux Foundation** - For their stewardship of the Linux kernel
