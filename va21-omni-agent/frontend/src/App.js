@@ -4,12 +4,17 @@ import './App.css';
 import TabBar from './components/Tabs/TabBar';
 import AddressBar from './components/Browser/AddressBar';
 import SidePanel from './components/SidePanel/SidePanel';
+import CommandPalette from './components/CommandPalette';
+import { ThemeProvider, useTheme } from './components/ThemeProvider';
+import './components/ThemeProvider.css';
 import { v4 as uuidv4 } from 'uuid';
 
-function App() {
+function AppContent() {
   const [isSidePanelOpen, setSidePanelOpen] = useState(false);
   const [tabs, setTabs] = useState([]);
   const [activeTabId, setActiveTabId] = useState(null);
+  const [isCommandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const { toggleTheme } = useTheme();
 
   // Initialize with a single tab on mount
   useEffect(() => {
@@ -19,6 +24,43 @@ function App() {
     setActiveTabId(firstTabId);
     window.electronAPI?.newTab({ id: firstTabId, url: 'app://new-tab' });
   }, []);
+
+  // Global keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Command Palette: Ctrl/Cmd + K
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setCommandPaletteOpen(prev => !prev);
+      }
+      // Alternative Command Palette: Ctrl/Cmd + Shift + P
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'P') {
+        e.preventDefault();
+        setCommandPaletteOpen(prev => !prev);
+      }
+      // Toggle Side Panel: Ctrl/Cmd + B
+      if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
+        e.preventDefault();
+        toggleSidePanel();
+      }
+      // Toggle Theme: Ctrl/Cmd + Shift + T
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'T') {
+        e.preventDefault();
+        toggleTheme();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    
+    // Listen for theme toggle from command palette
+    const handleThemeToggle = () => toggleTheme();
+    window.addEventListener('toggle-theme', handleThemeToggle);
+    
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('toggle-theme', handleThemeToggle);
+    };
+  }, [toggleTheme]);
 
   const handleNewTab = useCallback(() => {
     const newTabId = uuidv4();
@@ -69,25 +111,37 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <div className="App">
-        <div className="browser-chrome">
-          <TabBar
-            tabs={tabs}
-            activeTabId={activeTabId}
-            onSelectTab={handleSelectTab}
-            onCloseTab={handleCloseTab}
-            onNewTab={handleNewTab}
-          />
-          <AddressBar
-            onToggleSidePanel={toggleSidePanel}
-            activeTab={tabs.find(t => t.id === activeTabId)}
-          />
-        </div>
-        <SidePanel isOpen={isSidePanelOpen} />
-        {/* The main BrowserView is managed by Electron and placed behind this window */}
+    <div className="App">
+      <div className="browser-chrome">
+        <TabBar
+          tabs={tabs}
+          activeTabId={activeTabId}
+          onSelectTab={handleSelectTab}
+          onCloseTab={handleCloseTab}
+          onNewTab={handleNewTab}
+        />
+        <AddressBar
+          onToggleSidePanel={toggleSidePanel}
+          activeTab={tabs.find(t => t.id === activeTabId)}
+        />
       </div>
-    </Router>
+      <SidePanel isOpen={isSidePanelOpen} />
+      <CommandPalette 
+        isOpen={isCommandPaletteOpen} 
+        onClose={() => setCommandPaletteOpen(false)} 
+      />
+      {/* The main BrowserView is managed by Electron and placed behind this window */}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </ThemeProvider>
   );
 }
 

@@ -1,0 +1,311 @@
+.bookmarks-container {
+  padding: 20px;
+  height: 100%;
+  overflow-y: auto;
+  background-color: var(--bg-primary, #1a1a2e);
+}
+
+.bookmarks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.bookmarks-header h2 {
+  margin: 0;
+  color: var(--text-primary, #fff);
+  font-size: 1.5rem;
+}
+
+.bookmarks-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.bookmarks-search {
+  padding: 10px 16px;
+  border: 1px solid var(--border-color, #333);
+  border-radius: var(--radius-md, 8px);
+  background-color: var(--bg-secondary, #1e1e2e);
+  color: var(--text-primary, #fff);
+  font-size: 0.9rem;
+  width: 250px;
+}
+
+.bookmarks-search::placeholder {
+  color: var(--text-muted, #666);
+}
+
+.add-bookmark-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  background-color: var(--accent-primary, #e94560);
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.15s ease);
+}
+
+.add-bookmark-btn:hover {
+  background-color: #d63850;
+  transform: translateY(-1px);
+}
+
+.bookmarks-stats {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: var(--bg-secondary, #1e1e2e);
+  border-radius: var(--radius-md, 8px);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--accent-primary, #e94560);
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text-muted, #666);
+}
+
+.bookmarks-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.bookmarks-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.bookmarks-empty .empty-icon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.bookmarks-empty h3 {
+  color: var(--text-primary, #fff);
+  margin-bottom: 8px;
+}
+
+.bookmarks-empty p {
+  color: var(--text-muted, #666);
+  margin-bottom: 20px;
+}
+
+.bookmarks-empty button {
+  padding: 10px 24px;
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  background-color: var(--accent-primary, #e94560);
+  color: white;
+  cursor: pointer;
+}
+
+.bookmark-category {
+  margin-bottom: 16px;
+}
+
+.category-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary, #fff);
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color, #333);
+}
+
+.category-icon {
+  font-size: 1.2rem;
+}
+
+.category-count {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  background-color: var(--bg-tertiary, #2a2a3a);
+  border-radius: var(--radius-sm, 4px);
+  color: var(--text-muted, #666);
+}
+
+.bookmark-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.bookmark-card {
+  padding: 16px;
+  background-color: var(--bg-secondary, #1e1e2e);
+  border: 1px solid var(--border-color, #333);
+  border-radius: var(--radius-md, 8px);
+  transition: all var(--transition-fast, 0.15s ease);
+}
+
+.bookmark-card:hover {
+  border-color: var(--accent-primary, #e94560);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md, 0 4px 6px rgba(0, 0, 0, 0.4));
+}
+
+.bookmark-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.bookmark-favicon {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+}
+
+.bookmark-title {
+  font-weight: 600;
+  color: var(--text-primary, #fff);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bookmark-url {
+  font-size: 0.8rem;
+  color: var(--text-muted, #666);
+  margin-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bookmark-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.bookmark-tag {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  background-color: var(--bg-tertiary, #2a2a3a);
+  border-radius: var(--radius-sm, 4px);
+  color: var(--text-secondary, #b8b8b8);
+}
+
+.bookmark-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.bookmark-actions button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: var(--radius-sm, 4px);
+  background-color: var(--bg-tertiary, #2a2a3a);
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.15s ease);
+}
+
+.bookmark-actions button:hover {
+  background-color: var(--accent-primary, #e94560);
+}
+
+/* Modal Styles */
+.bookmark-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10002;
+}
+
+.bookmark-modal {
+  width: 450px;
+  max-width: 90vw;
+  background-color: var(--bg-secondary, #1e1e2e);
+  border-radius: var(--radius-lg, 12px);
+  padding: 24px;
+  box-shadow: var(--shadow-lg, 0 10px 25px rgba(0, 0, 0, 0.5));
+}
+
+.bookmark-modal h3 {
+  margin: 0 0 20px;
+  color: var(--text-primary, #fff);
+}
+
+.bookmark-modal .form-group {
+  margin-bottom: 16px;
+}
+
+.bookmark-modal label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--text-secondary, #b8b8b8);
+  font-size: 0.9rem;
+}
+
+.bookmark-modal input,
+.bookmark-modal select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color, #333);
+  border-radius: var(--radius-md, 8px);
+  background-color: var(--bg-tertiary, #2a2a3a);
+  color: var(--text-primary, #fff);
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.modal-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.modal-actions button:not(.primary) {
+  background-color: var(--bg-tertiary, #2a2a3a);
+  color: var(--text-primary, #fff);
+}
+
+.modal-actions button.primary {
+  background-color: var(--accent-primary, #e94560);
+  color: white;
+}

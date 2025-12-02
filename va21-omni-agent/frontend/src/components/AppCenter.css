@@ -1,0 +1,527 @@
+.app-center {
+  padding: 20px;
+  height: 100%;
+  overflow-y: auto;
+  background-color: var(--bg-primary, #1a1a2e);
+}
+
+.app-center-header {
+  margin-bottom: 24px;
+}
+
+.header-title h2 {
+  margin: 0;
+  color: var(--text-primary, #fff);
+  font-size: 1.5rem;
+}
+
+.header-title .subtitle {
+  margin: 4px 0 0;
+  color: var(--text-muted, #666);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.system-badge {
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  background: var(--bg-tertiary, #2a2a3a);
+  border-radius: 12px;
+}
+
+.message {
+  padding: 12px 16px;
+  border-radius: var(--radius-md, 8px);
+  margin-bottom: 16px;
+}
+
+.message.success {
+  background-color: rgba(0, 210, 106, 0.2);
+  color: #00d26a;
+  border: 1px solid #00d26a;
+}
+
+.message.error {
+  background-color: rgba(220, 53, 69, 0.2);
+  color: #dc3545;
+  border: 1px solid #dc3545;
+}
+
+/* Search Section */
+.search-section {
+  margin-bottom: 24px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: var(--bg-secondary, #1e1e2e);
+  border: 1px solid var(--border-color, #333);
+  border-radius: var(--radius-md, 8px);
+  margin-bottom: 16px;
+}
+
+.search-icon {
+  font-size: 1.2rem;
+  margin-right: 12px;
+}
+
+.search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-primary, #fff);
+  font-size: 1rem;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: var(--text-muted, #666);
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.filter-select {
+  padding: 8px 16px;
+  background-color: var(--bg-secondary, #1e1e2e);
+  border: 1px solid var(--border-color, #333);
+  border-radius: var(--radius-md, 8px);
+  color: var(--text-primary, #fff);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.category-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.category-pill {
+  padding: 6px 14px;
+  border: 1px solid var(--border-color, #333);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--text-secondary, #b8b8b8);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.category-pill:hover,
+.category-pill.active {
+  background-color: var(--accent-primary, #e94560);
+  border-color: var(--accent-primary, #e94560);
+  color: white;
+}
+
+/* Featured Section */
+.featured-section {
+  margin-bottom: 32px;
+}
+
+.featured-section h3 {
+  margin: 0 0 16px;
+  color: var(--text-primary, #fff);
+  font-size: 1.1rem;
+}
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.featured-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 16px;
+  background-color: var(--bg-secondary, #1e1e2e);
+  border: 1px solid var(--border-color, #333);
+  border-radius: var(--radius-md, 8px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.featured-card:hover {
+  border-color: var(--accent-primary, #e94560);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md, 0 4px 6px rgba(0, 0, 0, 0.4));
+}
+
+.app-icon-large {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+
+.featured-card .app-info {
+  text-align: center;
+}
+
+.featured-card .app-name {
+  display: block;
+  font-weight: 600;
+  color: var(--text-primary, #fff);
+  margin-bottom: 4px;
+}
+
+.featured-card .app-category {
+  font-size: 0.75rem;
+  color: var(--text-muted, #666);
+}
+
+/* Apps Grid */
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.app-card {
+  padding: 16px;
+  background-color: var(--bg-secondary, #1e1e2e);
+  border: 1px solid var(--border-color, #333);
+  border-radius: var(--radius-md, 8px);
+  transition: all 0.2s ease;
+}
+
+.app-card:hover {
+  border-color: var(--accent-primary, #e94560);
+}
+
+.app-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.app-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.app-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.app-name {
+  display: block;
+  font-weight: 600;
+  color: var(--text-primary, #fff);
+  margin-bottom: 4px;
+}
+
+.app-summary {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-muted, #666);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.source-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.source-badge.flatpak {
+  background-color: rgba(0, 162, 255, 0.2);
+  color: #00a2ff;
+}
+
+.source-badge.debian {
+  background-color: rgba(215, 48, 91, 0.2);
+  color: #d7305b;
+}
+
+.app-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-category-tag {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  background-color: var(--bg-tertiary, #2a2a3a);
+  border-radius: 12px;
+  color: var(--text-muted, #666);
+}
+
+.btn-install {
+  padding: 8px 20px;
+  background-color: var(--accent-primary, #e94560);
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  color: white;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-install:hover {
+  background-color: #d63850;
+  transform: translateY(-1px);
+}
+
+.installed-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.installed-badge {
+  color: #00d26a;
+  font-size: 0.85rem;
+}
+
+.btn-uninstall {
+  padding: 6px 10px;
+  background: transparent;
+  border: 1px solid var(--border-color, #333);
+  border-radius: var(--radius-sm, 4px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-uninstall:hover {
+  background-color: rgba(220, 53, 69, 0.2);
+  border-color: #dc3545;
+}
+
+.install-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.progress-bar {
+  width: 100px;
+  height: 6px;
+  background-color: var(--bg-tertiary, #2a2a3a);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-primary, #e94560), #00d26a);
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 0.75rem;
+  color: var(--text-muted, #666);
+}
+
+/* No apps state */
+.no-apps {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.no-apps-icon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.no-apps h3 {
+  color: var(--text-primary, #fff);
+  margin-bottom: 8px;
+}
+
+.no-apps p {
+  color: var(--text-muted, #666);
+}
+
+/* App Modal */
+.app-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10002;
+  backdrop-filter: blur(4px);
+}
+
+.app-modal {
+  width: 500px;
+  max-width: 90vw;
+  background-color: var(--bg-secondary, #1e1e2e);
+  border-radius: var(--radius-lg, 12px);
+  overflow: hidden;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--bg-tertiary, #2a2a3a);
+  color: var(--text-primary, #fff);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  background-color: var(--bg-tertiary, #2a2a3a);
+}
+
+.app-icon-xl {
+  font-size: 4rem;
+}
+
+.app-modal-info h2 {
+  margin: 0 0 4px;
+  color: var(--text-primary, #fff);
+}
+
+.developer {
+  display: block;
+  color: var(--text-muted, #666);
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.badges {
+  display: flex;
+  gap: 8px;
+}
+
+.category-badge {
+  padding: 4px 10px;
+  background-color: var(--bg-secondary, #1e1e2e);
+  border-radius: 12px;
+  font-size: 0.75rem;
+  color: var(--text-secondary, #b8b8b8);
+}
+
+.app-modal-body {
+  padding: 24px;
+}
+
+.app-description {
+  color: var(--text-secondary, #b8b8b8);
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+
+.app-meta {
+  color: var(--text-muted, #666);
+  font-size: 0.85rem;
+}
+
+.app-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 24px;
+  border-top: 1px solid var(--border-color, #333);
+}
+
+.btn-install-large {
+  padding: 12px 32px;
+  background-color: var(--accent-primary, #e94560);
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-install-large:hover {
+  background-color: #d63850;
+}
+
+.btn-uninstall-large {
+  padding: 12px 24px;
+  background: transparent;
+  border: 1px solid #dc3545;
+  border-radius: var(--radius-md, 8px);
+  color: #dc3545;
+  cursor: pointer;
+}
+
+.installed-status {
+  color: #00d26a;
+  font-weight: 500;
+}
+
+.install-progress-large {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.install-progress-large .progress-bar {
+  width: 100%;
+  height: 8px;
+}
+
+/* Footer */
+.app-center-footer {
+  margin-top: 40px;
+  padding: 24px;
+  text-align: center;
+  border-top: 1px solid var(--border-color, #333);
+}
+
+.app-center-footer p {
+  color: var(--text-muted, #666);
+  font-size: 0.85rem;
+  margin: 0 0 8px;
+}
+
+.powered-by {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}

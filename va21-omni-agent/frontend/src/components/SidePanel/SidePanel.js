@@ -9,6 +9,13 @@ import TilingTerminals from '../TilingTerminals';
 import Documents from '../Documents';
 import Workflows from '../Workflows';
 import ResearchCommandCenter from '../ResearchCommandCenter';
+import Bookmarks from '../Bookmarks';
+import BackupManager from '../BackupManager';
+import SystemStats from '../SystemStats';
+import KeyboardShortcuts from '../KeyboardShortcuts';
+import AppCenter from '../AppCenter';
+import DeveloperTools from '../DeveloperTools';
+import CodeHistory from '../CodeHistory';
 
 const SidePanel = ({ isOpen }) => {
   return (
@@ -24,6 +31,13 @@ const SidePanel = ({ isOpen }) => {
             <Route path="/terminal" element={<Terminal />} />
             <Route path="/documents" element={<Documents />} />
             <Route path="/workflows" element={<Workflows />} />
+            <Route path="/bookmarks" element={<Bookmarks />} />
+            <Route path="/backups" element={<BackupManager />} />
+            <Route path="/stats" element={<SystemStats />} />
+            <Route path="/shortcuts" element={<KeyboardShortcuts />} />
+            <Route path="/apps" element={<AppCenter />} />
+            <Route path="/devtools" element={<DeveloperTools />} />
+            <Route path="/code-history" element={<CodeHistory />} />
           </Routes>
         </main>
       </div>
