@@ -1,11 +1,29 @@
 # VA21 Research OS Configuration
 # This file configures the VA21 Research OS environment
+# Version: 1.0.0-alpha.1 (Codename: Vinayaka)
 
 # System Settings
 system:
   name: "VA21 Research OS"
-  version: "1.0.0"
+  version: "1.0.0-alpha.1"
   codename: "Vinayaka"
+
+# Memory Management Settings
+# RAM Targets: Minimum 7GB, Recommended 10GB
+memory:
+  mode: "standard"          # standard (7GB), performance (8GB), maximum (10GB)
+  aggressive_unload: false  # Unload models more aggressively
+  quantization: "int8"      # int8 (50% reduction) or int4 (75% reduction)
+  lazy_loading: true        # Load models only when needed
+
+# FARA App Compatibility Layer
+fara:
+  enabled: true
+  auto_analyze: true        # Automatically analyze unknown apps
+  legacy_support: true      # Enable legacy GTK2/Qt4 support
+  wine_support: true        # Enable Wine app compatibility
+  screenshot_analysis: true # Use screenshot-based UI analysis
+  profiles_path: "data/fara/profiles.json"
 
 # Guardian AI Settings
 guardian:
@@ -37,6 +55,7 @@ interface:
   hints_enabled: true  # Show helper hints for newcomers
   theme: "dark"
   prompt_style: "adventure"  # adventure, minimal, classic
+  minimal_mode: false        # Reduced AI features for power users
 
 # Research Settings
 research:
