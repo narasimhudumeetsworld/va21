@@ -7,14 +7,14 @@ health monitoring, and dashboard data.
 
 import os
 import time
+import importlib.util
 from datetime import datetime
 from flask_socketio import Namespace, emit
 
-try:
+# Check if psutil is available
+HAS_PSUTIL = importlib.util.find_spec("psutil") is not None
+if HAS_PSUTIL:
     import psutil
-    HAS_PSUTIL = True
-except ImportError:
-    HAS_PSUTIL = False
 
 
 class StatsNamespace(Namespace):

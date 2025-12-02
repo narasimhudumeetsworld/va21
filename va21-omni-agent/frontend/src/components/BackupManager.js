@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './BackupManager.css';
 import io from 'socket.io-client';
 
@@ -24,9 +24,14 @@ const BackupManager = () => {
   const [showConfigModal, setShowConfigModal] = useState(false);
   const [filter, setFilter] = useState('all');
 
-  const socket = io('/backup');
+  // Use ref to store socket instance
+  const socketRef = useRef(null);
 
   useEffect(() => {
+    // Create socket connection inside useEffect
+    const socket = io('/backup');
+    socketRef.current = socket;
+
     // Connect and fetch initial data
     socket.on('connect', () => {
       console.log('Connected to backup server');
@@ -66,6 +71,7 @@ const BackupManager = () => {
 
     return () => {
       socket.disconnect();
+      socketRef.current = null;
     };
   }, []);
 
@@ -76,50 +82,66 @@ const BackupManager = () => {
 
   const createBackup = useCallback((description = '', backupType = 'manual') => {
     setLoading(true);
-    socket.emit('create_backup', { description, backup_type: backupType });
-  }, [socket]);
+    if (socketRef.current) {
+      socketRef.current.emit('create_backup', { description, backup_type: backupType });
+    }
+  }, []);
 
   const createPreResetBackup = useCallback(() => {
     setLoading(true);
-    socket.emit('create_pre_reset_backup');
-  }, [socket]);
+    if (socketRef.current) {
+      socketRef.current.emit('create_pre_reset_backup');
+    }
+  }, []);
 
   const restoreBackup = useCallback((versionId, components = null) => {
     setLoading(true);
-    socket.emit('restore_backup', { version_id: versionId, components });
-  }, [socket]);
+    if (socketRef.current) {
+      socketRef.current.emit('restore_backup', { version_id: versionId, components });
+    }
+  }, []);
 
   const deleteVersion = useCallback((versionId) => {
     if (window.confirm('Are you sure you want to delete this backup version?')) {
-      socket.emit('delete_version', { version_id: versionId });
-      socket.emit('get_versions');
-      socket.emit('get_stats');
+      if (socketRef.current) {
+        socketRef.current.emit('delete_version', { version_id: versionId });
+        socketRef.current.emit('get_versions');
+        socketRef.current.emit('get_stats');
+      }
     }
-  }, [socket]);
+  }, []);
 
   const deleteSelected = useCallback(() => {
     if (selectedVersions.length === 0) return;
     if (window.confirm(`Delete ${selectedVersions.length} selected backup(s)?`)) {
-      selectedVersions.forEach(id => {
-        socket.emit('delete_version', { version_id: id });
-      });
-      setSelectedVersions([]);
-      setTimeout(() => {
-        socket.emit('get_versions');
-        socket.emit('get_stats');
-      }, 500);
+      if (socketRef.current) {
+        selectedVersions.forEach(id => {
+          socketRef.current.emit('delete_version', { version_id: id });
+        });
+        setSelectedVersions([]);
+        setTimeout(() => {
+          if (socketRef.current) {
+            socketRef.current.emit('get_versions');
+            socketRef.current.emit('get_stats');
+          }
+        }, 500);
+      }
     }
-  }, [socket, selectedVersions]);
+  }, [selectedVersions]);
 
   const updateConfig = useCallback((newConfig) => {
-    socket.emit('update_config', newConfig);
+    if (socketRef.current) {
+      socketRef.current.emit('update_config', newConfig);
+    }
     setShowConfigModal(false);
-  }, [socket]);
+  }, []);
 
   const toggleAutoBackup = useCallback(() => {
     const newConfig = { ...config, enabled: !config.enabled };
-    socket.emit('update_config', newConfig);
-  }, [socket, config]);
+    if (socketRef.current) {
+      socketRef.current.emit('update_config', newConfig);
+    }
+  }, [config]);
 
   const toggleVersionSelection = (versionId) => {
     setSelectedVersions(prev => 

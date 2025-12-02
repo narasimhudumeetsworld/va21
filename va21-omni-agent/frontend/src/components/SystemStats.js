@@ -50,8 +50,10 @@ const SystemStats = () => {
 
   const refreshStats = () => {
     setRefreshing(true);
-    const socket = io('/stats');
-    socket.emit('get_all_stats');
+    // Emit refresh event on the existing socket instead of creating a new connection
+    const existingSocket = io('/stats');
+    existingSocket.emit('get_all_stats');
+    existingSocket.disconnect();
     setTimeout(() => setRefreshing(false), 1000);
   };
 

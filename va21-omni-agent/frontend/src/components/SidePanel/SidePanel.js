@@ -13,6 +13,9 @@ import Bookmarks from '../Bookmarks';
 import BackupManager from '../BackupManager';
 import SystemStats from '../SystemStats';
 import KeyboardShortcuts from '../KeyboardShortcuts';
+import AppCenter from '../AppCenter';
+import DeveloperTools from '../DeveloperTools';
+import CodeHistory from '../CodeHistory';
 
 const SidePanel = ({ isOpen }) => {
   return (
@@ -32,6 +35,9 @@ const SidePanel = ({ isOpen }) => {
             <Route path="/backups" element={<BackupManager />} />
             <Route path="/stats" element={<SystemStats />} />
             <Route path="/shortcuts" element={<KeyboardShortcuts />} />
+            <Route path="/apps" element={<AppCenter />} />
+            <Route path="/devtools" element={<DeveloperTools />} />
+            <Route path="/code-history" element={<CodeHistory />} />
           </Routes>
         </main>
       </div>

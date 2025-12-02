@@ -16,6 +16,11 @@ from dataclasses import dataclass, field
 import threading
 import time
 
+# Constants for byte conversions
+BYTES_PER_KB = 1024
+BYTES_PER_MB = 1024 * 1024
+BYTES_PER_GB = 1024 * 1024 * 1024
+
 
 @dataclass
 class BackupVersion:
@@ -79,6 +84,7 @@ class AutoBackupManager:
         self.is_running = False
         self.backup_thread: Optional[threading.Thread] = None
         self.last_backup_time: Optional[datetime] = None
+        self._stop_event = threading.Event()  # For responsive thread shutdown
         
         # Initialize
         self._initialize()
@@ -439,7 +445,7 @@ class AutoBackupManager:
     def _enforce_storage_limit(self):
         """Enforce maximum storage limit."""
         total_size = sum(v.size_bytes for v in self.versions)
-        max_size = self.config.max_storage_mb * 1024 * 1024
+        max_size = self.config.max_storage_mb * BYTES_PER_MB
         
         while total_size > max_size and len(self.versions) > 1:
             # Remove oldest auto backup
@@ -496,8 +502,10 @@ class AutoBackupManager:
     def stop_auto_backup(self):
         """Stop automatic backup scheduler."""
         self.is_running = False
+        self._stop_event.set()  # Signal the thread to stop
         if self.backup_thread:
             self.backup_thread.join(timeout=5.0)
+        self._stop_event.clear()  # Reset for potential restart
         print("[AutoBackup] Stopped auto backup")
     
     def _auto_backup_loop(self):
@@ -513,23 +521,26 @@ class AutoBackupManager:
                     # First backup
                     self.create_backup("Initial auto backup", backup_type="auto")
                 
-                # Sleep for a minute before checking again
-                time.sleep(60)
+                # Wait for 60 seconds or until stop is signaled (responsive shutdown)
+                if self._stop_event.wait(timeout=60):
+                    break  # Stop was signaled
                 
             except Exception as e:
                 print(f"[AutoBackup] Error in auto backup loop: {e}")
-                time.sleep(60)
+                if self._stop_event.wait(timeout=60):
+                    break
     
     def get_storage_stats(self) -> Dict:
         """Get backup storage statistics."""
         total_size = sum(v.size_bytes for v in self.versions)
+        max_size_bytes = self.config.max_storage_mb * BYTES_PER_MB
         
         return {
             'total_versions': len(self.versions),
             'total_size_bytes': total_size,
-            'total_size_mb': round(total_size / (1024 * 1024), 2),
+            'total_size_mb': round(total_size / BYTES_PER_MB, 2),
             'max_storage_mb': self.config.max_storage_mb,
-            'storage_used_percent': round((total_size / (self.config.max_storage_mb * 1024 * 1024)) * 100, 1),
+            'storage_used_percent': round((total_size / max_size_bytes) * 100, 1) if max_size_bytes > 0 else 0,
             'oldest_backup': self.versions[-1].timestamp.isoformat() if self.versions else None,
             'newest_backup': self.versions[0].timestamp.isoformat() if self.versions else None,
             'auto_backup_enabled': self.config.enabled,
