@@ -89,6 +89,49 @@ docker build -f Dockerfile.alpine-desktop -t va21-os:alpine .
 docker run -it --rm va21-os:alpine
 ```
 
+## 🖥️ Display Server Architecture
+
+VA21 supports both **X11** and **Wayland** for running GUI applications:
+
+### X11 (Primary - Maximum Compatibility)
+- Full Xorg server included
+- OpenBox as lightweight window manager
+- Works with all traditional Linux apps
+- Flatpak, .deb, .apk packages supported
+
+### Wayland (Modern Apps)
+- Weston compositor included
+- XWayland for X11 app compatibility
+- Better security model
+- Smoother graphics
+
+### Running GUI Apps
+
+```bash
+# Start X11 session (in VA21)
+> startx
+
+# Or start Wayland
+> weston
+
+# Install apps via Flatpak
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak install flathub org.mozilla.firefox
+
+# Install apps via package manager
+# Debian edition:
+sudo apt install firefox-esr gimp libreoffice
+
+# Alpine edition:
+sudo apk add firefox gimp libreoffice
+```
+
+### VA21's Own Interface
+VA21's Zork-style interface and tiling window manager work alongside X11/Wayland:
+- Text interface for quick commands
+- GUI apps run in X11/Wayland when needed
+- Seamless switching between modes
+
 ## ⚙️ Built-in Settings
 
 All settings are accessible via chat or the Settings Center:
@@ -199,7 +242,24 @@ Or ask the AI: *"let's play zork"*
 
 ## Quick Start
 
-### Using Docker (Recommended)
+### 📥 Download ISO (Recommended for Physical/Virtual Install)
+
+Download pre-built ISO images from the [Releases page](../../releases):
+
+| Edition | Description | Download |
+|---------|-------------|----------|
+| **Debian** | Full GNU toolkit, glibc, max compatibility (~500MB) | `va21-debian-x86_64.iso` |
+| **Alpine** | Lightweight, musl libc, fast boot (~100MB) | `va21-alpine-x86_64.iso` |
+
+#### Install on Physical Hardware or VirtualBox
+
+1. Download the ISO from Releases
+2. Verify checksum: `sha256sum -c va21-*.sha256`
+3. **USB Drive**: `sudo dd if=va21-*.iso of=/dev/sdX bs=4M status=progress`
+4. **VirtualBox**: Create new VM → Use ISO as boot disk
+5. Boot and enjoy VA21 Research OS!
+
+### 🐳 Using Docker (Containerized)
 
 ```bash
 # Clone the repository
@@ -212,6 +272,22 @@ cd va21/va21_system/linux_os
 # Or run Debian edition
 docker build -f Dockerfile.debian -t va21-os:debian .
 docker run -it --rm va21-os:debian
+```
+
+### 🔧 Build ISO Locally
+
+```bash
+cd va21/va21_system/linux_os
+
+# Build both Debian and Alpine ISOs
+./scripts/build_iso.sh all
+
+# Or build just one edition
+./scripts/build_iso.sh debian
+./scripts/build_iso.sh alpine
+
+# ISOs will be in output/ directory
+ls -la output/*.iso
 ```
 
 ### Using Podman

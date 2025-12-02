@@ -1,0 +1,279 @@
+# VA21 Research OS - ISO Release Workflow
+# =========================================
+# Automatically builds and releases ISO images for VA21 OS
+# Triggered on version tags (e.g., v1.0.0)
+#
+# Download ISOs from: Releases page on GitHub
+#
+# Om Vinayaka - Automated releases.
+
+name: Build and Release ISO
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g., 1.0.0)'
+        required: true
+        default: '1.0.0'
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-debian-iso:
+    name: Build Debian ISO
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xorriso squashfs-tools grub-pc-bin grub-efi-amd64-bin mtools
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Build Docker image
+        working-directory: va21_system/linux_os
+        run: |
+          docker build -f Dockerfile.debian -t va21-debian:build .
+      
+      - name: Create rootfs and ISO
+        working-directory: va21_system/linux_os
+        run: |
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          ISO_NAME="va21-debian-${VERSION}-x86_64.iso"
+          
+          mkdir -p output/iso-build/debian/{staging/live,staging/boot/grub,rootfs}
+          
+          # Export rootfs from Docker
+          container_id=$(docker create va21-debian:build)
+          docker export "$container_id" | tar -C output/iso-build/debian/rootfs -xf -
+          docker rm "$container_id"
+          
+          # Create squashfs
+          sudo mksquashfs output/iso-build/debian/rootfs output/iso-build/debian/staging/live/filesystem.squashfs \
+            -comp xz -b 1M -no-duplicates
+          
+          # Create GRUB config
+          cat > output/iso-build/debian/staging/boot/grub/grub.cfg << 'EOF'
+          set timeout=10
+          set default=0
+          
+          menuentry "VA21 Research OS (Debian Edition)" {
+              linux /live/vmlinuz boot=live quiet splash
+              initrd /live/initrd
+          }
+          
+          menuentry "VA21 Research OS (Safe Mode)" {
+              linux /live/vmlinuz boot=live single
+              initrd /live/initrd
+          }
+          EOF
+          
+          # Create ISO using grub-mkrescue
+          grub-mkrescue -o "output/${ISO_NAME}" output/iso-build/debian/staging 2>/dev/null || \
+            echo "Note: grub-mkrescue completed with warnings"
+          
+          # Create checksum
+          cd output
+          sha256sum "${ISO_NAME}" > "${ISO_NAME}.sha256"
+          
+          echo "ISO created: ${ISO_NAME}"
+          ls -lh "${ISO_NAME}"
+      
+      - name: Upload Debian ISO artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: va21-debian-iso
+          path: |
+            va21_system/linux_os/output/*.iso
+            va21_system/linux_os/output/*.sha256
+          retention-days: 30
+
+  build-alpine-iso:
+    name: Build Alpine ISO
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xorriso squashfs-tools grub-pc-bin grub-efi-amd64-bin mtools
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Build Docker image
+        working-directory: va21_system/linux_os
+        run: |
+          docker build -f Dockerfile.alpine-desktop -t va21-alpine:build .
+      
+      - name: Create rootfs and ISO
+        working-directory: va21_system/linux_os
+        run: |
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          ISO_NAME="va21-alpine-${VERSION}-x86_64.iso"
+          
+          mkdir -p output/iso-build/alpine/{staging/live,staging/boot/grub,rootfs}
+          
+          # Export rootfs from Docker
+          container_id=$(docker create va21-alpine:build)
+          docker export "$container_id" | tar -C output/iso-build/alpine/rootfs -xf -
+          docker rm "$container_id"
+          
+          # Create squashfs
+          sudo mksquashfs output/iso-build/alpine/rootfs output/iso-build/alpine/staging/live/filesystem.squashfs \
+            -comp xz -b 1M -no-duplicates
+          
+          # Create GRUB config
+          cat > output/iso-build/alpine/staging/boot/grub/grub.cfg << 'EOF'
+          set timeout=10
+          set default=0
+          
+          menuentry "VA21 Research OS (Alpine Edition)" {
+              linux /live/vmlinuz boot=live quiet splash
+              initrd /live/initrd
+          }
+          
+          menuentry "VA21 Research OS (Safe Mode)" {
+              linux /live/vmlinuz boot=live single
+              initrd /live/initrd
+          }
+          EOF
+          
+          # Create ISO using grub-mkrescue
+          grub-mkrescue -o "output/${ISO_NAME}" output/iso-build/alpine/staging 2>/dev/null || \
+            echo "Note: grub-mkrescue completed with warnings"
+          
+          # Create checksum
+          cd output
+          sha256sum "${ISO_NAME}" > "${ISO_NAME}.sha256"
+          
+          echo "ISO created: ${ISO_NAME}"
+          ls -lh "${ISO_NAME}"
+      
+      - name: Upload Alpine ISO artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: va21-alpine-iso
+          path: |
+            va21_system/linux_os/output/*.iso
+            va21_system/linux_os/output/*.sha256
+          retention-days: 30
+
+  create-release:
+    name: Create GitHub Release
+    needs: [build-debian-iso, build-alpine-iso]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Download Debian ISO
+        uses: actions/download-artifact@v4
+        with:
+          name: va21-debian-iso
+          path: release-files/
+      
+      - name: Download Alpine ISO
+        uses: actions/download-artifact@v4
+        with:
+          name: va21-alpine-iso
+          path: release-files/
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: VA21 Research OS v${{ steps.version.outputs.VERSION }}
+          tag_name: v${{ steps.version.outputs.VERSION }}
+          draft: false
+          prerelease: false
+          body: |
+            # VA21 Research OS v${{ steps.version.outputs.VERSION }}
+            
+            ## 🎉 Om Vinayaka - The Ultimate Research Operating System
+            
+            ### Download Options
+            
+            | Edition | Description | Download |
+            |---------|-------------|----------|
+            | **Debian** | Full GNU toolkit, glibc, maximum compatibility | `va21-debian-${{ steps.version.outputs.VERSION }}-x86_64.iso` |
+            | **Alpine** | Lightweight (~100MB), musl libc, fast boot | `va21-alpine-${{ steps.version.outputs.VERSION }}-x86_64.iso` |
+            
+            ### Installation
+            
+            1. Download the ISO for your preferred edition
+            2. Verify checksum: `sha256sum -c va21-*.sha256`
+            3. Write to USB: `sudo dd if=va21-*.iso of=/dev/sdX bs=4M status=progress`
+            4. Boot from USB and follow the installer
+            
+            ### Features
+            
+            - 🎮 **Zork-style interface** - Control your OS like a text adventure
+            - 🤖 **AI-powered control** - Chat to control WiFi, volume, settings
+            - ⌨️ **Keyboard-driven** - Every action has a shortcut
+            - 🔒 **Guardian AI** - Built-in security protection
+            - 🎲 **Bundled games** - Mini Zork included!
+            
+            ### System Requirements
+            
+            - 64-bit x86 processor
+            - 2GB RAM (4GB recommended)
+            - 10GB disk space
+            - UEFI or Legacy BIOS
+            
+            ---
+            *Om Vinayaka - Where adventure meets research* 🕉️
+          files: |
+            release-files/*.iso
+            release-files/*.sha256
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

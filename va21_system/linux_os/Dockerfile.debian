@@ -10,11 +10,13 @@
 #   - AI-powered command interface (chat to control)
 #   - WiFi, Audio, Display, Time settings
 #   - Guardian AI security
+#   - X11 + Wayland display servers
+#   - Flatpak support for apps
 #
 # Installation targets:
 #   - Docker / Podman (containerized)
 #   - VirtualBox / VMware (virtual machine)
-#   - Physical Hardware (bare metal installation)
+#   - Physical Hardware (bare metal installation via ISO)
 #
 # Om Vinayaka - Full GNU/Linux Desktop Power.
 #
@@ -38,167 +40,355 @@ ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 
 # ============================================
-# GNU TOOLKIT - Complete GNU/Linux Userland
+# CORE LINUX OS COMPONENTS
 # ============================================
+# Complete Linux system foundation
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    # ----------------------------------------
-    # Core GNU Utilities (GNU Coreutils)
-    # ----------------------------------------
-    coreutils \
-    binutils \
-    # ----------------------------------------
-    # GNU C Library (glibc)
-    # ----------------------------------------
+    # ========================================
+    # KERNEL & BOOT (for ISO installation)
+    # ========================================
+    linux-image-amd64 \
+    linux-headers-amd64 \
+    initramfs-tools \
+    grub-pc \
+    grub-efi-amd64-bin \
+    # ========================================
+    # INIT SYSTEM (SystemD)
+    # ========================================
+    systemd \
+    systemd-sysv \
+    systemd-timesyncd \
+    libpam-systemd \
+    # ========================================
+    # GNU C LIBRARY (glibc)
+    # ========================================
     libc6 \
     libc-bin \
-    # ----------------------------------------
-    # GNU Text Processing Tools
-    # ----------------------------------------
+    libc-dev-bin \
+    # ========================================
+    # GNU COREUTILS & ESSENTIAL UTILITIES
+    # ========================================
+    coreutils \
+    binutils \
+    util-linux \
+    bsdutils \
+    debianutils \
+    # ========================================
+    # SHELL & TERMINAL
+    # ========================================
+    bash \
+    bash-completion \
+    dash \
+    readline-common \
+    libreadline8 \
+    ncurses-base \
+    ncurses-bin \
+    libncurses6 \
+    libncursesw6 \
+    # ========================================
+    # TEXT PROCESSING (GNU)
+    # ========================================
     grep \
     sed \
     gawk \
+    mawk \
     diffutils \
     patch \
     less \
-    # ----------------------------------------
-    # GNU File Utilities
-    # ----------------------------------------
+    more \
+    # ========================================
+    # FILE UTILITIES
+    # ========================================
     findutils \
     file \
     tree \
     rsync \
-    # ----------------------------------------
-    # GNU Shell and Terminal
-    # ----------------------------------------
-    bash \
-    bash-completion \
-    readline-common \
-    ncurses-base \
-    ncurses-bin \
-    # ----------------------------------------
-    # GNU Compression Tools
-    # ----------------------------------------
+    lsof \
+    fuse3 \
+    ntfs-3g \
+    dosfstools \
+    exfatprogs \
+    e2fsprogs \
+    xfsprogs \
+    btrfs-progs \
+    # ========================================
+    # COMPRESSION & ARCHIVING
+    # ========================================
     gzip \
     bzip2 \
     xz-utils \
+    zstd \
+    lz4 \
     tar \
+    cpio \
     zip \
     unzip \
     p7zip-full \
-    # ----------------------------------------
-    # GNU Build Tools
-    # ----------------------------------------
-    make \
-    # ----------------------------------------
-    # Essential System Utilities
-    # ----------------------------------------
+    # ========================================
+    # PROCESS & SYSTEM MANAGEMENT
+    # ========================================
     procps \
     psmisc \
-    util-linux \
-    mount \
-    kmod \
+    htop \
+    iotop \
+    sysstat \
+    acpi \
+    acpid \
+    # ========================================
+    # DEVICE & HARDWARE MANAGEMENT
+    # ========================================
     udev \
-    dbus \
-    # ----------------------------------------
-    # Networking Tools & WiFi
-    # ----------------------------------------
+    kmod \
+    pciutils \
+    usbutils \
+    lshw \
+    dmidecode \
+    hdparm \
+    smartmontools \
+    # ========================================
+    # DISK & PARTITION MANAGEMENT
+    # ========================================
+    fdisk \
+    gdisk \
+    parted \
+    lvm2 \
+    mdadm \
+    cryptsetup \
+    # ========================================
+    # NETWORKING - CORE
+    # ========================================
     iproute2 \
     iputils-ping \
+    iputils-tracepath \
     net-tools \
     netcat-openbsd \
-    curl \
-    wget \
+    traceroute \
     dnsutils \
-    openssh-client \
-    openssh-server \
-    # WiFi tools
+    host \
+    whois \
+    ethtool \
+    bridge-utils \
+    vlan \
+    # ========================================
+    # NETWORKING - WIFI
+    # ========================================
     wireless-tools \
     wpasupplicant \
+    iw \
+    rfkill \
+    # ========================================
+    # NETWORKING - MANAGEMENT
+    # ========================================
     network-manager \
-    # ----------------------------------------
-    # Audio Tools
-    # ----------------------------------------
+    network-manager-gnome \
+    modemmanager \
+    # ========================================
+    # NETWORKING - SERVICES
+    # ========================================
+    openssh-client \
+    openssh-server \
+    curl \
+    wget \
+    rsync \
+    # ========================================
+    # FIREWALL & SECURITY
+    # ========================================
+    iptables \
+    nftables \
+    ufw \
+    fail2ban \
+    apparmor \
+    apparmor-utils \
+    # ========================================
+    # AUDIO SYSTEM
+    # ========================================
     pulseaudio \
     pulseaudio-utils \
     alsa-utils \
-    # ----------------------------------------
-    # Display Tools
-    # ----------------------------------------
+    alsa-plugins-pulseaudio \
+    pavucontrol \
+    # ========================================
+    # X11 DISPLAY SERVER
+    # ========================================
+    xorg \
+    xserver-xorg-core \
+    xserver-xorg-video-all \
+    xserver-xorg-input-all \
     x11-xserver-utils \
     x11-utils \
+    x11-apps \
+    xauth \
     xterm \
-    # ----------------------------------------
-    # Time & Date
-    # ----------------------------------------
+    xinit \
+    xclip \
+    xsel \
+    # ========================================
+    # WINDOW MANAGER (Lightweight)
+    # ========================================
+    openbox \
+    obconf \
+    # ========================================
+    # WAYLAND DISPLAY SERVER
+    # ========================================
+    weston \
+    xwayland \
+    # ========================================
+    # DISPLAY MANAGER
+    # ========================================
+    lightdm \
+    lightdm-gtk-greeter \
+    # ========================================
+    # GTK & QT LIBRARIES
+    # ========================================
+    libgtk-3-0 \
+    libgtk-4-1 \
+    libqt5core5a \
+    libqt5gui5 \
+    qt5-gtk-platformtheme \
+    # ========================================
+    # FONTS
+    # ========================================
+    fonts-dejavu-core \
+    fonts-dejavu-extra \
+    fonts-liberation \
+    fonts-liberation2 \
+    fonts-noto-core \
+    fonts-freefont-ttf \
+    fontconfig \
+    # ========================================
+    # PRINTING (CUPS)
+    # ========================================
+    cups \
+    cups-bsd \
+    printer-driver-all \
+    # ========================================
+    # BLUETOOTH
+    # ========================================
+    bluetooth \
+    bluez \
+    bluez-tools \
+    pulseaudio-module-bluetooth \
+    # ========================================
+    # POWER MANAGEMENT
+    # ========================================
+    acpid \
+    tlp \
+    powertop \
+    # ========================================
+    # TIME & DATE
+    # ========================================
     chrony \
     tzdata \
-    # ----------------------------------------
-    # Development and Debugging
-    # ----------------------------------------
+    # ========================================
+    # LOCALIZATION
+    # ========================================
+    locales \
+    locales-all \
+    console-setup \
+    keyboard-configuration \
+    # ========================================
+    # PACKAGE MANAGEMENT
+    # ========================================
+    apt-utils \
+    apt-transport-https \
+    software-properties-common \
+    # ========================================
+    # FLATPAK & SNAP SUPPORT
+    # ========================================
+    flatpak \
+    snapd \
+    # ========================================
+    # DBUS & POLKIT
+    # ========================================
+    dbus \
+    dbus-x11 \
+    policykit-1 \
+    # ========================================
+    # DEVELOPMENT TOOLS
+    # ========================================
+    build-essential \
+    gcc \
+    g++ \
+    make \
+    cmake \
+    pkg-config \
+    git \
+    # ========================================
+    # DEBUGGING & TRACING
+    # ========================================
     strace \
     ltrace \
-    # ----------------------------------------
-    # Security Tools
-    # ----------------------------------------
-    nmap \
-    gnupg \
-    # ----------------------------------------
-    # Text Editors
-    # ----------------------------------------
+    gdb \
+    valgrind \
+    # ========================================
+    # TEXT EDITORS
+    # ========================================
     vim \
     nano \
-    # ----------------------------------------
-    # Terminal Multiplexer
-    # ----------------------------------------
+    # ========================================
+    # TERMINAL MULTIPLEXERS
+    # ========================================
     tmux \
     screen \
-    # ----------------------------------------
-    # System Monitoring
-    # ----------------------------------------
-    htop \
-    # ----------------------------------------
-    # JSON/YAML Processing
-    # ----------------------------------------
+    # ========================================
+    # SHELL UTILITIES
+    # ========================================
+    sudo \
+    passwd \
+    login \
+    adduser \
+    # ========================================
+    # JSON/YAML/XML PROCESSING
+    # ========================================
     jq \
-    # ----------------------------------------
-    # Version Control
-    # ----------------------------------------
-    git \
-    # ----------------------------------------
-    # Games (Z-Machine interpreter for Zork)
-    # ----------------------------------------
-    frotz \
-    # ----------------------------------------
-    # Python (for VA21 interface and tools)
-    # ----------------------------------------
+    yq \
+    xmlstarlet \
+    # ========================================
+    # PYTHON (for VA21)
+    # ========================================
     python3 \
     python3-pip \
     python3-venv \
     python3-dev \
+    python3-setuptools \
+    python3-wheel \
     python3-psutil \
     python3-yaml \
     python3-requests \
-    # ----------------------------------------
-    # ClamAV - Open Source Antivirus
-    # ----------------------------------------
+    python3-gi \
+    python3-dbus \
+    # ========================================
+    # SECURITY TOOLS
+    # ========================================
+    gnupg \
+    gnupg-agent \
+    pinentry-curses \
+    openssl \
+    ca-certificates \
+    nmap \
+    # ========================================
+    # ANTIVIRUS
+    # ========================================
     clamav \
     clamav-daemon \
     clamav-freshclam \
-    # ----------------------------------------
-    # CA Certificates (for HTTPS)
-    # ----------------------------------------
-    ca-certificates \
-    # ----------------------------------------
-    # Locales support
-    # ----------------------------------------
-    locales \
-    locales-all \
-    # ----------------------------------------
-    # Fonts (for terminal)
-    # ----------------------------------------
-    fonts-dejavu-core \
-    fonts-liberation \
+    # ========================================
+    # GAMES (Zork interpreter)
+    # ========================================
+    frotz \
+    # ========================================
+    # ESSENTIAL GUI APPS
+    # ========================================
+    firefox-esr \
+    file-roller \
+    # ========================================
+    # LIVE BOOT SUPPORT
+    # ========================================
+    live-boot \
+    live-config \
+    live-config-systemd \
+    squashfs-tools \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
@@ -218,15 +408,25 @@ ENV LC_ALL=en_US.UTF-8
 RUN mkdir -p /var/lib/clamav && \
     chown clamav:clamav /var/lib/clamav
 
+# Configure SystemD
+RUN systemctl set-default graphical.target 2>/dev/null || true
+
 # ============================================
 # VA21 User and Directory Setup
 # ============================================
 
-RUN useradd -m -s /bin/bash -u 1000 -G sudo,audio,video,plugdev,netdev researcher && \
+RUN useradd -m -s /bin/bash -u 1000 -G sudo,audio,video,plugdev,netdev,bluetooth,lpadmin researcher && \
     echo "researcher:va21" | chpasswd && \
+    echo "researcher ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/researcher && \
     mkdir -p /va21/{guardian,vault,research,sandbox,logs,config,desktop,games} && \
-    mkdir -p /home/researcher/{research,notes,tools,Desktop,Documents,Downloads,Pictures} && \
+    mkdir -p /home/researcher/{research,notes,tools,Desktop,Documents,Downloads,Pictures,Music,Videos} && \
     chown -R researcher:researcher /va21 /home/researcher
+
+# ============================================
+# Flatpak Configuration
+# ============================================
+
+RUN flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo 2>/dev/null || true
 
 # ============================================
 # Python Dependencies for VA21
@@ -261,6 +461,32 @@ RUN echo '#!/bin/bash' > /usr/local/bin/va21 && \
     chmod +x /usr/local/bin/va21
 
 # ============================================
+# Desktop Integration
+# ============================================
+
+# Create VA21 desktop entry
+RUN mkdir -p /usr/share/applications && \
+    cat > /usr/share/applications/va21.desktop << 'EOF'
+[Desktop Entry]
+Name=VA21 Research OS
+Comment=AI-Powered Research Environment
+Exec=/usr/local/bin/va21
+Terminal=true
+Type=Application
+Icon=utilities-terminal
+Categories=System;TerminalEmulator;
+EOF
+
+# Configure LightDM for auto-login
+RUN mkdir -p /etc/lightdm/lightdm.conf.d && \
+    cat > /etc/lightdm/lightdm.conf.d/autologin.conf << 'EOF'
+[Seat:*]
+autologin-user=researcher
+autologin-user-timeout=0
+user-session=openbox
+EOF
+
+# ============================================
 # Environment Variables
 # ============================================
 
@@ -270,6 +496,7 @@ ENV VA21_BASE=debian
 ENV VA21_TYPE=desktop
 ENV PYTHONUNBUFFERED=1
 ENV TERM=xterm-256color
+ENV DISPLAY=:0
 
 # ============================================
 # Working Directory

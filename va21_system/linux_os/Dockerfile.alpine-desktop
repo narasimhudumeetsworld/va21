@@ -3,10 +3,12 @@
 # Lightweight Desktop OS based on Alpine Linux
 # Uses VA21's own advanced interface (no external DE needed)
 #
-# Alpine provides a minimal footprint (~50MB base) with:
+# Alpine provides a minimal footprint (~100MB) with:
 #   - musl libc (lightweight alternative to glibc)
 #   - BusyBox utilities (compact GNU-like tools)
 #   - OpenRC init system
+#   - X11 + Wayland display servers
+#   - Flatpak support for apps
 #
 # Features:
 #   - VA21 Zork-style text adventure interface
@@ -19,7 +21,7 @@
 # Installation targets:
 #   - Docker / Podman (containerized)
 #   - VirtualBox / VMware (virtual machine)
-#   - Physical Hardware (bare metal installation)
+#   - Physical Hardware (bare metal installation via ISO)
 #
 # Om Vinayaka - Lightweight power, full capability.
 #
@@ -38,152 +40,308 @@ LABEL base="alpine"
 LABEL type="desktop"
 
 # ============================================
-# Core System Utilities
+# CORE LINUX OS COMPONENTS
 # ============================================
 
 RUN apk add --no-cache \
-    # ----------------------------------------
-    # Core Utilities
-    # ----------------------------------------
+    # ========================================
+    # KERNEL & BOOT (for ISO installation)
+    # ========================================
+    linux-lts \
+    linux-firmware \
+    mkinitfs \
+    grub \
+    grub-efi \
+    syslinux \
+    # ========================================
+    # INIT SYSTEM (OpenRC)
+    # ========================================
+    openrc \
+    openrc-bash-completion \
+    # ========================================
+    # MUSL C LIBRARY (already in base)
+    # ========================================
+    musl \
+    musl-utils \
+    # ========================================
+    # CORE UTILITIES
+    # ========================================
     coreutils \
+    busybox \
     busybox-extras \
     util-linux \
+    util-linux-misc \
     shadow \
     sudo \
-    # ----------------------------------------
-    # Shell and Terminal
-    # ----------------------------------------
+    # ========================================
+    # SHELL & TERMINAL
+    # ========================================
     bash \
     bash-completion \
     ncurses \
+    ncurses-terminfo \
     readline \
-    # ----------------------------------------
-    # Text Processing
-    # ----------------------------------------
+    # ========================================
+    # TEXT PROCESSING
+    # ========================================
     grep \
     sed \
     gawk \
+    mawk \
     diffutils \
     patch \
     less \
-    # ----------------------------------------
-    # File Utilities
-    # ----------------------------------------
+    # ========================================
+    # FILE UTILITIES
+    # ========================================
     findutils \
     file \
     tree \
     rsync \
-    # ----------------------------------------
-    # Compression
-    # ----------------------------------------
+    lsof \
+    fuse3 \
+    ntfs-3g \
+    ntfs-3g-progs \
+    dosfstools \
+    e2fsprogs \
+    e2fsprogs-extra \
+    xfsprogs \
+    btrfs-progs \
+    # ========================================
+    # COMPRESSION & ARCHIVING
+    # ========================================
     gzip \
     bzip2 \
     xz \
+    zstd \
+    lz4 \
     tar \
+    cpio \
     zip \
     unzip \
     p7zip \
-    # ----------------------------------------
-    # Build Tools
-    # ----------------------------------------
-    make \
-    # ----------------------------------------
-    # System
-    # ----------------------------------------
+    # ========================================
+    # PROCESS & SYSTEM MANAGEMENT
+    # ========================================
     procps \
     psmisc \
-    openrc \
-    dbus \
+    htop \
+    iotop \
+    sysstat \
+    acpi \
+    # ========================================
+    # DEVICE & HARDWARE MANAGEMENT
+    # ========================================
     eudev \
-    # ----------------------------------------
-    # Networking & WiFi
-    # ----------------------------------------
+    kmod \
+    pciutils \
+    usbutils \
+    lshw \
+    dmidecode \
+    hdparm \
+    smartmontools \
+    # ========================================
+    # DISK & PARTITION MANAGEMENT
+    # ========================================
+    fdisk \
+    gdisk \
+    parted \
+    lvm2 \
+    mdadm \
+    cryptsetup \
+    # ========================================
+    # NETWORKING - CORE
+    # ========================================
     iproute2 \
     iputils \
     net-tools \
     netcat-openbsd \
-    curl \
-    wget \
+    traceroute \
     bind-tools \
-    openssh \
-    # WiFi tools
+    whois \
+    ethtool \
+    bridge-utils \
+    vlan \
+    # ========================================
+    # NETWORKING - WIFI
+    # ========================================
     wireless-tools \
     wpa_supplicant \
+    iw \
+    rfkill \
+    # ========================================
+    # NETWORKING - MANAGEMENT
+    # ========================================
     networkmanager \
-    # ----------------------------------------
-    # Audio
-    # ----------------------------------------
+    networkmanager-wifi \
+    networkmanager-cli \
+    # ========================================
+    # NETWORKING - SERVICES
+    # ========================================
+    openssh \
+    openssh-client \
+    openssh-server \
+    curl \
+    wget \
+    # ========================================
+    # FIREWALL & SECURITY
+    # ========================================
+    iptables \
+    nftables \
+    # ========================================
+    # AUDIO SYSTEM
+    # ========================================
     pulseaudio \
     pulseaudio-utils \
+    pulseaudio-alsa \
     alsa-lib \
     alsa-utils \
-    # ----------------------------------------
-    # Display/X11
-    # ----------------------------------------
+    alsa-plugins-pulse \
+    pavucontrol \
+    # ========================================
+    # X11 DISPLAY SERVER
+    # ========================================
+    xorg-server \
+    xf86-video-vesa \
+    xf86-video-fbdev \
+    xf86-video-intel \
+    xf86-video-nouveau \
+    xf86-video-amdgpu \
+    xf86-input-evdev \
+    xf86-input-libinput \
+    xauth \
     xterm \
-    # ----------------------------------------
-    # Time & Date
-    # ----------------------------------------
+    xinit \
+    xclip \
+    # ========================================
+    # WINDOW MANAGER (Lightweight)
+    # ========================================
+    openbox \
+    # ========================================
+    # WAYLAND DISPLAY SERVER
+    # ========================================
+    weston \
+    xwayland \
+    # ========================================
+    # DISPLAY MANAGER
+    # ========================================
+    lightdm \
+    lightdm-gtk-greeter \
+    # ========================================
+    # GTK LIBRARIES
+    # ========================================
+    gtk+3.0 \
+    # ========================================
+    # FONTS
+    # ========================================
+    font-dejavu \
+    font-noto \
+    ttf-liberation \
+    fontconfig \
+    # ========================================
+    # PRINTING (CUPS)
+    # ========================================
+    cups \
+    cups-filters \
+    # ========================================
+    # BLUETOOTH
+    # ========================================
+    bluez \
+    bluez-tools \
+    # ========================================
+    # POWER MANAGEMENT
+    # ========================================
+    acpid \
+    # ========================================
+    # TIME & DATE
+    # ========================================
     chrony \
     tzdata \
-    # ----------------------------------------
-    # Development
-    # ----------------------------------------
+    # ========================================
+    # LOCALIZATION
+    # ========================================
+    musl-locales \
+    # ========================================
+    # PACKAGE MANAGEMENT
+    # ========================================
+    apk-tools \
+    # ========================================
+    # FLATPAK SUPPORT
+    # ========================================
+    flatpak \
+    # ========================================
+    # DBUS & POLKIT
+    # ========================================
+    dbus \
+    dbus-x11 \
+    polkit \
+    # ========================================
+    # DEVELOPMENT TOOLS
+    # ========================================
+    build-base \
+    gcc \
+    g++ \
+    make \
+    cmake \
+    pkgconf \
+    git \
+    # ========================================
+    # DEBUGGING & TRACING
+    # ========================================
     strace \
-    # ----------------------------------------
-    # Security
-    # ----------------------------------------
-    nmap \
-    gnupg \
-    # ----------------------------------------
-    # Editors
-    # ----------------------------------------
+    gdb \
+    # ========================================
+    # TEXT EDITORS
+    # ========================================
     vim \
     nano \
-    # ----------------------------------------
-    # Multiplexers
-    # ----------------------------------------
+    # ========================================
+    # TERMINAL MULTIPLEXERS
+    # ========================================
     tmux \
     screen \
-    # ----------------------------------------
-    # Monitoring
-    # ----------------------------------------
-    htop \
-    # ----------------------------------------
-    # JSON
-    # ----------------------------------------
+    # ========================================
+    # JSON/YAML PROCESSING
+    # ========================================
     jq \
-    # ----------------------------------------
-    # Version Control
-    # ----------------------------------------
-    git \
-    # ----------------------------------------
-    # Games (Z-Machine interpreter for Zork)
-    # ----------------------------------------
-    frotz \
-    # ----------------------------------------
-    # Python
-    # ----------------------------------------
+    yq \
+    # ========================================
+    # PYTHON (for VA21)
+    # ========================================
     python3 \
     py3-pip \
+    py3-setuptools \
+    py3-wheel \
     py3-psutil \
     py3-yaml \
     py3-requests \
-    # ----------------------------------------
-    # ClamAV
-    # ----------------------------------------
+    py3-gobject3 \
+    py3-dbus \
+    # ========================================
+    # SECURITY TOOLS
+    # ========================================
+    gnupg \
+    openssl \
+    ca-certificates \
+    nmap \
+    # ========================================
+    # ANTIVIRUS
+    # ========================================
     clamav \
     clamav-daemon \
     clamav-libunrar \
-    # ----------------------------------------
-    # CA Certificates
-    # ----------------------------------------
-    ca-certificates \
-    # ----------------------------------------
-    # Fonts
-    # ----------------------------------------
-    font-dejavu \
-    ttf-liberation \
+    # ========================================
+    # GAMES (Zork interpreter)
+    # ========================================
+    frotz \
+    # ========================================
+    # ESSENTIAL GUI APPS
+    # ========================================
+    firefox \
+    # ========================================
+    # LIVE BOOT SUPPORT
+    # ========================================
+    squashfs-tools \
     && rm -rf /var/cache/apk/*
 
 # ============================================
@@ -194,6 +352,13 @@ RUN apk add --no-cache \
 RUN mkdir -p /var/lib/clamav && \
     chown clamav:clamav /var/lib/clamav
 
+# Configure OpenRC services
+RUN rc-update add dbus default 2>/dev/null || true && \
+    rc-update add udev sysinit 2>/dev/null || true && \
+    rc-update add networkmanager default 2>/dev/null || true && \
+    rc-update add chronyd default 2>/dev/null || true && \
+    rc-update add lightdm default 2>/dev/null || true
+
 # ============================================
 # VA21 User and Directory Setup
 # ============================================
@@ -203,10 +368,19 @@ RUN adduser -D -h /home/researcher -s /bin/bash -u 1000 researcher && \
     adduser researcher wheel && \
     adduser researcher audio && \
     adduser researcher video && \
+    adduser researcher input && \
+    adduser researcher plugdev 2>/dev/null || true && \
+    adduser researcher netdev 2>/dev/null || true && \
     echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
     mkdir -p /va21/{guardian,vault,research,sandbox,logs,config,desktop,games} && \
-    mkdir -p /home/researcher/{research,notes,tools,Desktop,Documents,Downloads,Pictures} && \
+    mkdir -p /home/researcher/{research,notes,tools,Desktop,Documents,Downloads,Pictures,Music,Videos} && \
     chown -R researcher:researcher /va21 /home/researcher
+
+# ============================================
+# Flatpak Configuration
+# ============================================
+
+RUN flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo 2>/dev/null || true
 
 # ============================================
 # Python Dependencies for VA21
@@ -242,6 +416,32 @@ RUN echo '#!/bin/bash' > /usr/local/bin/va21 && \
     chmod +x /usr/local/bin/va21
 
 # ============================================
+# Desktop Integration
+# ============================================
+
+# Create VA21 desktop entry
+RUN mkdir -p /usr/share/applications && \
+    cat > /usr/share/applications/va21.desktop << 'EOF'
+[Desktop Entry]
+Name=VA21 Research OS
+Comment=AI-Powered Research Environment
+Exec=/usr/local/bin/va21
+Terminal=true
+Type=Application
+Icon=utilities-terminal
+Categories=System;TerminalEmulator;
+EOF
+
+# Configure LightDM for auto-login
+RUN mkdir -p /etc/lightdm && \
+    cat > /etc/lightdm/lightdm.conf << 'EOF'
+[Seat:*]
+autologin-user=researcher
+autologin-user-timeout=0
+user-session=openbox
+EOF
+
+# ============================================
 # Environment Variables
 # ============================================
 
@@ -251,6 +451,7 @@ ENV VA21_BASE=alpine
 ENV VA21_TYPE=desktop
 ENV PYTHONUNBUFFERED=1
 ENV TERM=xterm-256color
+ENV DISPLAY=:0
 
 # ============================================
 # Working Directory
