@@ -1,0 +1,24 @@
+# VA21 Research OS - Python Dependencies
+
+# Core
+psutil>=5.9.0
+
+# AI/ML (lightweight options)
+onnxruntime>=1.16.0
+
+# Security tools
+python-whois>=0.8.0
+
+# Text processing
+prompt_toolkit>=3.0.0
+rich>=13.0.0
+colorama>=0.4.6
+
+# Data handling
+pyyaml>=6.0
+
+# Networking
+requests>=2.31.0
+
+# File watching
+watchdog>=3.0.0

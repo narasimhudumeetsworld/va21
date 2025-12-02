@@ -1,0 +1,111 @@
+# VA21 Research OS - Docker Compose Configuration
+# Supports Docker and Podman (with podman-compose)
+#
+# Usage:
+#   docker-compose up -d          # Start VA21 OS
+#   docker-compose exec va21 va21 # Enter the Zork interface
+#   docker-compose logs -f        # View logs
+#   docker-compose down           # Stop VA21 OS
+
+version: '3.8'
+
+services:
+  va21:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: va21-research-os:latest
+    container_name: va21-os
+    hostname: va21
+    
+    # Interactive mode for Zork interface
+    stdin_open: true
+    tty: true
+    
+    # Volumes for persistent data
+    volumes:
+      # Research data persistence
+      - va21_research:/home/researcher/research
+      - va21_notes:/home/researcher/notes
+      - va21_vault:/va21/vault
+      - va21_logs:/va21/logs
+      
+      # ClamAV database (optional - for faster startup)
+      - va21_clamav:/var/lib/clamav
+      
+      # Mount host directory for file sharing (optional)
+      # - ./shared:/home/researcher/shared:ro
+    
+    # Environment variables
+    environment:
+      - VA21_HOME=/va21
+      - VA21_USER=researcher
+      - TERM=xterm-256color
+      - HINTS_ENABLED=true
+      - SEARXNG_INSTANCE=https://searx.be
+    
+    # Resource limits (adjust as needed)
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import sys; sys.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    
+    # Security options
+    security_opt:
+      - no-new-privileges:true
+    
+    # Restart policy
+    restart: unless-stopped
+    
+    # Default command
+    command: ["zork"]
+
+  # Optional: SearXNG instance for local search
+  searxng:
+    image: searxng/searxng:latest
+    container_name: va21-searxng
+    profiles:
+      - full  # Only start with --profile full
+    
+    volumes:
+      - searxng_data:/etc/searxng
+    
+    environment:
+      - SEARXNG_BASE_URL=http://localhost:8888/
+    
+    ports:
+      - "8888:8080"
+    
+    restart: unless-stopped
+
+# Named volumes for data persistence
+volumes:
+  va21_research:
+    name: va21_research
+  va21_notes:
+    name: va21_notes
+  va21_vault:
+    name: va21_vault
+  va21_logs:
+    name: va21_logs
+  va21_clamav:
+    name: va21_clamav
+  searxng_data:
+    name: searxng_data
+
+# Network configuration
+networks:
+  default:
+    name: va21_network
