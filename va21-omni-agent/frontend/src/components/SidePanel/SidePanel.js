@@ -5,8 +5,10 @@ import Nav from '../Nav';
 import Chat from '../Chat';
 import Settings from '../Settings';
 import Terminal from '../Terminal';
+import TilingTerminals from '../TilingTerminals';
 import Documents from '../Documents';
 import Workflows from '../Workflows';
+import ResearchCommandCenter from '../ResearchCommandCenter';
 
 const SidePanel = ({ isOpen }) => {
   return (
@@ -16,6 +18,8 @@ const SidePanel = ({ isOpen }) => {
         <main>
           <Routes>
             <Route path="/" element={<Chat />} />
+            <Route path="/research" element={<ResearchCommandCenter />} />
+            <Route path="/terminals" element={<TilingTerminals />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/terminal" element={<Terminal />} />
             <Route path="/documents" element={<Documents />} />
