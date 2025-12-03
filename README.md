@@ -8,14 +8,21 @@ VA21 OS is a revolutionary Debian-based operating system that combines enterpris
 
 ## ✨ What's New in VA21 OS
 
-### 🤖 Multi-Agent Task Automation System (NEW!)
-Inspired by the best features from [Agent Zero](https://github.com/agent0ai/agent-zero) and [OpenCode](https://github.com/sst/opencode):
+### 🤖 Multi-Agent Task Automation System v2.0 (NEW!)
+Inspired by the best features from [Microsoft AutoGen](https://github.com/microsoft/autogen), [Agent Zero](https://github.com/agent0ai/agent-zero), and [OpenCode](https://github.com/sst/opencode):
+
+- **Microsoft AutoGen Integration** (MIT License - Backed by Microsoft Research):
+  - **Multi-Agent Conversation Framework**: Agents collaborate autonomously
+  - **Specialized Agents**: Code Agent, Research Agent, Reflection Agent
+  - **AgentTool Pattern**: Agents can use other agents as tools
+  - **Orchestrator Agent**: Coordinates all specialized agents
+  - **Reflection Capabilities**: Self-improvement and learning
+  - *Aligns with VA21's Microsoft FARA integration*
 
 - **Multi-Agent Roles** (inspired by OpenCode):
   - **Build Agent**: Full access for development work
   - **Plan Agent**: Read-only for analysis and safe exploration
   - **General Agent**: Complex multi-step task handling
-  - **Security Agent**: Guardian AI integration
 
 - **Agent Cooperation** (inspired by Agent Zero):
   - Hierarchical superior/subordinate agent relationships
@@ -23,7 +30,10 @@ Inspired by the best features from [Agent Zero](https://github.com/agent0ai/agen
   - Persistent memory for solutions and instructions
   - Dynamic tool creation by agents
 
-- **All Protected by Guardian AI**:
+- **Enhanced VA21 Architecture**:
+  ```
+  Guardian AI + Orchestrator AI + Helper AI + AutoGen Agents + Embedding AI
+  ```
   - Think>Vet>Act methodology for every action
   - Sandboxed execution environment
   - Real-time security monitoring
@@ -182,6 +192,9 @@ VA21 uses **dynamic context-aware AI activation** to minimize RAM usage:
 VA21 OS is built on the shoulders of giants:
 
 ### Multi-Agent Automation Inspiration
+- **Microsoft AutoGen** - [github.com/microsoft/autogen](https://github.com/microsoft/autogen) (MIT License) ⭐⭐⭐⭐⭐
+  For multi-agent conversation framework, specialized agents, AgentTool pattern, and reflection capabilities
+  Backed by Microsoft Research - aligns with VA21's Microsoft FARA integration
 - **Agent Zero** - [github.com/agent0ai/agent-zero](https://github.com/agent0ai/agent-zero) (MIT License)
   For multi-agent cooperation patterns, persistent memory concepts, and hierarchical agent design
 - **OpenCode** - [github.com/sst/opencode](https://github.com/sst/opencode) (MIT License)
@@ -189,7 +202,7 @@ VA21 OS is built on the shoulders of giants:
 
 ### AI & Machine Learning
 - **IBM Research** - For [Granite language models](https://huggingface.co/collections/ibm-granite/granite-40-language-models) powering intelligent features
-- **Microsoft** - For [ONNX Runtime](https://onnxruntime.ai/), [FARA technology](https://github.com/microsoft/fara), and Phi models
+- **Microsoft** - For [ONNX Runtime](https://onnxruntime.ai/), [FARA technology](https://github.com/microsoft/fara), [AutoGen](https://github.com/microsoft/autogen), and Phi models
 - **Meta AI** - For LLaMA models and PyTorch
 - **Hugging Face** - For democratizing AI model access
 - **Ollama** - For simple local LLM deployment

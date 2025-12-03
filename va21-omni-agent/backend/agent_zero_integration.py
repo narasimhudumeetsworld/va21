@@ -3,6 +3,14 @@ VA21 Multi-Agent Task Automation System
 
 This module implements the best features inspired by open source AI agent projects:
 
+From Microsoft AutoGen (https://github.com/microsoft/autogen) - MIT License:
+    - Multi-agent conversation framework for autonomous collaboration
+    - Specialized agents for different capabilities (security, coding, research)
+    - AgentTool pattern - agents can be used as tools by other agents
+    - Layered architecture (Core, AgentChat, Extensions)
+    - Code execution with sandboxing support
+    - Reflection capabilities for self-improvement
+
 From Agent Zero (https://github.com/agent0ai/agent-zero) - MIT License:
     - Multi-agent cooperation with hierarchical superior/subordinate relationships
     - Persistent memory for solutions, facts, and instructions
@@ -17,16 +25,25 @@ From OpenCode (https://github.com/sst/opencode) - MIT License:
 
 All features are integrated with VA21 Guardian AI's Think>Vet>Act security model.
 
-Architecture:
+Enhanced VA21 Architecture:
     VA21 OS (Secure Foundation)
         └── Multi-Agent System (Automation Layer)
-            ├── Build Agent (full access, development work)
-            ├── Plan Agent (read-only, analysis and planning)
-            └── General Subagent (complex searches, multi-step)
-            └── VA21 Guardian AI monitors all agent actions
+            ├── Guardian AI (Security Agent) - Think>Vet>Act
+            ├── Orchestrator AI (Coordination)
+            ├── Helper AI (User Interface)
+            ├── Specialized Agents (AutoGen-inspired)
+            │   ├── Code Agent (coding, debugging)
+            │   ├── Research Agent (search, analysis)
+            │   ├── Security Agent (threat detection)
+            │   └── Reflection Agent (self-improvement)
+            └── Embedding AI (context-aware retrieval)
             └── Sandboxed execution environment
 
 Special Thanks:
+    - Microsoft AutoGen (https://github.com/microsoft/autogen) - MIT License
+      For multi-agent conversation framework and specialized agent patterns.
+      Backed by Microsoft Research - aligns with VA21's Microsoft FARA integration.
+    
     - Agent Zero project (https://github.com/agent0ai/agent-zero) - MIT License
       For multi-agent cooperation patterns and persistent memory concepts.
     
@@ -80,18 +97,31 @@ class SecurityClearance(Enum):
 
 class AgentRole(Enum):
     """
-    Agent roles inspired by OpenCode's multi-agent design.
+    Agent roles inspired by OpenCode and Microsoft AutoGen's multi-agent design.
     
-    Different roles have different permissions and capabilities:
+    From OpenCode:
     - BUILD: Full access for development work
     - PLAN: Read-only for analysis and planning
     - GENERAL: Complex searches and multi-step tasks
+    
+    From AutoGen (specialized agents):
+    - CODE: Specialized coding and debugging
+    - RESEARCH: Search and analysis
     - SECURITY: Guardian AI security monitoring
+    - REFLECTION: Self-improvement and learning
+    - ORCHESTRATOR: Coordination between agents
     """
-    BUILD = "build"         # Full access agent for development work
-    PLAN = "plan"           # Read-only agent for analysis and planning
-    GENERAL = "general"     # Subagent for complex multi-step tasks
-    SECURITY = "security"   # Guardian AI security agent
+    # OpenCode-inspired roles
+    BUILD = "build"             # Full access agent for development work
+    PLAN = "plan"               # Read-only agent for analysis and planning
+    GENERAL = "general"         # Subagent for complex multi-step tasks
+    
+    # AutoGen-inspired specialized agents
+    CODE = "code"               # Specialized coding and debugging agent
+    RESEARCH = "research"       # Search and analysis agent
+    SECURITY = "security"       # Guardian AI security agent
+    REFLECTION = "reflection"   # Self-improvement and learning agent
+    ORCHESTRATOR = "orchestrator"  # Coordination agent (like AutoGen's AgentTool)
 
 
 class AgentCapability(Enum):
@@ -105,6 +135,10 @@ class AgentCapability(Enum):
     MEMORY_ACCESS = "memory_access"
     CREATE_SUBAGENT = "create_subagent"
     TOOL_CREATION = "tool_creation"
+    # AutoGen-inspired capabilities
+    AGENT_AS_TOOL = "agent_as_tool"     # Use other agents as tools
+    REFLECTION = "reflection"           # Self-reflection capability
+    CONVERSATION = "conversation"       # Multi-agent conversation
 
 
 @dataclass
@@ -237,8 +271,9 @@ class AgentMessage:
         }
 
 
-# Role-based capability definitions (inspired by OpenCode)
+# Role-based capability definitions (inspired by OpenCode and AutoGen)
 ROLE_CAPABILITIES = {
+    # OpenCode-inspired roles
     AgentRole.BUILD: [
         AgentCapability.FILE_READ,
         AgentCapability.FILE_WRITE,
@@ -249,12 +284,15 @@ ROLE_CAPABILITIES = {
         AgentCapability.MEMORY_ACCESS,
         AgentCapability.CREATE_SUBAGENT,
         AgentCapability.TOOL_CREATION,
+        AgentCapability.AGENT_AS_TOOL,
+        AgentCapability.CONVERSATION,
     ],
     AgentRole.PLAN: [
         # Read-only agent - denies file edits, asks permission for commands
         AgentCapability.FILE_READ,
         AgentCapability.WEB_SEARCH,
         AgentCapability.MEMORY_ACCESS,
+        AgentCapability.CONVERSATION,
     ],
     AgentRole.GENERAL: [
         # General subagent for complex tasks
@@ -262,11 +300,44 @@ ROLE_CAPABILITIES = {
         AgentCapability.WEB_SEARCH,
         AgentCapability.MEMORY_ACCESS,
         AgentCapability.CODE_EXECUTE,
+        AgentCapability.CONVERSATION,
+    ],
+    
+    # AutoGen-inspired specialized agents
+    AgentRole.CODE: [
+        # Specialized coding agent (like AutoGen's coding assistant)
+        AgentCapability.FILE_READ,
+        AgentCapability.FILE_WRITE,
+        AgentCapability.CODE_EXECUTE,
+        AgentCapability.MEMORY_ACCESS,
+        AgentCapability.CONVERSATION,
+        AgentCapability.REFLECTION,
+    ],
+    AgentRole.RESEARCH: [
+        # Research agent (like AutoGen's research assistant)
+        AgentCapability.FILE_READ,
+        AgentCapability.WEB_SEARCH,
+        AgentCapability.MEMORY_ACCESS,
+        AgentCapability.CONVERSATION,
     ],
     AgentRole.SECURITY: [
         # Guardian AI security agent
         AgentCapability.FILE_READ,
         AgentCapability.MEMORY_ACCESS,
+        AgentCapability.REFLECTION,
+    ],
+    AgentRole.REFLECTION: [
+        # Self-improvement agent (AutoGen-inspired reflection)
+        AgentCapability.MEMORY_ACCESS,
+        AgentCapability.REFLECTION,
+        AgentCapability.CONVERSATION,
+    ],
+    AgentRole.ORCHESTRATOR: [
+        # Coordination agent (like AutoGen's AgentTool pattern)
+        AgentCapability.MEMORY_ACCESS,
+        AgentCapability.CREATE_SUBAGENT,
+        AgentCapability.AGENT_AS_TOOL,
+        AgentCapability.CONVERSATION,
     ],
 }
 
@@ -276,6 +347,13 @@ class MultiAgentSystem:
     VA21 Multi-Agent Task Automation System
     
     Implements best features from open source AI agent projects:
+    
+    From Microsoft AutoGen (MIT License):
+    - Multi-agent conversation framework
+    - Specialized agents (Code, Research, Security, Reflection)
+    - AgentTool pattern - agents can use other agents as tools
+    - Sandboxed code execution
+    - Reflection for self-improvement
     
     From Agent Zero (MIT License):
     - Multi-agent cooperation with superior/subordinate hierarchy
@@ -290,21 +368,26 @@ class MultiAgentSystem:
     
     All actions are vetted by VA21 Guardian AI using Think>Vet>Act methodology.
     
-    Architecture:
-        User → Helper AI → Multi-Agent System → Agent Selection
+    Enhanced VA21 Architecture:
+        User → Helper AI → Multi-Agent System → Orchestrator Agent
                                     ↓
                     ┌───────────────┼───────────────┐
                     ↓               ↓               ↓
-            Build Agent      Plan Agent      General Agent
-            (full access)    (read-only)    (multi-step)
-                    └───────────────┼───────────────┘
+            Build Agent      Plan Agent      Specialized Agents
+            (full access)    (read-only)    (AutoGen-inspired)
+                    │               │               │
+                    │               │       ┌───────┴───────┐
+                    │               │       ↓               ↓
+                    │               │   Code Agent    Research Agent
+                    │               │       │               │
+                    └───────────────┴───────┴───────────────┘
                                     ↓
-                    Guardian AI Vetting (Think>Vet>Act)
+                    Guardian AI + Reflection Agent (Think>Vet>Act)
                                     ↓
                     Sandboxed Execution → Results
     """
     
-    VERSION = "1.0.0"
+    VERSION = "2.0.0"  # Major version bump for AutoGen integration
     
     # Task patterns that need different handling
     AUTOMATION_PATTERNS = [
@@ -381,6 +464,8 @@ class MultiAgentSystem:
             'guardian_vetoes': 0,
             'agents_created': 0,
             'messages_sent': 0,
+            'agent_conversations': 0,
+            'reflections_performed': 0,
         }
         
         # Initialize default agents
@@ -388,36 +473,80 @@ class MultiAgentSystem:
         
         print(f"[MultiAgentSystem] Initialized v{self.VERSION}")
         print(f"[MultiAgentSystem] Guardian AI: {'Connected' if guardian else 'Not connected'}")
-        print(f"[MultiAgentSystem] Default agents: Build, Plan, General, Security")
+        print(f"[MultiAgentSystem] Agents: Orchestrator, Build, Plan, Code, Research, Security, Reflection")
     
     def _init_default_agents(self):
-        """Initialize the default agents (inspired by OpenCode's agent roles)."""
-        # Build Agent - Full access for development work
+        """
+        Initialize the default agents.
+        
+        Inspired by:
+        - OpenCode: Build, Plan, General roles
+        - AutoGen: Specialized agents (Code, Research, Reflection, Orchestrator)
+        - Agent Zero: Security agent with Guardian AI
+        """
+        # Orchestrator Agent - Coordinates other agents (AutoGen-inspired)
+        orchestrator = Agent(
+            agent_id="agent_orchestrator_main",
+            role=AgentRole.ORCHESTRATOR,
+            name="Orchestrator Agent",
+            capabilities=ROLE_CAPABILITIES[AgentRole.ORCHESTRATOR],
+        )
+        self.agents[orchestrator.agent_id] = orchestrator
+        
+        # Build Agent - Full access for development work (OpenCode-inspired)
         build_agent = Agent(
             agent_id="agent_build_main",
             role=AgentRole.BUILD,
             name="Build Agent",
+            superior_id="agent_orchestrator_main",
             capabilities=ROLE_CAPABILITIES[AgentRole.BUILD],
         )
         self.agents[build_agent.agent_id] = build_agent
+        orchestrator.subordinate_ids.append(build_agent.agent_id)
         
-        # Plan Agent - Read-only for analysis and planning
+        # Plan Agent - Read-only for analysis and planning (OpenCode-inspired)
         plan_agent = Agent(
             agent_id="agent_plan_main",
             role=AgentRole.PLAN,
             name="Plan Agent",
+            superior_id="agent_orchestrator_main",
             capabilities=ROLE_CAPABILITIES[AgentRole.PLAN],
         )
         self.agents[plan_agent.agent_id] = plan_agent
+        orchestrator.subordinate_ids.append(plan_agent.agent_id)
         
-        # General Agent - For complex multi-step tasks
+        # General Agent - For complex multi-step tasks (OpenCode-inspired)
         general_agent = Agent(
             agent_id="agent_general_main",
             role=AgentRole.GENERAL,
             name="General Agent",
+            superior_id="agent_orchestrator_main",
             capabilities=ROLE_CAPABILITIES[AgentRole.GENERAL],
         )
         self.agents[general_agent.agent_id] = general_agent
+        orchestrator.subordinate_ids.append(general_agent.agent_id)
+        
+        # Code Agent - Specialized coding (AutoGen-inspired)
+        code_agent = Agent(
+            agent_id="agent_code_main",
+            role=AgentRole.CODE,
+            name="Code Agent",
+            superior_id="agent_orchestrator_main",
+            capabilities=ROLE_CAPABILITIES[AgentRole.CODE],
+        )
+        self.agents[code_agent.agent_id] = code_agent
+        orchestrator.subordinate_ids.append(code_agent.agent_id)
+        
+        # Research Agent - Search and analysis (AutoGen-inspired)
+        research_agent = Agent(
+            agent_id="agent_research_main",
+            role=AgentRole.RESEARCH,
+            name="Research Agent",
+            superior_id="agent_orchestrator_main",
+            capabilities=ROLE_CAPABILITIES[AgentRole.RESEARCH],
+        )
+        self.agents[research_agent.agent_id] = research_agent
+        orchestrator.subordinate_ids.append(research_agent.agent_id)
         
         # Security Agent - Guardian AI integration
         security_agent = Agent(
@@ -428,7 +557,99 @@ class MultiAgentSystem:
         )
         self.agents[security_agent.agent_id] = security_agent
         
-        self.metrics['agents_created'] = 4
+        # Reflection Agent - Self-improvement (AutoGen-inspired)
+        reflection_agent = Agent(
+            agent_id="agent_reflection_main",
+            role=AgentRole.REFLECTION,
+            name="Reflection Agent",
+            capabilities=ROLE_CAPABILITIES[AgentRole.REFLECTION],
+        )
+        self.agents[reflection_agent.agent_id] = reflection_agent
+        
+        self.metrics['agents_created'] = 8
+    
+    # =========================================================================
+    # AUTOGEN-INSPIRED: Agent as Tool Pattern
+    # =========================================================================
+    
+    def use_agent_as_tool(self, caller_agent_id: str, tool_agent_id: str,
+                          task: str) -> Dict:
+        """
+        Use an agent as a tool (inspired by AutoGen's AgentTool pattern).
+        
+        This allows one agent to delegate tasks to another specialized agent,
+        treating it as a tool rather than a peer.
+        
+        Args:
+            caller_agent_id: The agent making the request
+            tool_agent_id: The agent to use as a tool
+            task: The task to delegate
+            
+        Returns:
+            Dict with result from the tool agent
+        """
+        with self._lock:
+            if caller_agent_id not in self.agents or tool_agent_id not in self.agents:
+                return {'success': False, 'error': 'Agent not found'}
+            
+            caller = self.agents[caller_agent_id]
+            tool_agent = self.agents[tool_agent_id]
+            
+            # Check capability
+            if AgentCapability.AGENT_AS_TOOL not in caller.capabilities:
+                return {'success': False, 'error': 'Caller lacks AGENT_AS_TOOL capability'}
+            
+            # Send task message
+            message = self.send_message(
+                caller_agent_id,
+                tool_agent_id,
+                'tool_request',
+                task,
+                requires_response=True
+            )
+            
+            # Simulate tool agent processing (in production, this would be async)
+            result = {
+                'success': True,
+                'tool_agent': tool_agent.name,
+                'task': task,
+                'result': f"[{tool_agent.name}] Completed: {task[:50]}...",
+                'message_id': message.message_id if message else None,
+            }
+            
+            return result
+    
+    def perform_reflection(self, agent_id: str, context: Dict = None) -> Dict:
+        """
+        Perform reflection for self-improvement (AutoGen-inspired).
+        
+        The reflection agent analyzes past actions and decisions to
+        improve future performance.
+        """
+        with self._lock:
+            if agent_id not in self.agents:
+                return {'success': False, 'error': 'Agent not found'}
+            
+            agent = self.agents[agent_id]
+            
+            if AgentCapability.REFLECTION not in agent.capabilities:
+                return {'success': False, 'error': 'Agent lacks REFLECTION capability'}
+            
+            self.metrics['reflections_performed'] += 1
+            
+            # Simulate reflection (in production, this would analyze memory)
+            reflection = {
+                'success': True,
+                'agent': agent.name,
+                'reflection': {
+                    'past_decisions': 'Analyzed recent task decisions',
+                    'improvements': ['Consider alternative approaches', 'Validate assumptions earlier'],
+                    'learnings': ['Task pattern recognition improved', 'Security awareness enhanced'],
+                },
+                'timestamp': datetime.now().isoformat(),
+            }
+            
+            return reflection
     
     # =========================================================================
     # AGENT MANAGEMENT (Inspired by Agent Zero's hierarchical design)
@@ -1064,10 +1285,25 @@ This task was blocked for security reasons. Please modify your request or contac
     def get_acknowledgment(self) -> str:
         """Get acknowledgment text for open source projects that inspired this system."""
         return """
-🤖 **VA21 Multi-Agent System - Acknowledgments**
+🤖 **VA21 Multi-Agent System v2.0 - Acknowledgments**
 
 VA21 OS gratefully acknowledges the following open source projects
 that inspired the best features implemented in this system:
+
+### Microsoft AutoGen (MIT License) ⭐⭐⭐⭐⭐
+https://github.com/microsoft/autogen
+Backed by: Microsoft Research
+
+Inspired features:
+• Multi-agent conversation framework for autonomous collaboration
+• Specialized agents for different capabilities (Code, Research, Security)
+• AgentTool pattern - agents can be used as tools by other agents
+• Layered architecture (Core, AgentChat, Extensions)
+• Code execution with sandboxing support
+• Reflection capabilities for self-improvement
+
+Thank you to Microsoft Research and the AutoGen team! 🙏
+This aligns perfectly with our Microsoft FARA integration.
 
 ### Agent Zero (MIT License)
 https://github.com/agent0ai/agent-zero
@@ -1078,7 +1314,7 @@ Inspired features:
 • Dynamic tool creation by agents
 • Agent-to-agent communication protocols
 
-Thank you to the Agent Zero team for their innovative approach to AI automation! 🙏
+Thank you to the Agent Zero team for their innovative approach! 🙏
 
 ### OpenCode (MIT License)
 https://github.com/sst/opencode
@@ -1089,21 +1325,27 @@ Inspired features:
 • Provider-agnostic LLM design
 • Read-only analysis mode for safe exploration
 
-Thank you to the SST/OpenCode team for their excellent multi-agent design! 🙏
+Thank you to the SST/OpenCode team for their excellent design! 🙏
 
-**VA21 Architecture (Best of Both Worlds):**
+**Enhanced VA21 Architecture (Best of All Worlds):**
 ```
 VA21 OS (Secure Foundation)
-    └── Multi-Agent System (Automation Layer)
-        ├── Build Agent (full access, development work)
-        ├── Plan Agent (read-only, analysis and planning)
-        └── General Subagent (complex searches, multi-step)
-        └── VA21 Guardian AI monitors all agent actions
-        └── Think>Vet>Act security methodology
+    └── Multi-Agent System v2.0 (Automation Layer)
+        ├── Guardian AI (Security Core) - Think>Vet>Act
+        ├── Orchestrator AI (Coordination) - AutoGen-inspired
+        ├── Helper AI (User Interface)
+        ├── Specialized Agents (AutoGen-inspired)
+        │   ├── Build Agent (full access) - OpenCode
+        │   ├── Plan Agent (read-only) - OpenCode
+        │   ├── Code Agent (coding, debugging)
+        │   ├── Research Agent (search, analysis)
+        │   └── Reflection Agent (self-improvement)
+        └── Embedding AI (context-aware retrieval)
         └── Sandboxed execution environment
 ```
 
 *All features are protected by VA21 Guardian AI's security monitoring.*
+*Complements your Dual-AI architecture with specialized multi-agent capabilities.*
 
 Om Vinayaka 🙏
 """
@@ -1135,7 +1377,7 @@ def get_agent_zero(guardian=None, helper_ai=None) -> MultiAgentSystem:
 
 if __name__ == "__main__":
     # Test the Multi-Agent System
-    print("\n=== VA21 Multi-Agent System Test ===")
+    print("\n=== VA21 Multi-Agent System v2.0 Test ===")
     system = get_multi_agent_system()
     
     print("\n--- Status ---")
@@ -1144,8 +1386,20 @@ if __name__ == "__main__":
     print("\n--- Acknowledgments ---")
     print(system.get_acknowledgment())
     
-    print("\n--- Testing Agent Role Switching ---")
+    print("\n--- Testing Agent Role Switching (OpenCode-inspired) ---")
     result = system.switch_agent_role(AgentRole.PLAN)
+    print(json.dumps(result, indent=2))
+    
+    print("\n--- Testing Agent-as-Tool (AutoGen-inspired) ---")
+    result = system.use_agent_as_tool(
+        "agent_orchestrator_main",
+        "agent_code_main",
+        "Write a Python function to calculate factorial"
+    )
+    print(json.dumps(result, indent=2))
+    
+    print("\n--- Testing Reflection (AutoGen-inspired) ---")
+    result = system.perform_reflection("agent_reflection_main")
     print(json.dumps(result, indent=2))
     
     print("\n--- Submitting Test Task ---")

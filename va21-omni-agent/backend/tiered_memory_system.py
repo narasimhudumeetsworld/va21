@@ -123,6 +123,7 @@ class MemoryEntry:
             'tags': self.tags,
             'connected_memories': self.connected_memories,
             'relevance_score': self.relevance_score,
+            'decay_rate': self.decay_rate,
             'validated': self.validated,
             'validation_id': self.validation_id,
         }
@@ -143,6 +144,7 @@ class MemoryEntry:
             tags=data.get('tags', []),
             connected_memories=data.get('connected_memories', []),
             relevance_score=data.get('relevance_score', 1.0),
+            decay_rate=data.get('decay_rate', 0.01),
             validated=data.get('validated', False),
             validation_id=data.get('validation_id', ''),
         )

@@ -257,12 +257,26 @@
 
    VA21 OS is built on the shoulders of giants. We are deeply grateful to:
 
+   ### Microsoft AutoGen Project ⭐⭐⭐⭐⭐
+   Special thanks to Microsoft Research and the AutoGen team
+   (https://github.com/microsoft/autogen) for their groundbreaking multi-agent
+   conversation framework. AutoGen's approach to specialized agents, the AgentTool
+   pattern, and reflection capabilities has greatly enhanced VA21's multi-agent
+   architecture. The MIT license and Microsoft backing align perfectly with our
+   existing Microsoft FARA integration.
+
    ### Agent Zero Project 🤖
    Special thanks to the Agent Zero project (https://github.com/agent0ai/agent-zero)
    for their innovative approach to AI automation. Agent Zero's multi-agent
    framework has inspired our integration of task automation within the VA21
    secure environment. We acknowledge their contribution to the AI automation
    community and thank them for their open-source work.
+
+   ### OpenCode Project 💻
+   Special thanks to the SST/OpenCode team (https://github.com/sst/opencode)
+   for their excellent multi-agent design with Build and Plan agents, provider-
+   agnostic LLM design, and read-only analysis mode. Their MIT-licensed work
+   has influenced VA21's role-based agent system.
 
    ### Debian Project 🐧
    This project builds upon the incredible foundation provided by the Debian
@@ -284,7 +298,9 @@
    - https://huggingface.co/collections/ibm-granite/granite-40-language-models
 
    ### Microsoft 🖥️
-   For ONNX Runtime (MIT License), FARA technology (MIT License), and Phi models.
+   For AutoGen (MIT License), ONNX Runtime (MIT License), FARA technology
+   (MIT License), and Phi models.
+   - https://github.com/microsoft/autogen
    - https://github.com/microsoft/onnxruntime
    - https://github.com/microsoft/fara
 
