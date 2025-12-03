@@ -8,6 +8,40 @@ VA21 OS is a revolutionary Debian-based operating system that combines enterpris
 
 ## ✨ What's New in VA21 OS
 
+### 🤖 Multi-Agent Task Automation System (NEW!)
+Inspired by the best features from [Agent Zero](https://github.com/agent0ai/agent-zero) and [OpenCode](https://github.com/sst/opencode):
+
+- **Multi-Agent Roles** (inspired by OpenCode):
+  - **Build Agent**: Full access for development work
+  - **Plan Agent**: Read-only for analysis and safe exploration
+  - **General Agent**: Complex multi-step task handling
+  - **Security Agent**: Guardian AI integration
+
+- **Agent Cooperation** (inspired by Agent Zero):
+  - Hierarchical superior/subordinate agent relationships
+  - Agent-to-agent communication protocols
+  - Persistent memory for solutions and instructions
+  - Dynamic tool creation by agents
+
+- **All Protected by Guardian AI**:
+  - Think>Vet>Act methodology for every action
+  - Sandboxed execution environment
+  - Real-time security monitoring
+
+### 🧠 Dynamic AI Quantization System (NEW!)
+- **Adaptive Performance**: AI models automatically quantize to 4-bit, 5-bit, or 8-bit based on available system memory
+- **Memory-Aware Loading**: Intelligent model loading and unloading
+- **Quality Preservation**: Optimal quality-to-memory tradeoffs
+
+### 📚 Tiered Memory System with Obsidian Brain Maps (NEW!)
+- **Three-Tier Architecture**:
+  - Working Memory (current context)
+  - Short-Term Memory (session)
+  - Long-Term Memory (persistent)
+- **Separate Knowledge Bases**: Each AI (Guardian, Helper, Agent) has its own memory space
+- **Interconnected Context**: Tiered tags and context-aware retrieval
+- **Anti-Hallucination Engine**: Validates all AI memory retrieval
+
 ### 🎨 Futuristic Interface & Easter Eggs
 - **Halo/Cortana Theme**: Type "cortana call the masterchief" to activate a stunning holographic interface inspired by the Halo universe
 - **Dark/Light Theme Toggle**: Switch between themes with Ctrl+Shift+T
@@ -38,13 +72,15 @@ VA21 OS is a revolutionary Debian-based operating system that combines enterpris
 - **Backup Knowledge**: AI knows your version history (sanitized for security)
 - **Natural Language Restoration**: Just ask "restore from yesterday"
 - **System Awareness**: Get status updates and recommendations
+- **Task Automation**: Request automated tasks through natural conversation
 - **Easter Egg Activation**: Fun interactions unlock special features
 
 ## 🔒 Core Security Architecture
 
-### Dual-AI System
-- **Guardian AI (Security Core)**: Always-active security analysis using ONNX models
-- **Orchestrator AI**: User-facing reasoning engine with flexible LLM integration
+### Triple-AI System
+- **Guardian AI (Security Core)**: Always-active security analysis using ONNX models with Think>Vet>Act methodology
+- **Helper AI (User Interface)**: User-facing assistant with backup and system knowledge
+- **Multi-Agent System (Automation)**: Task automation with Guardian AI oversight
 - **Air Gap Protection**: Complete isolation from screen content and sensitive data
 - **Principle of Least Privilege**: No direct website interactions or form submissions
 
@@ -54,6 +90,7 @@ VA21 OS is a revolutionary Debian-based operating system that combines enterpris
 - ✅ **5-Day Quarantine Protocol**: Safe integration of external intelligence
 - ✅ **Localhost-Only Operation**: No external network exposure
 - ✅ **Pattern-Based Detection**: Advanced malware and injection detection
+- ✅ **Anti-Hallucination Engine**: Prevents AI from making up information
 
 ## 🔬 Research Command Center
 
@@ -66,6 +103,7 @@ VA21 OS is a revolutionary Debian-based operating system that combines enterpris
 - **Wiki-Style Links**: Create interconnected notes with `[[link]]` syntax
 - **Knowledge Graph**: Visual representation of your research connections
 - **LLM Memory Integration**: Persistent memory for AI context
+- **Brain Maps**: Visual memory maps for each AI component
 
 ### Sensitive Information Protection
 - **Automatic Redaction**: Detect and redact API keys, passwords, tokens
@@ -104,16 +142,16 @@ Access the interface at: **http://localhost:5000**
 ### Memory Optimization
 VA21 uses **dynamic context-aware AI activation** to minimize RAM usage:
 - 🧠 **Lazy Loading** - Models loaded only when needed
-- 📦 **INT8 Quantization** - 50% model size reduction
+- 📦 **Dynamic Quantization** - 4-bit, 5-bit, or 8-bit based on available RAM
 - 🔄 **Context-Aware Unloading** - Automatic memory management
 - 💾 **Memory Mapping** - Efficient large file handling
 
-| Usage Scenario | RAM Required | Description |
-|---------------|--------------|-------------|
-| Minimal | ~3GB | Basic browsing, text editing |
-| Standard | ~5GB | Multiple apps, AI chat |
-| Heavy Multitasking | ~7GB | Many apps, FARA compatibility |
-| Full Development | ~9GB | All AI features, IDE, Docker |
+| Usage Scenario | RAM Required | Quantization | Description |
+|---------------|--------------|--------------|-------------|
+| Minimal | ~3GB | 4-bit | Basic browsing, text editing |
+| Standard | ~5GB | 5-bit | Multiple apps, AI chat |
+| Heavy Multitasking | ~7GB | 8-bit | Many apps, FARA compatibility |
+| Full Development | ~9GB | 8-bit/FP16 | All AI features, IDE, Docker |
 
 ## ⌨️ Keyboard Shortcuts
 
@@ -143,6 +181,12 @@ VA21 uses **dynamic context-aware AI activation** to minimize RAM usage:
 
 VA21 OS is built on the shoulders of giants:
 
+### Multi-Agent Automation Inspiration
+- **Agent Zero** - [github.com/agent0ai/agent-zero](https://github.com/agent0ai/agent-zero) (MIT License)
+  For multi-agent cooperation patterns, persistent memory concepts, and hierarchical agent design
+- **OpenCode** - [github.com/sst/opencode](https://github.com/sst/opencode) (MIT License)
+  For multi-agent roles (Build/Plan agents), provider-agnostic design, and read-only analysis mode
+
 ### AI & Machine Learning
 - **IBM Research** - For [Granite language models](https://huggingface.co/collections/ibm-granite/granite-40-language-models) powering intelligent features
 - **Microsoft** - For [ONNX Runtime](https://onnxruntime.ai/), [FARA technology](https://github.com/microsoft/fara), and Phi models
@@ -159,7 +203,10 @@ VA21 OS is built on the shoulders of giants:
 
 ## 📄 License
 
-This project is licensed under the Prayaga Vaibhav Proprietary License - All Rights Reserved.
+This project is licensed under a modified Apache License 2.0 with proprietary components.
+- **Permissive (Apache 2.0)**: Most features with acknowledgment
+- **Proprietary**: Guardian AI, Think>Vet>Act, Sandbox Testing, Anti-Hallucination Engine
+
 See [LICENSE](LICENSE) for full terms and acknowledgments.
 
 Copyright (c) 2024-2025 Prayaga Vaibhav. All rights reserved.
