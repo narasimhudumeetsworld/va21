@@ -10,7 +10,7 @@ const PYTHON_WIN_DIR = path.join(VENDOR_DIR, 'python-win');
 const PYTHON_EXECUTABLE_WIN = path.join(PYTHON_WIN_DIR, 'python.exe');
 const GET_PIP_URL = 'https://bootstrap.pypa.io/get-pip.py';
 const GET_PIP_PATH = path.join(VENDOR_DIR, 'get-pip.py');
-const REQUIREMENTS_PATH = path.join(__dirname, '..', 'va21-omni-agent', 'backend', 'requirements.txt');
+const REQUIREMENTS_PATH = path.join(__dirname, '..', 'va21_system', 'linux_os', 'requirements.txt');
 
 function executeCommand(command) {
     return new Promise((resolve, reject) => {
