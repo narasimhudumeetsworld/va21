@@ -257,71 +257,177 @@
 
    VA21 OS is built on the shoulders of giants. We are deeply grateful to:
 
-   ### Microsoft AutoGen Project ⭐⭐⭐⭐⭐
-   Special thanks to Microsoft Research and the AutoGen team
-   (https://github.com/microsoft/autogen) for their groundbreaking multi-agent
-   conversation framework. AutoGen's approach to specialized agents, the AgentTool
-   pattern, and reflection capabilities has greatly enhanced VA21's multi-agent
-   architecture. The MIT license and Microsoft backing align perfectly with our
-   existing Microsoft FARA integration.
+   ============================================================================
+                         VOICE INTELLIGENCE LAYER
+   ============================================================================
 
-   ### Agent Zero Project 🤖
-   Special thanks to the Agent Zero project (https://github.com/agent0ai/agent-zero)
-   for their innovative approach to AI automation. Agent Zero's multi-agent
-   framework has inspired our integration of task automation within the VA21
-   secure environment. We acknowledge their contribution to the AI automation
-   community and thank them for their open-source work.
+   ### Meta Omnilingual ASR ⭐⭐⭐⭐⭐ (Apache 2.0)
+   https://github.com/facebookresearch/fairseq
+   Released: November 2025
+   - 1,600+ languages (including 500+ low-resource Indian dialects)
+   - Zero-shot learning: Extend to 5,400+ languages
+   - Model sizes: 300M (2GB), 1B (4GB), 3B (8GB), 7B (14GB)
+   - VA21 Default: 1B model for 7GB RAM systems
+   Thank you, Meta FAIR team! 🙏
 
-   ### OpenCode Project 💻
-   Special thanks to the SST/OpenCode team (https://github.com/sst/opencode)
-   for their excellent multi-agent design with Build and Plan agents, provider-
-   agnostic LLM design, and read-only analysis mode. Their MIT-licensed work
-   has influenced VA21's role-based agent system.
+   ### OpenAI Whisper / Solus AI (MIT License)
+   https://github.com/openai/whisper
+   - Offline backup ASR
+   - Excellent accuracy for common languages
+   Thank you, OpenAI! 🙏
 
-   ### Debian Project 🐧
-   This project builds upon the incredible foundation provided by the Debian
-   GNU/Linux operating system. We extend our heartfelt gratitude to the Debian
-   community for their tireless work in creating and maintaining one of the most
-   stable, secure, and versatile operating systems in the world.
-   - Website: https://www.debian.org/
-   - Debian Social Contract: https://www.debian.org/social_contract
+   ### Rhasspy Wake Word (MIT License)
+   https://github.com/rhasspy/rhasspy
+   - Custom wake word detection: "Hey VA21", "Om Vinayaka"
+   - Privacy-focused, fully offline
+   Thank you, Rhasspy team! 🙏
 
-   ### Linux Foundation 🐧
-   Special thanks to the Linux Foundation for their stewardship of the Linux
-   kernel and their work in supporting the open source community that makes
-   projects like this possible.
-   - Website: https://www.linuxfoundation.org/
+   ### Piper TTS (MIT License)
+   https://github.com/rhasspy/piper
+   - Fast neural text-to-speech synthesis
+   - Low latency for real-time response
+   Thank you, Rhasspy/Piper team! 🙏
 
-   ### IBM Research 🧠
-   For the IBM Granite language models (Apache License 2.0) that power many
-   of our intelligent features.
-   - https://huggingface.co/collections/ibm-granite/granite-40-language-models
+   ### Kokoro TTS (Apache 2.0 License)
+   https://github.com/remsky/Kokoro-FastAPI
+   - Premium quality neural voices
+   - 82M parameter model
+   Thank you, Kokoro team! 🙏
 
-   ### Microsoft 🖥️
-   For AutoGen (MIT License), ONNX Runtime (MIT License), FARA technology
-   (MIT License), and Phi models.
-   - https://github.com/microsoft/autogen
-   - https://github.com/microsoft/onnxruntime
-   - https://github.com/microsoft/fara
+   ============================================================================
+                         SECURITY & PRIVACY LAYER
+   ============================================================================
 
-   ### Meta AI 🤖
-   For LLaMA models and PyTorch.
+   ### IBM AI Privacy Toolkit (MIT License) ⭐⭐⭐⭐⭐
+   https://github.com/IBM/ai-privacy-toolkit
+   - Data anonymization for GDPR compliance
+   - Data minimization principle
+   - Differential privacy
+   - Privacy attack testing
+   Citation: Goldsteen et al., "AI privacy toolkit", SoftwareX, 2023
+   Thank you, IBM Research! 🙏
+
+   ### LLM Guard by ProtectAI (MIT License)
+   https://github.com/protectai/llm-guard
+   - Prompt injection detection
+   - Output validation and scanning
+   - Toxicity filtering
+   - Sensitive data protection
+   Thank you, ProtectAI! 🙏
+
+   ### LMDeploy (Apache 2.0 License)
+   https://github.com/InternLM/lmdeploy
+   - Efficient LLM deployment with TurboMind
+   - Quantization support (INT4, INT8)
+   - High-performance CUDA kernels
+   Thank you, InternLM team! 🙏
+
+   ============================================================================
+                         MULTI-AGENT AUTOMATION LAYER
+   ============================================================================
+
+   ### Microsoft AutoGen Project ⭐⭐⭐⭐⭐ (MIT License)
+   https://github.com/microsoft/autogen
+   - Multi-agent conversation framework
+   - Specialized agents (Code, Research, Reflection)
+   - AgentTool pattern
+   - Backed by Microsoft Research
+   Thank you, Microsoft Research! 🙏
+
+   ### Agent Zero Project (MIT License) 🤖
+   https://github.com/agent0ai/agent-zero
+   - Multi-agent cooperation patterns
+   - Persistent memory concepts
+   - Hierarchical agent design
+   Thank you, Agent Zero team! 🙏
+
+   ### OpenCode Project (MIT License) 💻
+   https://github.com/sst/opencode
+   - Role-based agents (Build/Plan)
+   - Provider-agnostic LLM design
+   - Read-only analysis mode
+   Thank you, SST/OpenCode team! 🙏
+
+   ============================================================================
+                         LLM & AI PROCESSING LAYER
+   ============================================================================
+
+   ### LangChain (MIT License)
+   https://github.com/langchain-ai/langchain
+   - AI orchestration framework
+   - Chain-of-thought processing
+   Thank you, LangChain team! 🙏
+
+   ### IBM Granite (Apache 2.0 License) 🧠
+   https://huggingface.co/collections/ibm-granite/granite-40-language-models
+   - Enterprise-grade language models
+   - Powers VA21's intelligent features
+   Thank you, IBM Research! 🙏
+
+   ### Microsoft (MIT License) 🖥️
+   - AutoGen: https://github.com/microsoft/autogen
+   - ONNX Runtime: https://github.com/microsoft/onnxruntime
+   - FARA technology: https://github.com/microsoft/fara
+   - Phi models
+   Thank you, Microsoft! 🙏
+
+   ### Meta AI (Various Licenses) 🤖
+   - Omnilingual ASR (Apache 2.0)
+   - LLaMA models
+   - PyTorch
+   Thank you, Meta AI! 🙏
 
    ### Hugging Face 🤗
    For democratizing AI model access.
+   Thank you, Hugging Face! 🙏
 
-   ### Ollama 🦙
-   For simple local LLM deployment (MIT License).
+   ### Ollama (MIT License) 🦙
+   For simple local LLM deployment.
+   Thank you, Ollama! 🙏
+
+   ============================================================================
+                         OPERATING SYSTEM FOUNDATION
+   ============================================================================
+
+   ### Debian Project 🐧
+   https://www.debian.org/
+   - Rock-solid foundation for VA21 OS
+   - Debian Social Contract: https://www.debian.org/social_contract
+   Thank you, Debian community! 🙏
+
+   ### Linux Foundation 🐧
+   https://www.linuxfoundation.org/
+   - Stewardship of the Linux kernel
+   - Supporting the open source community
+   Thank you, Linux Foundation! 🙏
 
    ### Linux Community 🐧
-   This project stands on the shoulders of giants. We are deeply grateful to:
    - Linus Torvalds and all Linux kernel contributors
-   - The countless open source developers worldwide
-   - The GNOME, KDE, and other desktop environment communities
-   - The Flatpak and Flathub teams for revolutionizing Linux application distribution
-   - Every contributor who has ever submitted a patch, reported a bug, or helped a newcomer
+   - GNOME, KDE, and desktop environment communities
+   - Flatpak and Flathub teams
+   - Every open source contributor worldwide
+   Thank you, Linux community! 🙏
 
-   ### Open Source Philosophy 💡
+   ============================================================================
+                         MODEL SELECTION GUIDE (RAM-Based)
+   ============================================================================
+
+   | Use Case          | Model Size | RAM Required | Accuracy   | Device           |
+   |-------------------|------------|--------------|------------|------------------|
+   | Low-Power Devices | 300M       | ~2GB         | Good       | Raspberry Pi     |
+   | Balanced          | 1B         | ~4GB         | Very Good  | Consumer laptops |
+   | High Performance  | 3B         | ~8GB         | Excellent  | Desktop/server   |
+   | Maximum Accuracy  | 7B         | ~14GB        | Best       | High-end hardware|
+
+   VA21 Default (7GB RAM target):
+   - 1B ASR model (4GB RAM) for voice input
+   - Leaves 3GB for other AI components
+   - Excellent accuracy for practical use
+
+   ============================================================================
+                         OPEN SOURCE PHILOSOPHY 💡
+   ============================================================================
+
    VA21 OS embraces the spirit of open source collaboration. While our core
    innovations are protected, we believe in giving back to the community that
    has given us so much.

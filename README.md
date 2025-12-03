@@ -8,6 +8,47 @@ VA21 OS is a revolutionary Debian-based operating system that combines enterpris
 
 ## ✨ What's New in VA21 OS
 
+### 🎤 Voice Intelligence Layer (NEW!)
+Complete multilingual voice processing with 1,600+ language support:
+
+| Component | Technology | License | Purpose |
+|-----------|------------|---------|---------|
+| ASR (Primary) | [Meta Omnilingual ASR](https://github.com/facebookresearch/fairseq) | Apache 2.0 | 1,600+ languages |
+| ASR (Secondary) | [Whisper/Solus AI](https://github.com/openai/whisper) | MIT | Offline backup |
+| Wake Word | [Rhasspy](https://github.com/rhasspy/rhasspy) | MIT | Custom triggers |
+| TTS (Fast) | [Piper](https://github.com/rhasspy/piper) | MIT | Fast synthesis |
+| TTS (Premium) | [Kokoro](https://github.com/remsky/Kokoro-FastAPI) | Apache 2.0 | Premium voices |
+| LLM Processing | [LangChain](https://github.com/langchain-ai/langchain) + [Granite](https://huggingface.co/ibm-granite) | MIT + Apache 2.0 | AI reasoning |
+| Security | Guardian AI + [LLM Guard](https://github.com/protectai/llm-guard) | Proprietary + MIT | Safety layer |
+
+**Model Selection (RAM-Based):**
+| Use Case | Model Size | RAM Required | Accuracy | Device |
+|----------|------------|--------------|----------|--------|
+| Low-Power | 300M | ~2GB | Good | Raspberry Pi |
+| Balanced | 1B | ~4GB | Very Good | Consumer laptops |
+| High Performance | 3B | ~8GB | Excellent | Desktop/server |
+| Maximum | 7B | ~14GB | Best | High-end hardware |
+
+**VA21 Default (7GB RAM):** 1B model (4GB) + 3GB for other AI = Excellent accuracy!
+
+**Indian Language Support:** Hindi, Tamil, Telugu, Kannada, Bengali, Marathi, Gujarati, Malayalam, Punjabi, Awadhi, Maithili, Chhattisgarhi, Tulu, Bhojpuri, and 100+ more!
+
+### 🔒 AI Privacy & Security System (NEW!)
+Powered by [IBM AI Privacy Toolkit](https://github.com/IBM/ai-privacy-toolkit) (MIT) + [LLM Guard](https://github.com/protectai/llm-guard) (MIT):
+- **Data Anonymization**: GDPR-compliant AI processing
+- **Data Minimization**: Only essential data for predictions
+- **Differential Privacy**: Calibrated noise for privacy
+- **Privacy Attack Testing**: Membership inference defense
+- **Prompt Injection Detection**: Blocks malicious inputs
+- **Output Scanning**: Filters harmful content
+
+### 🚀 Secure LLM Pipeline (NEW!)
+Combining [LMDeploy](https://github.com/InternLM/lmdeploy) (Apache 2.0) + [LLM Guard](https://github.com/protectai/llm-guard) (MIT):
+- **Efficient Inference**: TurboMind engine with quantization
+- **Input Validation**: Scans prompts before LLM processing
+- **Output Verification**: Validates responses before delivery
+- **Guardian AI Integration**: Think>Vet>Act for all outputs
+
 ### 🤖 Multi-Agent Task Automation System v2.0 (NEW!)
 Inspired by the best features from [Microsoft AutoGen](https://github.com/microsoft/autogen), [Agent Zero](https://github.com/agent0ai/agent-zero), and [OpenCode](https://github.com/sst/opencode):
 
@@ -184,35 +225,49 @@ VA21 uses **dynamic context-aware AI activation** to minimize RAM usage:
 - **Backend**: Flask + Socket.IO Python server
 - **Frontend**: React.js with custom theming
 - **Package Management**: Flatpak + APT integration
-- **AI Models**: IBM Granite, Microsoft ONNX/FARA, Meta LLaMA
-- **Security**: Multi-layer protection with Guardian AI
+- **AI Models**: IBM Granite, Microsoft ONNX/FARA, Meta LLaMA, Meta Omnilingual ASR
+- **Voice**: Meta Omnilingual ASR, Whisper, Rhasspy, Piper TTS, Kokoro TTS
+- **Security**: Guardian AI, LLM Guard, IBM AI Privacy Toolkit
+- **Multi-Agent**: Microsoft AutoGen, Agent Zero patterns, OpenCode patterns
 
 ## 🙏 Acknowledgments
 
 VA21 OS is built on the shoulders of giants:
 
-### Multi-Agent Automation Inspiration
-- **Microsoft AutoGen** - [github.com/microsoft/autogen](https://github.com/microsoft/autogen) (MIT License) ⭐⭐⭐⭐⭐
-  For multi-agent conversation framework, specialized agents, AgentTool pattern, and reflection capabilities
-  Backed by Microsoft Research - aligns with VA21's Microsoft FARA integration
-- **Agent Zero** - [github.com/agent0ai/agent-zero](https://github.com/agent0ai/agent-zero) (MIT License)
-  For multi-agent cooperation patterns, persistent memory concepts, and hierarchical agent design
-- **OpenCode** - [github.com/sst/opencode](https://github.com/sst/opencode) (MIT License)
-  For multi-agent roles (Build/Plan agents), provider-agnostic design, and read-only analysis mode
+### Voice Intelligence Layer
+- **Meta Omnilingual ASR** - [Apache 2.0] ⭐⭐⭐⭐⭐
+  1,600+ languages including 100+ Indian dialects (Released November 2025)
+- **OpenAI Whisper** - [github.com/openai/whisper](https://github.com/openai/whisper) (MIT) - Offline backup ASR
+- **Rhasspy** - [github.com/rhasspy/rhasspy](https://github.com/rhasspy/rhasspy) (MIT) - Wake word detection
+- **Piper TTS** - [github.com/rhasspy/piper](https://github.com/rhasspy/piper) (MIT) - Fast TTS synthesis
+- **Kokoro TTS** - [github.com/remsky/Kokoro-FastAPI](https://github.com/remsky/Kokoro-FastAPI) (Apache 2.0) - Premium voices
 
-### AI & Machine Learning
-- **IBM Research** - For [Granite language models](https://huggingface.co/collections/ibm-granite/granite-40-language-models) powering intelligent features
-- **Microsoft** - For [ONNX Runtime](https://onnxruntime.ai/), [FARA technology](https://github.com/microsoft/fara), [AutoGen](https://github.com/microsoft/autogen), and Phi models
-- **Meta AI** - For LLaMA models and PyTorch
-- **Hugging Face** - For democratizing AI model access
-- **Ollama** - For simple local LLM deployment
+### Security & Privacy
+- **IBM AI Privacy Toolkit** - [github.com/IBM/ai-privacy-toolkit](https://github.com/IBM/ai-privacy-toolkit) (MIT) - GDPR compliance
+- **LLM Guard** - [github.com/protectai/llm-guard](https://github.com/protectai/llm-guard) (MIT) - LLM security
+- **LMDeploy** - [github.com/InternLM/lmdeploy](https://github.com/InternLM/lmdeploy) (Apache 2.0) - Efficient LLM deployment
+
+### Multi-Agent Automation
+- **Microsoft AutoGen** - [github.com/microsoft/autogen](https://github.com/microsoft/autogen) (MIT) ⭐⭐⭐⭐⭐
+  Multi-agent conversation framework (Backed by Microsoft Research)
+- **Agent Zero** - [github.com/agent0ai/agent-zero](https://github.com/agent0ai/agent-zero) (MIT)
+  Multi-agent cooperation patterns
+- **OpenCode** - [github.com/sst/opencode](https://github.com/sst/opencode) (MIT)
+  Role-based agents (Build/Plan)
+
+### LLM & AI Processing
+- **LangChain** - [github.com/langchain-ai/langchain](https://github.com/langchain-ai/langchain) (MIT) - AI orchestration
+- **IBM Granite** - [huggingface.co/ibm-granite](https://huggingface.co/collections/ibm-granite/granite-40-language-models) (Apache 2.0)
+- **Microsoft** - ONNX Runtime, FARA, AutoGen, Phi models (MIT)
+- **Meta AI** - Omnilingual ASR (Apache 2.0), LLaMA, PyTorch
+- **Hugging Face** - Democratizing AI model access
+- **Ollama** - Simple local LLM deployment (MIT)
 
 ### Open Source Foundation
-
-- **Debian Project** - For creating the most stable and versatile Linux distribution
-- **Linux Foundation** - For their stewardship of the Linux kernel
+- **Debian Project** - Rock-solid OS foundation
+- **Linux Foundation** - Linux kernel stewardship
 - **Linux Community** - Every contributor who makes open source possible
-- **Flathub** - For revolutionizing Linux application distribution
+- **Flathub** - Revolutionizing Linux application distribution
 
 ## 📄 License
 
