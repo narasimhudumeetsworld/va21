@@ -85,13 +85,32 @@ Complete multilingual voice processing with 1,600+ language support:
 
 **Indian Language Support:** Hindi, Tamil, Telugu, Kannada, Bengali, Marathi, Gujarati, Malayalam, Punjabi, and 100+ more!
 
-### ♿ Accessibility - Voice Input (Hold Super Key)
-For users who cannot type, VA21 OS provides **push-to-talk voice input**:
-- **Hold Super Key**: Activates voice detection automatically
-- **Speak your command**: Voice is transcribed in real-time
-- **Release to send**: Command is processed when you release the key
-- **Works everywhere**: In Zork interface, terminal, or any input field
-- **1,600+ languages**: Powered by Meta Omnilingual ASR
+### ♿ Intelligent Accessibility (Unique to VA21!)
+
+VA21's accessibility goes **far beyond traditional screen readers**:
+
+| Traditional Screen Readers | VA21 Intelligent Accessibility |
+|---------------------------|-------------------------------|
+| Reads keywords: "menu", "button" | Explains purpose: "This saves your work" |
+| No context awareness | Understands your intent and current task |
+| Just announces elements | Asks clarifying questions when needed |
+| User must know commands | Natural conversation in any language |
+
+**How it works:**
+- **Hold Super Key**: Activates voice detection
+- **Speak naturally**: "I want to search the internet" or "Save my document"
+- **Helper AI understands**: Asks clarifying questions if needed
+- **FARA Layer executes**: Performs action in any application
+- **1,600+ languages**: Hindi, Tamil, Telugu, Spanish, French, and more
+
+**Example conversation:**
+```
+User: "I want to find something on the internet"
+VA21: "I can help you search. What would you like to look up?"
+User: "Climate change research papers"
+VA21: "Searching for climate change research papers. I'm using 
+      privacy-respecting search so your query isn't tracked."
+```
 
 ### 🔒 Guardian AI Security
 Powered by IBM Granite 4.0 via Ollama:
