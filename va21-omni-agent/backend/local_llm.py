@@ -133,11 +133,13 @@ class LocalLLM:
         """Pull a model from Ollama."""
         try:
             print(f"[LocalLLM] Pulling model: {model_name}")
+            # Use longer timeout for larger models (30 minutes for 8B models)
+            timeout = 1800 if "8b" in model_name.lower() else 600
             response = requests.post(
                 f"{self.ollama_host}/api/pull",
                 json={"name": model_name},
                 stream=True,
-                timeout=600  # 10 minutes for large models
+                timeout=timeout
             )
             
             for line in response.iter_lines():
@@ -307,10 +309,13 @@ Then briefly explain why."""
         """Quick pattern-based security check."""
         content_lower = content.lower()
         
-        # Critical threats (immediate block)
+        # Critical threats (immediate block) - include variants without spaces
         critical_patterns = [
-            'rm -rf /', 'mkfs', 'dd if=/dev/zero', ':(){ :|:& };:',
-            'format c:', '> /dev/sda', 'chmod -R 777 /'
+            'rm -rf /', 'rm -rf/', 'rm -rf .',  # rm variants
+            'mkfs', 'dd if=/dev/zero', 'dd if=/dev/urandom',
+            ':(){ :|:& };:', ':(){ :|:&};:',  # Fork bomb variants
+            'format c:', '> /dev/sda', '>/dev/sda',
+            'chmod -R 777 /', 'chmod 777 /', 'chmod -r 777 /'
         ]
         
         for pattern in critical_patterns:
