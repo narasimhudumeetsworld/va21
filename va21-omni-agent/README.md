@@ -1,26 +1,62 @@
-# VA21 OS - Backend Services
+# VA21 OS - Backend AI Services
 
 **Om Vinayaka** 🙏
 
-This directory contains the backend services for VA21 OS. 
+This directory contains the **backend AI services** for VA21 OS.
 
 ## Important Note
 
-**VA21 is a full operating system**, not a web or Electron application.
+**VA21 is a full Linux operating system**, available as:
+- **ISO images** for physical or virtual machine installation
+- **Docker/Podman containers** for containerized deployment
+- **VirtualBox VMs** for testing
 
-The main OS interface is:
-- **Zork Shell** (`va21_system/linux_os/zork_shell/`) - Text adventure interface
-- **Tiling Window Manager** (`va21_system/linux_os/window_manager/`) - Native window management
-- **Guardian AI** - Security core powered by IBM Granite 4.0 via Ollama
+**The main OS interface is NOT web-based.** It uses:
+- **Zork Shell** - Text adventure command interface
+- **Tiling Window Manager** - Native X11/Wayland window management
+- **Terminal** - Standard Linux terminal
 
-## Backend Components
+## This Directory
 
-This backend provides:
+The `va21-omni-agent/backend/` provides:
 1. **Local LLM Engine** - IBM Granite 4.0 via Ollama
-2. **Guardian AI** - Security analysis service
-3. **API Server** - REST API for system services
+2. **Guardian AI API** - Security analysis service
+3. **REST API Server** - For system service integration
 
-## Running the Backend
+## The Real OS
+
+The actual VA21 OS is located in:
+```
+va21_system/linux_os/
+├── zork_shell/        # Main text adventure interface
+├── window_manager/    # Tiling window manager
+├── guardian/          # Guardian AI core
+├── kernel/            # Kernel-level security
+├── research_suite/    # Research tools
+├── writing/           # Writing tools
+├── journalism/        # Journalism tools
+├── games/             # Built-in games (Zork!)
+└── Dockerfile         # Build the OS container
+```
+
+## Running VA21 OS
+
+```bash
+# From ISO (recommended for installation)
+# Download from releases page
+
+# From Docker
+cd va21_system/linux_os
+./run.sh
+
+# From source
+docker build -t va21-os .
+docker run -it --rm va21-os
+```
+
+## Backend Services (Optional)
+
+These backend services can be started separately for API access:
 
 ```bash
 # Install Ollama first
@@ -29,33 +65,18 @@ curl -fsSL https://ollama.com/install.sh | sh
 # Download Guardian AI model
 ollama pull granite4:2b
 
-# Start the backend
+# Start API server
 cd backend
 python va21_server.py
 ```
 
-## Frontend Note
+## Frontend Directory
 
-The `frontend/` directory contains a React-based web dashboard that can optionally be used for remote administration. It is **NOT** the main OS interface.
+The `frontend/` directory is **deprecated** and will be removed.
+VA21 OS does not use React, Electron, or web interfaces.
 
-The actual OS uses native Linux components:
-- Native tiling window manager
-- Zork-style text adventure shell
-- Terminal-based applications
+The native Zork Shell provides the user interface.
 
-## Directory Structure
-
-```
-va21-omni-agent/
-├── backend/           # Python backend services
-│   ├── local_llm.py  # IBM Granite 4.0 via Ollama
-│   ├── kernel_guardian.py  # Security core
-│   └── va21_server.py      # API server
-└── frontend/          # Optional web dashboard (NOT main UI)
-```
-
-## Core Philosophy
-
-VA21 OS is a self-correcting, security-conscious, AI-native operating system designed for research, development, and secure computing.
+---
 
 **Om Vinayaka - May obstacles be removed from your computing journey.**

@@ -1,147 +1,10 @@
 #!/bin/bash
-set -e
-
-echo "🔒 VA21 Omni Agent Installer"
-echo "========================================="
-echo "Installing the secure AI-powered desktop environment..."
-
-# Detect OS
-case "$(uname -s)" in
-    Linux*)     MACHINE=Linux;;
-    Darwin*)    MACHINE=Mac;;
-    CYGWIN*)    MACHINE=Cygwin;;
-    MINGW*)     MACHINE=MinGw;;
-    *)          MACHINE="UNKNOWN:${unameOut}"
-esac
-
-echo "Detected OS: $MACHINE"
-
-# Create installation directory
-INSTALL_DIR="$HOME/va21-omni-agent"
-echo "Installation directory: $INSTALL_DIR"
-
-# Check if directory exists and ask user
-if [ -d "$INSTALL_DIR" ]; then
-    read -p "Directory $INSTALL_DIR already exists. Do you want to continue? (y/N): " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        echo "Installation cancelled."
-        exit 1
-    fi
-fi
-
-mkdir -p "$INSTALL_DIR"
-cd "$INSTALL_DIR"
-
-echo "📥 Downloading VA21 Omni Agent..."
-# Download the repository
-if command -v git &> /dev/null; then
-    if [ -d ".git" ]; then
-        git pull origin main
-    else
-        git clone https://github.com/narasimhudumeetsworld/va21.git .
-    fi
-else
-    echo "Git not found. Downloading archive..."
-    curl -L https://github.com/narasimhudumeetsworld/va21/archive/refs/heads/main.zip -o va21.zip
-    unzip va21.zip
-    mv va21-main/* .
-    rm -rf va21-main va21.zip
-fi
-
-echo "🐍 Setting up portable Python environment..."
-# Create portable Python environment
-PYTHON_ENV="$INSTALL_DIR/python-env"
-mkdir -p "$PYTHON_ENV"
-
-# Setup Python based on OS
-if [ "$MACHINE" = "Linux" ]; then
-    if command -v python3 &> /dev/null; then
-        python3 -m venv "$PYTHON_ENV"
-        source "$PYTHON_ENV/bin/activate"
-    else
-        echo "❌ Python 3 is required but not found. Please install Python 3 and try again."
-        exit 1
-    fi
-elif [ "$MACHINE" = "Mac" ]; then
-    if command -v python3 &> /dev/null; then
-        python3 -m venv "$PYTHON_ENV"
-        source "$PYTHON_ENV/bin/activate"
-    else
-        echo "❌ Python 3 is required but not found. Please install Python 3 and try again."
-        exit 1
-    fi
-else
-    echo "❌ Unsupported operating system: $MACHINE"
-    exit 1
-fi
-
-echo "📦 Installing Python dependencies..."
-pip install --upgrade pip
-pip install -r va21-omni-agent/backend/requirements.txt
-
-echo ""
-echo "═══════════════════════════════════════════════════════════════════"
-echo "                    VA21 OS - AI Model Installation"
-echo "═══════════════════════════════════════════════════════════════════"
-echo ""
-echo "VA21 OS Base Size: ~5 GB (without AI models)"
-echo ""
-echo "All AI models are downloaded via Ollama during installation."
-echo ""
-
-# Install Ollama if not present
-echo "🦙 Checking Ollama installation..."
-if ! command -v ollama &> /dev/null; then
-    echo "📥 Installing Ollama..."
-    curl -fsSL https://ollama.com/install.sh | sh
-    echo "✅ Ollama installed successfully!"
-else
-    echo "✅ Ollama is already installed"
-fi
-
-# Start Ollama service if not running
-echo "🚀 Starting Ollama service..."
-if ! pgrep -x "ollama" > /dev/null; then
-    ollama serve &
-    sleep 3
-fi
-
-# Download Guardian AI model (IBM Granite 4.0 2B)
-echo ""
-echo "🧠 Downloading Guardian AI model (IBM Granite 4.0 2B - ~1.5GB)..."
-echo "This is the core security AI for VA21 OS."
-echo "See: https://ollama.com/library/granite4"
-echo ""
-ollama pull granite4:2b
-
-echo ""
-echo "✅ Guardian AI model downloaded successfully!"
-echo ""
-echo "═══════════════════════════════════════════════════════════════════"
-echo "                    Optional AI Models"
-echo "═══════════════════════════════════════════════════════════════════"
-echo ""
-echo "The following models will be downloaded automatically on first use:"
-echo ""
-echo "  📢 Meta Omnilingual ASR (~2 GB) - 1,600+ language speech recognition"
-echo "  📢 Whisper/Solus AI (~500 MB) - Backup offline ASR"
-echo "  🗣️ Piper TTS (~150 MB) - Fast text-to-speech"
-echo "  🗣️ Kokoro TTS (~200 MB) - Premium quality voices"
-echo "  🧠 IBM Granite 4.0 8B (~5 GB) - Complex AI reasoning"
-echo ""
-echo "To pre-download the full LLM model now (optional, ~5GB):"
-echo "  ollama pull granite4:8b"
-echo ""
-
-echo "🔧 Creating launcher script..."
-cd "$INSTALL_DIR"
-cat > va21-launcher.sh << 'EOF'
-#!/bin/bash
-# VA21 OS Launcher
+# VA21 OS - Installation Script
 # Om Vinayaka 🙏
+#
+# This script helps you build and install VA21 OS.
 
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+set -e
 
 echo ""
 echo "═══════════════════════════════════════════════════════════════════"
@@ -152,106 +15,135 @@ echo ""
 echo "Om Vinayaka 🙏"
 echo ""
 
-# Check if we have a Python virtual environment
-if [ -f "$DIR/python-env/bin/activate" ]; then
-    source "$DIR/python-env/bin/activate"
-fi
+# Detect host OS
+case "$(uname -s)" in
+    Linux*)     MACHINE=Linux;;
+    *)          
+        echo "❌ VA21 OS can only be built on Linux."
+        echo ""
+        echo "To install VA21 OS:"
+        echo "  1. Download the ISO from https://github.com/narasimhudumeetsworld/va21/releases"
+        echo "  2. Write to USB: dd if=va21-os.iso of=/dev/sdX bs=4M"
+        echo "  3. Boot from USB and install"
+        exit 1
+        ;;
+esac
 
-# Check Ollama
-if command -v ollama &> /dev/null; then
-    if ! pgrep -x "ollama" > /dev/null; then
-        echo "Starting Ollama service..."
-        ollama serve &
-        sleep 2
-    fi
-    echo "✅ Ollama: Running"
-    echo "✅ Guardian AI: IBM Granite 4.0"
-else
-    echo "⚠️ Ollama not found - Guardian AI in simulation mode"
-fi
-
+echo "What would you like to do?"
 echo ""
-echo "Starting VA21 OS..."
+echo "  1. Build VA21 OS ISO (for installation)"
+echo "  2. Download pre-built ISO"
+echo "  3. Install development environment"
 echo ""
+read -p "Enter choice [1-3]: " choice
 
-# Launch the Zork-style interface (main OS interface)
-cd "$DIR/va21_system/linux_os/zork_shell"
-python zork_interface.py
-EOF
-
-chmod +x va21-launcher.sh
-
-# Also create a backend service launcher
-cat > va21-backend.sh << 'EOF'
-#!/bin/bash
-# VA21 OS Backend Services
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-if [ -f "$DIR/python-env/bin/activate" ]; then
-    source "$DIR/python-env/bin/activate"
-fi
-
-cd "$DIR/va21-omni-agent/backend"
-python va21_server.py
-EOF
-
-chmod +x va21-backend.sh
+case $choice in
+    1)
+        echo ""
+        echo "═══════════════════════════════════════════════════════════════════"
+        echo "                    Building VA21 OS ISO"
+        echo "═══════════════════════════════════════════════════════════════════"
+        echo ""
+        
+        # Check for required packages
+        echo "Checking build requirements..."
+        MISSING=""
+        for pkg in debootstrap xorriso squashfs-tools grub-pc-bin; do
+            if ! dpkg -l | grep -q "^ii  $pkg"; then
+                MISSING="$MISSING $pkg"
+            fi
+        done
+        
+        if [ -n "$MISSING" ]; then
+            echo "Installing required packages:$MISSING"
+            sudo apt update
+            sudo apt install -y $MISSING
+        fi
+        
+        echo ""
+        echo "Select edition:"
+        echo "  1. Debian (Full GNU toolkit, ~5GB)"
+        echo "  2. Alpine (Lightweight, ~2GB)"
+        read -p "Enter choice [1-2]: " edition
+        
+        case $edition in
+            1) EDITION="debian" ;;
+            2) EDITION="alpine" ;;
+            *) EDITION="debian" ;;
+        esac
+        
+        echo ""
+        echo "Building VA21 OS $EDITION..."
+        ./build-iso.sh "$EDITION"
+        ;;
+        
+    2)
+        echo ""
+        echo "═══════════════════════════════════════════════════════════════════"
+        echo "                    Download VA21 OS ISO"
+        echo "═══════════════════════════════════════════════════════════════════"
+        echo ""
+        echo "Download from: https://github.com/narasimhudumeetsworld/va21/releases"
+        echo ""
+        echo "After downloading:"
+        echo "  1. Write to USB: sudo dd if=va21-os.iso of=/dev/sdX bs=4M status=progress"
+        echo "  2. Boot from USB"
+        echo "  3. Follow installation wizard"
+        ;;
+        
+    3)
+        echo ""
+        echo "═══════════════════════════════════════════════════════════════════"
+        echo "                    Development Environment"
+        echo "═══════════════════════════════════════════════════════════════════"
+        echo ""
+        
+        # Install Python dependencies
+        echo "Installing Python dependencies..."
+        pip3 install --user -r va21_system/linux_os/requirements.txt
+        
+        # Install Ollama for Guardian AI
+        if ! command -v ollama &> /dev/null; then
+            echo ""
+            echo "Installing Ollama for Guardian AI..."
+            curl -fsSL https://ollama.com/install.sh | sh
+        fi
+        
+        # Download Guardian AI model
+        echo ""
+        echo "Downloading Guardian AI model (IBM Granite 4.0)..."
+        ollama pull granite4:2b
+        
+        echo ""
+        echo "✅ Development environment ready!"
+        echo ""
+        echo "To run the Zork interface:"
+        echo "  cd va21_system/linux_os/zork_shell"
+        echo "  python3 zork_interface.py"
+        ;;
+        
+    *)
+        echo "Invalid choice"
+        exit 1
+        ;;
+esac
 
 echo ""
 echo "═══════════════════════════════════════════════════════════════════"
-echo "              ✅ VA21 OS INSTALLATION COMPLETE!"
+echo "                    VA21 OS Features"
 echo "═══════════════════════════════════════════════════════════════════"
 echo ""
-echo "🔒 VA21 OS - Digital Fortress Ready"
-echo ""
-echo "To start VA21 OS (Zork Interface):"
-echo "  cd $INSTALL_DIR"
-echo "  ./va21-launcher.sh"
-echo ""
-echo "To start backend services only:"
-echo "  ./va21-backend.sh"
-echo ""
-echo "═══════════════════════════════════════════════════════════════════"
-echo "                    ALL FEATURES INCLUDED"
-echo "═══════════════════════════════════════════════════════════════════"
-echo ""
-echo "🔒 Security Features:"
-echo "  ✅ Guardian AI Security Core (IBM Granite 4.0)"
-echo "  ✅ Air Gap Browser Protection"
-echo "  ✅ Threat Intelligence System"
-echo "  ✅ Self-Analysis & Healing"
-echo "  ✅ 5-Day Quarantine Protocol"
-echo "  ✅ IBM AI Privacy Toolkit (MIT)"
-echo "  ✅ LLM Guard Security (MIT)"
-echo ""
-echo "🎤 Voice Intelligence Layer:"
-echo "  ✅ Meta Omnilingual ASR - 1,600+ languages (Apache 2.0)"
-echo "  ✅ Whisper/Solus AI - Backup ASR (MIT)"
-echo "  ✅ Rhasspy - Wake word detection (MIT)"
-echo "  ✅ Piper TTS - Fast synthesis (MIT)"
-echo "  ✅ Kokoro TTS - Premium voices (Apache 2.0)"
-echo ""
-echo "🤖 AI Processing:"
-echo "  ✅ LangChain - AI orchestration (MIT)"
-echo "  ✅ IBM Granite - LLM reasoning (Apache 2.0)"
-echo "  ✅ LMDeploy - Efficient inference (Apache 2.0)"
-echo ""
-echo "🤝 Multi-Agent System:"
-echo "  ✅ Microsoft AutoGen - Multi-agent framework (MIT)"
-echo "  ✅ Agent Zero patterns - Agent cooperation (MIT)"
-echo "  ✅ OpenCode patterns - Role-based agents (MIT)"
-echo ""
-echo "🎮 Zork-Based Text Adventure UI:"
-echo "  ✅ Custom VA21 Zork Interface"
-echo "  ✅ Research Lab, Knowledge Vault, Terminal Nexus"
-echo "  ✅ Guardian AI NPC interaction"
-echo "  ✅ ClamAV & SearXNG integration"
+echo "🎮 Zork-style text adventure interface"
+echo "🔒 Guardian AI security (IBM Granite 4.0)"
+echo "🎤 Voice control (1,600+ languages)"
+echo "📦 Research & writing tools"
+echo "🛡️ ClamAV antivirus"
+echo "🔍 SearXNG private search"
 echo ""
 echo "═══════════════════════════════════════════════════════════════════"
 echo "                    VA21 OS Base: ~5 GB"
-echo "           With all AI models: ~10 GB (downloaded on demand)"
 echo "═══════════════════════════════════════════════════════════════════"
 echo ""
 echo "Om Vinayaka 🙏"
 echo ""
-echo "For support, visit: https://github.com/narasimhudumeetsworld/va21"
+echo "For support: https://github.com/narasimhudumeetsworld/va21"
