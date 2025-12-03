@@ -7,6 +7,28 @@ The Guardian AI is the security core of VA21 Research OS.
 It monitors system activity, analyzes threats, and protects
 the research environment at the kernel/system level.
 
+IMPORTANT: SANDBOXED ARCHITECTURE
+================================
+Guardian AI runs in a SANDBOXED OLLAMA at the kernel level.
+It is completely ISOLATED from user-facing AI systems:
+
+- Guardian AI: Runs in kernel-level sandboxed Ollama
+  - No connection to user-facing applications
+  - No access to user conversations
+  - Pure security monitoring and threat detection
+  - Cannot be influenced by user input
+
+- User-facing AI: Helper AI + Orchestration AI
+  - Uses a separate user-facing Ollama instance
+  - Handles accessibility, voice, and user interactions
+  - Managed by Om Vinayaka Accessibility AI
+
+This separation ensures that:
+1. Security cannot be compromised by user interactions
+2. Guardian AI decisions are independent and secure
+3. User-facing AI cannot access security-critical functions
+4. The Think > Vet > Act methodology remains protected
+
 Om Vinayaka - The remover of obstacles protects this realm.
 """
 
@@ -28,6 +50,21 @@ try:
     PSUTIL_AVAILABLE = True
 except ImportError:
     PSUTIL_AVAILABLE = False
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SANDBOXED OLLAMA CONFIGURATION
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Guardian AI uses its own sandboxed Ollama instance
+GUARDIAN_OLLAMA_HOST = "127.0.0.1"
+GUARDIAN_OLLAMA_PORT = 11435  # Different from user-facing Ollama (11434)
+GUARDIAN_MODEL = "granite-guardian:2b"  # IBM Granite for security
+
+# This is kernel-level, completely isolated from:
+# - User-facing Helper AI (uses port 11434)
+# - Om Vinayaka Accessibility AI (uses port 11434)
+# - Any user applications
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -64,6 +101,9 @@ class GuardianAI:
     """
     VA21 Guardian AI - The Protector of the Research Realm
     
+    IMPORTANT: Runs in SANDBOXED OLLAMA at kernel level.
+    Completely ISOLATED from user-facing AI systems.
+    
     The Guardian AI monitors all system activity and protects
     the research environment from threats. It operates at multiple
     levels:
@@ -73,9 +113,15 @@ class GuardianAI:
     3. File Integrity - Monitors critical file changes
     4. Network Watching - Observes network connections
     5. Anomaly Detection - Identifies unusual behavior
+    
+    Sandboxed Architecture:
+    - Uses dedicated Ollama instance on port 11435
+    - No connection to user-facing AI (port 11434)
+    - Cannot be influenced by user conversations
+    - Independent security decision making
     """
     
-    VERSION = "1.0.0"
+    VERSION = "1.1.0"
     
     def __init__(self, config_path: str = "/va21/config"):
         self.config_path = config_path
