@@ -6,7 +6,7 @@
 
 VA21 OS is a **full Linux operating system** designed for researchers, writers, journalists, and security professionals. It's a real OS that you install on your computer - not an app, not a container.
 
-![VA21 OS Interface](https://github.com/user-attachments/assets/a6013877-03bd-40c1-8bb5-d41e3385f1da)
+![VA21 OS Interface](
 
 ### What is VA21 OS?
 
