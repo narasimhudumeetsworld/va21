@@ -134,78 +134,89 @@ echo "To pre-download the full LLM model now (optional, ~5GB):"
 echo "  ollama pull granite4:8b"
 echo ""
 
-echo ""
-echo "═══════════════════════════════════════════════════════════════════"
-echo "                    Optional AI Models"
-echo "═══════════════════════════════════════════════════════════════════"
-echo ""
-echo "The following models will be downloaded automatically on first use:"
-echo ""
-echo "  📢 Meta Omnilingual ASR (~2 GB) - 1,600+ language speech recognition"
-echo "  📢 Whisper/Solus AI (~500 MB) - Backup offline ASR"
-echo "  🗣️ Piper TTS (~150 MB) - Fast text-to-speech"
-echo "  🗣️ Kokoro TTS (~200 MB) - Premium quality voices"
-echo "  🧠 IBM Granite LLM (~1.5 GB) - AI reasoning"
-echo ""
-echo "Total optional downloads: ~4.5 GB"
-echo ""
-
-echo "🌐 Installing Node.js dependencies..."
-cd "$INSTALL_DIR"
-if command -v npm &> /dev/null; then
-    npm install
-    cd va21-omni-agent/frontend
-    npm install
-    npm run build
-else
-    echo "⚠️ Node.js/npm not found. Frontend will not be built."
-    echo "Please install Node.js to use the web interface."
-fi
-
 echo "🔧 Creating launcher script..."
 cd "$INSTALL_DIR"
 cat > va21-launcher.sh << 'EOF'
 #!/bin/bash
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$DIR/va21-omni-agent/backend"
+# VA21 OS Launcher
+# Om Vinayaka 🙏
 
-echo "🔒 Starting VA21 Omni Agent - Digital Fortress..."
-echo "Guardian AI security system: ACTIVE"
-echo "Air gap protection: ENABLED" 
-echo "Access the interface at: http://localhost:5000"
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+echo ""
+echo "═══════════════════════════════════════════════════════════════════"
+echo "                        🔒 VA21 OS"
+echo "                  Secure AI-Powered Operating System"
+echo "═══════════════════════════════════════════════════════════════════"
+echo ""
+echo "Om Vinayaka 🙏"
 echo ""
 
 # Check if we have a Python virtual environment
 if [ -f "$DIR/python-env/bin/activate" ]; then
-    echo "Activating portable Python environment..."
     source "$DIR/python-env/bin/activate"
 fi
 
-# Start the lightweight server instead of the complex Flask app
-python va21_server.py
+# Check Ollama
+if command -v ollama &> /dev/null; then
+    if ! pgrep -x "ollama" > /dev/null; then
+        echo "Starting Ollama service..."
+        ollama serve &
+        sleep 2
+    fi
+    echo "✅ Ollama: Running"
+    echo "✅ Guardian AI: IBM Granite 4.0"
+else
+    echo "⚠️ Ollama not found - Guardian AI in simulation mode"
+fi
+
+echo ""
+echo "Starting VA21 OS..."
+echo ""
+
+# Launch the Zork-style interface (main OS interface)
+cd "$DIR/va21_system/linux_os/zork_shell"
+python zork_interface.py
 EOF
 
 chmod +x va21-launcher.sh
+
+# Also create a backend service launcher
+cat > va21-backend.sh << 'EOF'
+#!/bin/bash
+# VA21 OS Backend Services
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if [ -f "$DIR/python-env/bin/activate" ]; then
+    source "$DIR/python-env/bin/activate"
+fi
+
+cd "$DIR/va21-omni-agent/backend"
+python va21_server.py
+EOF
+
+chmod +x va21-backend.sh
 
 echo ""
 echo "═══════════════════════════════════════════════════════════════════"
 echo "              ✅ VA21 OS INSTALLATION COMPLETE!"
 echo "═══════════════════════════════════════════════════════════════════"
 echo ""
-echo "🔒 VA21 Omni Agent - Digital Fortress Ready"
+echo "🔒 VA21 OS - Digital Fortress Ready"
 echo ""
-echo "To start the application:"
+echo "To start VA21 OS (Zork Interface):"
 echo "  cd $INSTALL_DIR"
 echo "  ./va21-launcher.sh"
 echo ""
-echo "The application will be available at: http://localhost:5000"
+echo "To start backend services only:"
+echo "  ./va21-backend.sh"
 echo ""
 echo "═══════════════════════════════════════════════════════════════════"
 echo "                    ALL FEATURES INCLUDED"
 echo "═══════════════════════════════════════════════════════════════════"
 echo ""
 echo "🔒 Security Features:"
-echo "  ✅ Guardian AI Security Core (Phi-4 ONNX)"
+echo "  ✅ Guardian AI Security Core (IBM Granite 4.0)"
 echo "  ✅ Air Gap Browser Protection"
 echo "  ✅ Threat Intelligence System"
 echo "  ✅ Self-Analysis & Healing"

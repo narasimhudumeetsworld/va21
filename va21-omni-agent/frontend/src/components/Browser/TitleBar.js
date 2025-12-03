@@ -4,7 +4,7 @@ import './TitleBar.css';
 const TitleBar = () => {
   return (
     <div className="title-bar">
-      <div className="title-bar-text">Omni Agent</div>
+      <div className="title-bar-text">VA21 OS</div>
     </div>
   );
 };

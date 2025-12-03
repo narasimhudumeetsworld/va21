@@ -1,30 +1,61 @@
-# va21-omni-agent
+# VA21 OS - Backend Services
 
-The OmniAgent is a self-correcting, security-conscious, AI-native application designed for development, research, and automation.
+**Om Vinayaka** 🙏
 
-This project is being built by Jules, an AI software engineer.
+This directory contains the backend services for VA21 OS. 
 
-## Phases
+## Important Note
 
-*   **Phase 1: The Core Agent & Conversational Memory (MVP)**
-*   **Phase 2: The Agentic Terminal**
-*   **Phase 3: RAG and Long-Term Memory**
-*   **Phase 4: Workflow Automation**
+**VA21 is a full operating system**, not a web or Electron application.
+
+The main OS interface is:
+- **Zork Shell** (`va21_system/linux_os/zork_shell/`) - Text adventure interface
+- **Tiling Window Manager** (`va21_system/linux_os/window_manager/`) - Native window management
+- **Guardian AI** - Security core powered by IBM Granite 4.0 via Ollama
+
+## Backend Components
+
+This backend provides:
+1. **Local LLM Engine** - IBM Granite 4.0 via Ollama
+2. **Guardian AI** - Security analysis service
+3. **API Server** - REST API for system services
+
+## Running the Backend
+
+```bash
+# Install Ollama first
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Download Guardian AI model
+ollama pull granite4:2b
+
+# Start the backend
+cd backend
+python va21_server.py
+```
+
+## Frontend Note
+
+The `frontend/` directory contains a React-based web dashboard that can optionally be used for remote administration. It is **NOT** the main OS interface.
+
+The actual OS uses native Linux components:
+- Native tiling window manager
+- Zork-style text adventure shell
+- Terminal-based applications
+
+## Directory Structure
+
+```
+va21-omni-agent/
+├── backend/           # Python backend services
+│   ├── local_llm.py  # IBM Granite 4.0 via Ollama
+│   ├── kernel_guardian.py  # Security core
+│   └── va21_server.py      # API server
+└── frontend/          # Optional web dashboard (NOT main UI)
+```
 
 ## Core Philosophy
 
-A self-correcting, security-conscious, AI-native application designed for development, research, and automation.
+VA21 OS is a self-correcting, security-conscious, AI-native operating system designed for research, development, and secure computing.
 
-## Key Features & Systems
-
-1.  **Unified AI Chat**
-2.  **Multi-LLM Brain**
-3.  **Security Guardian LLM**
-4.  **RAG & Memory**
-5.  **Agentic Terminal**
-6.  **Natural Language Workflows**
-7.  **Self-Correction**
-
-## Delivery
-
-The application will be fully containerized with Docker for easy deployment.
+**Om Vinayaka - May obstacles be removed from your computing journey.**
