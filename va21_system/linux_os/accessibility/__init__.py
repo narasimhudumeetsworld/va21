@@ -10,10 +10,24 @@ Provides system-wide accessibility features including:
 - Push-to-talk voice input (Hold Super key)
 - Support for 1,600+ languages
 - Zork-style interface for EVERY application
+- Om Vinayaka Accessibility Knowledge Base AI
+- Self-Learning System with LangChain + Obsidian integration
 
 Unlike traditional screen readers that just read keywords,
 VA21 explains what things do, asks clarifying questions,
 and executes actions based on natural language.
+
+Om Vinayaka Architecture:
+- Automatically activated when accessibility/voice features are used
+- Creates Zork-style UX for every app when installed
+- Enables voice users to interact with ANY app in the full OS
+- Uses LangChain + Obsidian mind maps for knowledge storage
+- Self-learning system that gets smarter over time
+- FARA layer executes actions across the entire OS
+
+Guardian AI Note:
+Guardian AI runs in a sandboxed Ollama at the kernel level,
+completely isolated from this user-facing accessibility system.
 
 Om Vinayaka - May obstacles be removed from your computing journey.
 """
@@ -34,6 +48,24 @@ from .app_zork_generator import (
     AppZorkInterface
 )
 
+from .om_vinayaka_ai import (
+    OmVinayakaAI,
+    TerminalZorkAdapter,
+    AccessibilityMindMap,
+    CLIToolInterface,
+    get_om_vinayaka,
+    OM_VINAYAKA_VERSION,
+)
+
+from .self_learning import (
+    SelfLearningEngine,
+    LearningKnowledgeBase,
+    CommandPattern,
+    UserPreference,
+    AppUsagePattern,
+    get_learning_engine,
+)
+
 __all__ = [
     # Main accessibility system
     'VA21AccessibilitySystem',
@@ -48,4 +80,20 @@ __all__ = [
     'ZorkInterfaceGenerator',
     'AppAnalyzer',
     'AppZorkInterface',
+    
+    # Om Vinayaka Accessibility Knowledge Base AI
+    'OmVinayakaAI',
+    'TerminalZorkAdapter',
+    'AccessibilityMindMap',
+    'CLIToolInterface',
+    'get_om_vinayaka',
+    'OM_VINAYAKA_VERSION',
+    
+    # Self-Learning with LangChain + Obsidian
+    'SelfLearningEngine',
+    'LearningKnowledgeBase',
+    'CommandPattern',
+    'UserPreference',
+    'AppUsagePattern',
+    'get_learning_engine',
 ]

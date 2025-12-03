@@ -85,21 +85,31 @@ Complete multilingual voice processing with 1,600+ language support:
 
 **Indian Language Support:** Hindi, Tamil, Telugu, Kannada, Bengali, Marathi, Gujarati, Malayalam, Punjabi, and 100+ more!
 
-### ♿ Intelligent Accessibility (Unique to VA21!)
+### ♿ Intelligent Accessibility with Om Vinayaka AI (Unique to VA21!)
 
-VA21's accessibility goes **far beyond traditional screen readers**:
+VA21's accessibility goes **far beyond traditional screen readers**. Powered by the **Om Vinayaka Accessibility Knowledge Base AI**:
 
-| Traditional Screen Readers | VA21 Intelligent Accessibility |
+| Traditional Screen Readers | VA21 + Om Vinayaka AI |
 |---------------------------|-------------------------------|
 | Reads keywords: "menu", "button" | Explains purpose: "This saves your work" |
 | No context awareness | Understands your intent and current task |
 | Just announces elements | Asks clarifying questions when needed |
 | User must know commands | Natural conversation in any language |
+| Single app support | **Zork-style UX for EVERY app** |
+| Limited CLI support | **Wraps CLI tools like Gemini, Copilot, Codex** |
+
+**Om Vinayaka AI Features:**
+- **Automatic Zork UX Generation**: Every app gets a text adventure interface when installed
+- **System-Wide Voice Control**: Control ANY application with voice, not just specific apps
+- **CLI Tool Wrapper**: Gemini CLI, GitHub Copilot CLI, Codex, and more - all accessible via Zork interfaces
+- **Knowledge Base**: LangChain + Obsidian mind maps store all app interfaces
+- **Clarifying Questions**: AI asks for details when your intent is unclear
+- **Context-Aware Execution**: Understands what app is active and what you want
 
 **How it works:**
 - **Hold Super Key**: Activates voice detection
 - **Speak naturally**: "I want to search the internet" or "Save my document"
-- **Helper AI understands**: Asks clarifying questions if needed
+- **Om Vinayaka AI understands**: Asks clarifying questions if needed
 - **FARA Layer executes**: Performs action in any application
 - **1,600+ languages**: Hindi, Tamil, Telugu, Spanish, French, and more
 
@@ -112,12 +122,23 @@ VA21: "Searching for climate change research papers. I'm using
       privacy-respecting search so your query isn't tracked."
 ```
 
-### 🔒 Guardian AI Security
-Powered by IBM Granite 4.0 via Ollama:
+**CLI Tool Accessibility Example:**
+```
+User: "Ask Gemini about Python decorators"
+VA21: "You stand before the GEMINI ORACLE, a shimmering portal of AI wisdom.
+      The oracle considers your question deeply...
+      [Gemini's response about Python decorators]
+      What else would you like to ask?"
+```
+
+### 🔒 Guardian AI Security (Sandboxed)
+Powered by IBM Granite 4.0 via **sandboxed Ollama in the kernel**:
+- **Complete Isolation**: Guardian AI runs separately from user-facing AI
 - **Think → Vet → Act** methodology
 - **Real-time threat analysis**
 - **ClamAV antivirus integration**
 - **Air gap browser protection**
+- **Cannot be influenced by user conversations**
 
 ### 🔒 AI Privacy & Security System
 Powered by [IBM AI Privacy Toolkit](https://github.com/IBM/ai-privacy-toolkit) (MIT) + [LLM Guard](https://github.com/protectai/llm-guard) (MIT):
@@ -202,41 +223,65 @@ Inspired by [Microsoft AutoGen](https://github.com/microsoft/autogen), [Agent Ze
 ## 🏗️ VA21 OS - Complete Architecture
 
 ```
-┌─────────────────────────────────────────────────────┐
-│          VA21 OS - Complete Architecture            │
-├─────────────────────────────────────────────────────┤
-│  🛡️ Security Layer (Guardian AI)                   │
-│  ├── IBM Granite 4.0 2B (Ollama) - Apache 2.0      │
-│  ├── IBM AI Privacy Toolkit - MIT                   │
-│  ├── LLM Guard - MIT                                │
-│  └── Think → Vet → Act methodology                  │
-├─────────────────────────────────────────────────────┤
-│  🎤 Voice Intelligence Layer                        │
-│  ├── Meta Omnilingual ASR (1,600+ langs) - Apache  │
-│  ├── Whisper/Solus AI (backup) - MIT               │
-│  ├── Rhasspy (wake words) - MIT                    │
-│  ├── Piper TTS (fast) - MIT                        │
-│  ├── Kokoro TTS (premium) - Apache 2.0             │
-│  └── Hold Super Key = Push-to-Talk (Accessibility) │
-├─────────────────────────────────────────────────────┤
-│  🤖 Multi-Agent System                             │
-│  ├── Microsoft AutoGen - MIT                        │
-│  ├── Agent Zero patterns - MIT                      │
-│  ├── OpenCode patterns (Build/Plan) - MIT          │
-│  └── LangChain orchestration - MIT                 │
-├─────────────────────────────────────────────────────┤
-│  🎮 Zork-Style Interface (Custom Created!)         │
-│  ├── Text adventure UI (unique to VA21)            │
-│  ├── Native tiling window manager                   │
-│  ├── Obsidian-style Knowledge Vault                │
-│  └── Research Command Center                        │
-├─────────────────────────────────────────────────────┤
-│  💾 Debian GNU/Linux Foundation                    │
-│  ├── Full GNU toolkit                               │
-│  ├── Debian package management                      │
-│  ├── Flatpak integration                            │
-│  └── ISO releases for real hardware install         │
-└─────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────┐
+│                  VA21 OS - Complete Architecture                        │
+├─────────────────────────────────────────────────────────────────────────┤
+│  🛡️ KERNEL LEVEL - Guardian AI (Sandboxed Ollama - Port 11435)         │
+│  ├── IBM Granite 4.0 2B - Isolated security AI                         │
+│  ├── Completely separate from user-facing AI                           │
+│  ├── Cannot be influenced by user conversations                        │
+│  ├── Think → Vet → Act methodology                                     │
+│  └── Independent threat analysis and blocking                          │
+├─────────────────────────────────────────────────────────────────────────┤
+│  🙏 OM VINAYAKA ACCESSIBILITY AI (User-facing Ollama - Port 11434)     │
+│  ├── Automatic Zork UX for every app when installed                    │
+│  ├── System-wide voice control for ALL applications                    │
+│  ├── CLI tool wrappers (Gemini, Copilot, Codex, etc.)                  │
+│  ├── LangChain + Obsidian mind maps knowledge base                     │
+│  ├── Self-learning system that improves over time                      │
+│  ├── Clarifying questions to understand user intent                    │
+│  └── FARA layer executes actions across entire OS                      │
+├─────────────────────────────────────────────────────────────────────────┤
+│  🎤 Voice Intelligence Layer                                           │
+│  ├── Meta Omnilingual ASR (1,600+ langs) - Apache                      │
+│  ├── Whisper/Solus AI (backup) - MIT                                   │
+│  ├── Rhasspy (wake words) - MIT                                        │
+│  ├── Piper TTS (fast) - MIT                                            │
+│  ├── Kokoro TTS (premium) - Apache 2.0                                 │
+│  └── Hold Super Key = Push-to-Talk (Accessibility)                     │
+├─────────────────────────────────────────────────────────────────────────┤
+│  🤖 Multi-Agent System                                                 │
+│  ├── Microsoft AutoGen - MIT                                           │
+│  ├── Agent Zero patterns - MIT                                         │
+│  ├── OpenCode patterns (Build/Plan) - MIT                              │
+│  └── LangChain orchestration - MIT                                     │
+├─────────────────────────────────────────────────────────────────────────┤
+│  🎮 Zork-Style Interface (Custom Created!)                             │
+│  ├── Text adventure UI for EVERY application                           │
+│  ├── Automatic interface generation on app install                     │
+│  ├── Native tiling window manager                                      │
+│  ├── Obsidian-style Knowledge Vault                                    │
+│  └── Research Command Center                                           │
+├─────────────────────────────────────────────────────────────────────────┤
+│  💻 Sandboxed Terminals with Zork Accessibility                        │
+│  ├── Gemini CLI, Codex, GitHub Copilot CLI support                     │
+│  ├── Natural language to CLI command translation                       │
+│  ├── Zork narrative wrapping for all output                            │
+│  └── Voice control for terminal applications                           │
+├─────────────────────────────────────────────────────────────────────────┤
+│  🧠 Self-Learning System                                               │
+│  ├── Learns common command patterns                                    │
+│  ├── Tracks user preferences                                           │
+│  ├── Monitors app usage patterns                                       │
+│  ├── Improves narratives over time                                     │
+│  └── Gets smarter with continued use!                                  │
+├─────────────────────────────────────────────────────────────────────────┤
+│  💾 Debian GNU/Linux Foundation                                        │
+│  ├── Full GNU toolkit                                                  │
+│  ├── Debian package management                                         │
+│  ├── Flatpak integration                                               │
+│  └── ISO releases for real hardware install                            │
+└─────────────────────────────────────────────────────────────────────────┘
 ```
 
 ## 🔒 Core Security Architecture

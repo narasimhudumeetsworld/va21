@@ -919,10 +919,20 @@ class VA21AccessibilitySystem:
     - Conversational interaction with Helper AI
     - Action execution via FARA layer
     - Support for 1,600+ languages
+    - Om Vinayaka AI integration for Zork-style interfaces on ALL apps
     
     This creates a unique accessibility experience that explains
     what's happening, asks clarifying questions, and executes
     tasks based on natural language requests.
+    
+    Architecture:
+    - Om Vinayaka AI: Central orchestrator (user-facing Ollama)
+    - App Zork Generator: Creates Zork UX for each app automatically
+    - FARA Layer: Executes actions across the entire OS
+    - Voice Controller: Push-to-talk with 1,600+ languages
+    
+    Note: Guardian AI runs in a sandboxed Ollama in the kernel,
+    completely isolated from this user-facing system.
     """
     
     def __init__(self):
@@ -935,25 +945,54 @@ class VA21AccessibilitySystem:
             self.fara
         )
         self.action_callback = None
+        
+        # Initialize Om Vinayaka AI (lazy import to avoid circular dependencies)
+        self.om_vinayaka = None
+    
+    def _init_om_vinayaka(self):
+        """Initialize Om Vinayaka AI if not already initialized."""
+        if self.om_vinayaka is None:
+            try:
+                from .om_vinayaka_ai import get_om_vinayaka
+                from .app_zork_generator import AppZorkManager
+                
+                app_zork_manager = AppZorkManager()
+                self.om_vinayaka = get_om_vinayaka(
+                    fara_layer=self.fara,
+                    app_zork_manager=app_zork_manager
+                )
+            except ImportError as e:
+                print(f"[VA21 Accessibility] Could not initialize Om Vinayaka: {e}")
     
     def start(self, action_callback: Callable = None):
         """Start the accessibility system."""
         self.action_callback = action_callback
         self.voice_controller.start(action_callback)
         
+        # Initialize Om Vinayaka AI
+        self._init_om_vinayaka()
+        if self.om_vinayaka:
+            self.om_vinayaka.activate()
+        
         # Announce startup
         self.screen_reader.speak(
             "VA21 accessibility system is ready. "
+            "Om Vinayaka AI activated. "
             "Hold the Super key and speak to tell me what you'd like to do. "
-            "I'll explain everything and help you navigate the entire system."
+            "I'll explain everything and help you navigate the entire system. "
+            "Every application has a Zork-style interface ready for you."
         )
         print("\n♿ VA21 Accessibility System Active")
+        print("   🙏 Om Vinayaka AI: ACTIVATED")
         print("   Hold Super key for voice input")
+        print("   Zork interfaces available for ALL apps")
         print("   Conversational AI ready")
     
     def stop(self):
         """Stop the accessibility system."""
         self.voice_controller.stop()
+        if self.om_vinayaka:
+            self.om_vinayaka.deactivate()
         self.screen_reader.speak("Accessibility system stopped.")
     
     def announce(self, text: str):
@@ -963,23 +1002,57 @@ class VA21AccessibilitySystem:
     def describe_current_context(self):
         """Describe what's currently on screen."""
         context = self.fara.get_current_context()
-        description = self.screen_reader.describe_context(context)
+        
+        # Use Om Vinayaka for richer descriptions if available
+        if self.om_vinayaka and context.app_name:
+            description = self.om_vinayaka.get_app_description(context.app_name)
+        else:
+            description = self.screen_reader.describe_context(context)
+        
         self.screen_reader.speak(description)
         return description
     
     def process_text_input(self, text: str) -> Dict[str, Any]:
         """Process text input (for typed commands from accessibility users)."""
         context = self.fara.get_current_context()
-        response = self.helper_ai.process_request(text, context)
+        
+        # Use Om Vinayaka AI if available for richer processing
+        if self.om_vinayaka:
+            response = self.om_vinayaka.process_user_input(text, context.app_name)
+        else:
+            response = self.helper_ai.process_request(text, context)
         
         # Speak the response
         self.screen_reader.speak(response['response'], wait=False)
         
         # Execute action if present
-        if response['action'] and self.action_callback:
+        if response.get('action') and self.action_callback:
             self.action_callback(response['action'])
         
         return response
+    
+    def register_app(self, app_name: str, desktop_file: str = None) -> Dict:
+        """
+        Register an app and create its Zork interface.
+        Called when an app is installed or first launched.
+        """
+        self._init_om_vinayaka()
+        if self.om_vinayaka:
+            return self.om_vinayaka.register_app_on_install(app_name, desktop_file)
+        return {'status': 'om_vinayaka_not_available'}
+    
+    def get_status(self) -> Dict:
+        """Get the status of the accessibility system."""
+        status = {
+            'voice_available': VOICE_AVAILABLE,
+            'keyboard_available': KEYBOARD_AVAILABLE,
+            'tts_available': TTS_AVAILABLE,
+        }
+        
+        if self.om_vinayaka:
+            status['om_vinayaka'] = self.om_vinayaka.get_status()
+        
+        return status
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -990,6 +1063,7 @@ def main():
     """Test the accessibility system."""
     print("=" * 60)
     print("VA21 OS - Accessibility System Test")
+    print("Om Vinayaka - May obstacles be removed")
     print("=" * 60)
     
     def handle_action(action: str):
@@ -997,6 +1071,15 @@ def main():
     
     system = VA21AccessibilitySystem()
     system.start(action_callback=handle_action)
+    
+    # Register some test apps
+    print("\n--- Registering Test Apps ---")
+    system.register_app("Firefox")
+    system.register_app("Visual Studio Code")
+    system.register_app("Gemini CLI")
+    
+    print("\n--- System Status ---")
+    print(json.dumps(system.get_status(), indent=2, default=str))
     
     print("\nType commands to test (or 'quit' to exit):")
     
@@ -1008,7 +1091,7 @@ def main():
             
             response = system.process_text_input(user_input)
             print(f"\n[Response]: {response['response']}")
-            if response['action']:
+            if response.get('action'):
                 print(f"[Action]: {response['action']}")
                 
         except (KeyboardInterrupt, EOFError):
