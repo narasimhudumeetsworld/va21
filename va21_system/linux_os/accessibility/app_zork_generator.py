@@ -565,13 +565,23 @@ class ZorkInterfaceGenerator:
     
     def _generate_welcome(self, app_name: str, template: Dict) -> str:
         """Generate welcome message for the app interface."""
+        # Truncate and center text safely
+        theme = template['main_theme'][:40]
+        name = app_name[:45]
+        ambient = template['ambient'][:55]
+        
+        # Build lines with proper padding
+        theme_line = f"Welcome to {theme}".center(63)
+        name_line = f"({name})".center(63)
+        ambient_line = ambient.center(63)
+        
         return f"""
 ╔═══════════════════════════════════════════════════════════════════╗
 ║                                                                   ║
-║   Welcome to {template['main_theme'][:40]:^40}  ║
-║   ({app_name[:45]:^45})  ║
+║{theme_line}║
+║{name_line}║
 ║                                                                   ║
-║   {template['ambient'][:55]:^55}  ║
+║{ambient_line}║
 ║                                                                   ║
 ║   Your accessibility assistant is ready to guide you.            ║
 ║   Speak naturally or type what you'd like to do.                 ║

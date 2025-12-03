@@ -154,26 +154,24 @@ class SystemWideFARALayer:
         """Detect application type from window title."""
         title_lower = window_title.lower()
         
-        if 'zork' in title_lower or 'boot chamber' in title_lower or 'research lab' in title_lower:
-            return AppType.ZORK_SHELL
-        elif 'terminal' in title_lower or 'bash' in title_lower or 'shell' in title_lower:
-            return AppType.TERMINAL
-        elif 'file' in title_lower or 'nautilus' in title_lower or 'thunar' in title_lower:
-            return AppType.FILE_MANAGER
-        elif 'editor' in title_lower or 'vim' in title_lower or 'nano' in title_lower or 'gedit' in title_lower:
-            return AppType.TEXT_EDITOR
-        elif 'firefox' in title_lower or 'chrome' in title_lower or 'browser' in title_lower:
-            return AppType.WEB_BROWSER
-        elif 'setting' in title_lower or 'preference' in title_lower or 'config' in title_lower:
-            return AppType.SETTINGS
-        elif 'research' in title_lower:
-            return AppType.RESEARCH_SUITE
-        elif 'writing' in title_lower or 'document' in title_lower:
-            return AppType.WRITING_SUITE
-        elif 'vault' in title_lower or 'obsidian' in title_lower or 'note' in title_lower:
-            return AppType.OBSIDIAN_VAULT
-        else:
-            return AppType.UNKNOWN
+        # Optimized app type detection using keyword sets
+        app_keywords = {
+            AppType.ZORK_SHELL: {'zork', 'boot chamber', 'research lab', 'guardian sanctum'},
+            AppType.TERMINAL: {'terminal', 'bash', 'shell', 'konsole', 'xterm'},
+            AppType.FILE_MANAGER: {'file', 'nautilus', 'thunar', 'dolphin', 'files'},
+            AppType.TEXT_EDITOR: {'editor', 'vim', 'nano', 'gedit', 'kate', 'notepad'},
+            AppType.WEB_BROWSER: {'firefox', 'chrome', 'chromium', 'browser', 'safari'},
+            AppType.SETTINGS: {'setting', 'preference', 'config', 'control center'},
+            AppType.RESEARCH_SUITE: {'research'},
+            AppType.WRITING_SUITE: {'writing', 'document', 'writer', 'word'},
+            AppType.OBSIDIAN_VAULT: {'vault', 'obsidian', 'note'},
+        }
+        
+        for app_type, keywords in app_keywords.items():
+            if any(kw in title_lower for kw in keywords):
+                return app_type
+        
+        return AppType.UNKNOWN
     
     def _get_app_name(self, app_type: AppType) -> str:
         """Get friendly name for app type."""
