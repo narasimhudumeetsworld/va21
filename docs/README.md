@@ -49,11 +49,19 @@ This directory contains comprehensive documentation for VA21 OS, the revolutiona
    - Research command center demos
    - Real-world performance benchmarks
 
+5. **[MODEL_REQUIREMENTS.md](MODEL_REQUIREMENTS.md)** - AI Model & Storage Guide (NEW!)
+   - VA21 OS base installation: ~5 GB
+   - Guardian AI model (always included)
+   - On-demand AI model downloads
+   - Model sizes and RAM requirements
+   - Installation profiles (Minimal to Maximum)
+   - Hardware configuration guides
+
 ### Architecture & Technical Details
 
 **For developers and system administrators:**
 
-5. **[ARCHITECTURE.md](ARCHITECTURE.md)** - System architecture (Coming Soon)
+6. **[ARCHITECTURE.md](ARCHITECTURE.md)** - System architecture (Coming Soon)
    - Core architecture overview
    - Security architecture deep dive
    - AI architecture details
@@ -61,7 +69,7 @@ This directory contains comprehensive documentation for VA21 OS, the revolutiona
    - Data flow diagrams
    - Performance optimization
 
-6. **[DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)** - Development guide (Coming Soon)
+7. **[DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)** - Development guide (Coming Soon)
    - Setting up development environment
    - Code structure and organization
    - Contributing guidelines
@@ -69,7 +77,7 @@ This directory contains comprehensive documentation for VA21 OS, the revolutiona
    - Plugin development
    - Testing and debugging
 
-7. **[API_REFERENCE.md](API_REFERENCE.md)** - API documentation (Coming Soon)
+8. **[API_REFERENCE.md](API_REFERENCE.md)** - API documentation (Coming Soon)
    - REST API endpoints
    - WebSocket events
    - Python SDK
@@ -366,6 +374,7 @@ This documentation is actively being developed. Check back regularly for updates
 - ✅ FEATURE_SHOWCASE.md (Complete)
 - ✅ ADOPTION_GUIDE.md (Complete)
 - ✅ CHANGELOG.md (Complete)
+- ✅ MODEL_REQUIREMENTS.md (NEW - AI Models & 5GB Storage Guide)
 
 **Coming Soon:**
 - ⏳ GETTING_STARTED.md

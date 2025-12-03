@@ -177,16 +177,23 @@ Access the interface at: **http://localhost:5000**
 
 ## 📋 System Requirements
 
+### Disk Space Requirements
+- **VA21 OS Base Installation**: ~5 GB (includes Zork UI, Guardian AI, all features)
+- **With All AI Models**: ~10 GB (full model suite downloaded during install)
+
+> **Note:** Guardian AI model is always included. Other AI models are downloaded on-demand during first use.
+> See [docs/MODEL_REQUIREMENTS.md](docs/MODEL_REQUIREMENTS.md) for detailed breakdown.
+
 ### Minimum Requirements (7GB RAM)
 - **Debian-based Linux** (Debian 12+, Ubuntu 22.04+, Linux Mint 21+)
 - **Python 3.8+**
 - **7GB RAM** (for standard usage with AI features)
-- **2GB disk space** for models and dependencies
+- **5GB disk space** for VA21 OS base installation
 - **Flatpak** (optional, for App Center)
 
 ### Recommended Requirements (10GB RAM)
 - **8-10GB RAM** (for heavy multitasking with all AI models)
-- **4GB disk space** for full model suite
+- **10GB disk space** for full installation with all AI models
 - **Modern CPU** (Intel Core i5/AMD Ryzen 5 or better)
 - **SSD storage** for faster model loading
 
