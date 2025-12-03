@@ -58,7 +58,12 @@ AI_CONTEXT_LIMITS = {
 # When to start summarizing (percentage of limit)
 SUMMARIZE_THRESHOLD = 0.75  # Start summarizing at 75% capacity
 
-# Average characters per token (approximation)
+# Average characters per token (approximation for English text)
+# Note: This is an approximation. Actual token counts vary by:
+# - Language (CJK languages may have different ratios)
+# - Model tokenizer (GPT, LLaMA, etc. have different tokenizers)
+# - Content type (code vs prose vs mixed)
+# For VA21, we use 4 as a conservative estimate for English/Western languages
 CHARS_PER_TOKEN = 4
 
 # Summary compression ratios
@@ -70,12 +75,14 @@ COMPRESSION_RATIOS = {
 }
 
 # Priority levels for content
+# Used to determine what to keep vs summarize when context gets full
+# Higher priority = more likely to be kept in full
 PRIORITY_LEVELS = {
-    'critical': 5,    # Never summarize (user intent, current action)
-    'high': 4,        # Minimal summarization (recent context)
-    'medium': 3,      # Moderate summarization (background info)
-    'low': 2,         # Aggressive summarization (old history)
-    'archive': 1,     # Can be removed from context entirely
+    'critical': 5,    # Never summarize - user intent, current action, essential context
+    'high': 4,        # Minimal summarization - recent context, current conversation
+    'medium': 3,      # Moderate summarization - background info, knowledge context
+    'low': 2,         # Aggressive summarization - old history, verbose explanations
+    'archive': 1,     # Can be removed from context entirely - already processed info
 }
 
 DEFAULT_KNOWLEDGE_BASE_PATH = os.path.expanduser("~/.va21/accessibility_knowledge_base")
