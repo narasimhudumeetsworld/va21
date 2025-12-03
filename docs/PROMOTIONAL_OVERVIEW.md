@@ -320,38 +320,36 @@ Sandboxed terminals + knowledge vault + auto-redaction - **tailored for professi
 
 ### Quick Start (Recommended)
 
-**One-line installation:**
+**Download ISO from Releases:**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/narasimhudumeetsworld/va21/main/install.sh | bash
+# Download VA21 OS ISO from releases page
+# Write to USB drive
+sudo dd if=va21-os-debian.iso of=/dev/sdX bs=4M status=progress
+
+# Or use in VirtualBox
 ```
 
-**Installation time:** 5-15 minutes (depending on internet speed)
+**Installation time:** 10-20 minutes
 
 **What it does:**
-1. Checks system requirements
-2. Installs dependencies
-3. Downloads VA21 OS components
-4. Configures system services
-5. Sets up AI models
-6. Creates desktop shortcuts
+1. Installs full VA21 OS to your computer
+2. Sets up Zork-style interface
+3. Configures Guardian AI security
+4. Installs all research and writing tools
+5. Sets up tiling window manager
+6. Configures voice input for accessibility
 
-### Docker Installation (Testing)
+### Build from Source
 
-**Perfect for trying VA21 OS without system changes:**
+**For developers:**
 
 ```bash
 git clone https://github.com/narasimhudumeetsworld/va21.git
-cd va21/va21-omni-agent
-docker-compose up -d
-xdg-open http://localhost:5000
+cd va21/va21_system/linux_os
+./scripts/build_iso.sh debian
+# ISO will be in output/ directory
 ```
-
-### Manual Installation
-
-**For advanced users:**
-
-See [INSTALL.md](../INSTALL.md) for detailed instructions.
 
 ---
 

@@ -1,8 +1,10 @@
 # VA21 Research OS - The Ultimate Research Operating System
 
+**Om Vinayaka** 🙏
+
 ## Overview
 
-VA21 Research OS is a **real**, stripped-down Linux-based operating system designed for secure research. It features its own **advanced desktop environment** that's more powerful than traditional DEs, with everything controllable via **natural language AI chat** or **keyboard shortcuts**.
+VA21 Research OS is a **real**, full Linux-based operating system designed for secure research. It features its own **advanced desktop environment** that's more powerful than traditional DEs, with everything controllable via **natural language AI chat**, **voice commands**, or **keyboard shortcuts**.
 
 **The go-to OS for Researchers, Writers, Journalists, and Security Experts.**
 
@@ -16,13 +18,92 @@ VA21 Research OS is a **real**, stripped-down Linux-based operating system desig
 1. **Real Linux Base** - Available in both Debian and Alpine editions
 2. **Full GNU Toolkit** - Complete GNU/Linux userland with glibc support
 3. **AI-Powered Control** - Chat with Helper AI to control everything
-4. **Keyboard-Driven** - Every action has a keyboard shortcut
-5. **Guardian AI Protection** - AI-powered security at system level
-6. **Zork-Style Interface** - Unique text adventure command interaction
-7. **Spotlight Launcher** - Cmd/Ctrl+Space for universal access
-8. **Tiling Window Manager** - Full keyboard control
+4. **Voice Accessibility** - Hold Super key for push-to-talk voice input
+5. **Keyboard-Driven** - Every action has a keyboard shortcut
+6. **Guardian AI Protection** - AI-powered security at system level
+7. **Zork-Style Interface** - Custom created text adventure command interaction
+8. **Spotlight Launcher** - Cmd/Ctrl+Space for universal access
+9. **Tiling Window Manager** - Full keyboard control
 
-## 🎮 Control Everything with Chat or Keyboard
+## ♿ Intelligent Accessibility - Unlike Any Other OS
+
+VA21 OS provides a **unique accessibility experience** that goes far beyond traditional screen readers:
+
+### What Makes VA21 Accessibility Different?
+
+| Traditional Screen Readers | VA21 Intelligent Accessibility |
+|---------------------------|-------------------------------|
+| Reads keywords: "menu", "button", "file" | Explains what things do: "This button saves your work so you won't lose it" |
+| No context awareness | Understands what app you're in and what you're trying to do |
+| Just announces elements | Asks clarifying questions: "Where would you like to go?" |
+| User must know commands | Natural conversation: "I want to search the internet" |
+| Limited to UI elements | Controls entire OS, all apps, and system functions |
+
+### Voice Control (Hold Super Key)
+
+| Feature | How It Works |
+|---------|--------------|
+| **Hold Super Key** | Activates voice listening instantly |
+| **Speak Naturally** | "I want to save my work" or "Search for machine learning" |
+| **Helper AI Understands** | Interprets your intent, asks if unclear |
+| **FARA Layer Executes** | Performs the action across any application |
+| **1,600+ Languages** | Works in Hindi, Tamil, Spanish, French, and more |
+
+### Example Conversations
+
+**Traditional screen reader:**
+```
+"File menu. New. Open. Save. Exit."
+```
+
+**VA21 intelligent assistant:**
+```
+User: "I want to save my work"
+VA21: "I'll save your document now. It will be saved to your Documents 
+       folder. Would you like me to save it with a specific name, or 
+       use the current one?"
+User: "Use current name"
+VA21: "Done! Your document has been saved. Is there anything else 
+       you'd like to do?"
+```
+
+### Zork-Style Interface for EVERY App (Unique to VA21!)
+
+When you install any application, VA21 automatically:
+1. **Analyzes the app** - understands its menus, buttons, and functions
+2. **Generates a Zork interface** - creates a text adventure layer for the app
+3. **Stores in Knowledge Base** - saves in Obsidian-style vault with mind maps
+4. **Voice users can navigate** - use natural language in any app
+
+**Example - Using Firefox with Zork Interface:**
+```
+╔═══════════════════════════════════════════════════════════════════╗
+║   Welcome to The Portal Nexus (Firefox)                          ║
+║   Shimmering gateways to countless realms surround you.          ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+> I want to search for something
+
+VA21: "What would you like to search for? I'll find it on the internet 
+       while protecting your privacy."
+
+> climate change research
+
+VA21: "Searching for 'climate change research'. I found several portals. 
+       Shall I describe them, or would you like me to open the first one?"
+```
+
+### Works Across Entire OS
+
+- **Zork Interface**: Navigate the text adventure with voice
+- **File Manager**: "Open my documents", "Create a new folder called research"
+- **Web Browser**: "Search for climate change", "Go back to previous page"
+- **Text Editor**: "Save this file", "Find the word introduction"
+- **Settings**: "Turn on dark mode", "Connect to WiFi"
+- **System**: "What time is it?", "How much battery do I have?"
+- **Any Installed App**: Automatic Zork interface generation!
+
+## 🎮 Control Everything with Chat, Voice, or Keyboard
 
 VA21's revolutionary interface lets you control **everything** through natural language:
 
@@ -51,6 +132,7 @@ AI: Battery is at 78% (on battery) ✓
 
 | Action | Shortcut |
 |--------|----------|
+| **Voice Input (Accessibility)** | `Hold Super` |
 | Open Launcher | `Ctrl+Space` |
 | Command Palette | `Ctrl+K` |
 | Toggle Theme | `Ctrl+Shift+T` |
@@ -71,22 +153,24 @@ AI: Battery is at 78% (on battery) ✓
 - Complete GNU toolkit with glibc
 - Maximum compatibility with Linux software
 - Ideal for desktop installation
-- ~500MB base image
+- ~5GB base installation
 
 ```bash
-docker build -f Dockerfile.debian -t va21-os:debian .
-docker run -it --rm va21-os:debian
+# Build Debian edition ISO
+./scripts/build_iso.sh debian
+# Install from ISO to your computer
 ```
 
 ### Alpine Edition (Lightweight)
 - musl libc + BusyBox
-- Minimal footprint (~100MB)
-- Perfect for containers and VMs
+- Minimal footprint (~2GB)
 - Fast boot times
+- Perfect for older hardware
 
 ```bash
-docker build -f Dockerfile.alpine-desktop -t va21-os:alpine .
-docker run -it --rm va21-os:alpine
+# Build Alpine edition ISO
+./scripts/build_iso.sh alpine
+# Install from ISO to your computer
 ```
 
 ## 🖥️ Display Server Architecture
@@ -242,14 +326,14 @@ Or ask the AI: *"let's play zork"*
 
 ## Quick Start
 
-### 📥 Download ISO (Recommended for Physical/Virtual Install)
+### 📥 Download ISO (Recommended)
 
 Download pre-built ISO images from the [Releases page](../../releases):
 
 | Edition | Description | Download |
 |---------|-------------|----------|
-| **Debian** | Full GNU toolkit, glibc, max compatibility (~500MB) | `va21-debian-x86_64.iso` |
-| **Alpine** | Lightweight, musl libc, fast boot (~100MB) | `va21-alpine-x86_64.iso` |
+| **Debian** | Full GNU toolkit, glibc, max compatibility (~5GB) | `va21-debian-x86_64.iso` |
+| **Alpine** | Lightweight, musl libc, fast boot (~2GB) | `va21-alpine-x86_64.iso` |
 
 #### Install on Physical Hardware or VirtualBox
 
@@ -258,21 +342,6 @@ Download pre-built ISO images from the [Releases page](../../releases):
 3. **USB Drive**: `sudo dd if=va21-*.iso of=/dev/sdX bs=4M status=progress`
 4. **VirtualBox**: Create new VM → Use ISO as boot disk
 5. Boot and enjoy VA21 Research OS!
-
-### 🐳 Using Docker (Containerized)
-
-```bash
-# Clone the repository
-git clone https://github.com/narasimhudumeetsworld/va21.git
-cd va21/va21_system/linux_os
-
-# Run VA21 Research OS (Alpine - lightweight)
-./run.sh
-
-# Or run Debian edition
-docker build -f Dockerfile.debian -t va21-os:debian .
-docker run -it --rm va21-os:debian
-```
 
 ### 🔧 Build ISO Locally
 
@@ -290,56 +359,44 @@ cd va21/va21_system/linux_os
 ls -la output/*.iso
 ```
 
-### Using Podman
-
-```bash
-cd va21/va21_system/linux_os
-./run.sh podman
-
-# Or manually:
-podman build -t va21-research-os .
-podman run -it --rm va21-research-os
-```
-
-### Using Docker Compose
-
-```bash
-# Start in background
-docker-compose up -d
-
-# Enter the Zork interface
-docker-compose exec va21 va21
-
-# View logs
-docker-compose logs -f
-
-# Stop
-docker-compose down
-```
-
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    VA21 Research OS                          │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │              Zork-Style Text Interface              │   │
-│  │   "You are in the Research Lab. Guardian watches." │   │
-│  │   [Toggleable Hints for Newcomers]                  │   │
-│  └─────────────────────────────────────────────────────┘   │
-├─────────────────────────────────────────────────────────────┤
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐  │
-│  │  Guardian AI │  │   SearXNG    │  │   ClamAV         │  │
-│  │  (Security)  │  │  (Search)    │  │  (Antivirus)     │  │
-│  └──────────────┘  └──────────────┘  └──────────────────┘  │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │     Alpine Linux + BusyBox (Minimal Userland)       │   │
-│  └─────────────────────────────────────────────────────┘   │
-├─────────────────────────────────────────────────────────────┤
-│         Docker / Podman / VirtualBox Container              │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────┐
+│          VA21 OS - Complete Architecture            │
+├─────────────────────────────────────────────────────┤
+│  🛡️ Security Layer (Guardian AI)                   │
+│  ├── IBM Granite 4.0 2B (Ollama) - Apache 2.0      │
+│  ├── IBM AI Privacy Toolkit - MIT                   │
+│  ├── LLM Guard - MIT                                │
+│  └── Think → Vet → Act methodology                  │
+├─────────────────────────────────────────────────────┤
+│  🎤 Voice Intelligence Layer                        │
+│  ├── Meta Omnilingual ASR (1,600+ langs) - Apache  │
+│  ├── Whisper/Solus AI (backup) - MIT               │
+│  ├── Rhasspy (wake words) - MIT                    │
+│  ├── Piper TTS (fast) - MIT                        │
+│  ├── Kokoro TTS (premium) - Apache 2.0             │
+│  └── Hold Super Key = Push-to-Talk (Accessibility) │
+├─────────────────────────────────────────────────────┤
+│  🤖 Multi-Agent System                             │
+│  ├── Microsoft AutoGen - MIT                        │
+│  ├── Agent Zero patterns - MIT                      │
+│  ├── OpenCode patterns (Build/Plan) - MIT          │
+│  └── LangChain orchestration - MIT                 │
+├─────────────────────────────────────────────────────┤
+│  🎮 Zork-Style Interface (Custom Created!)         │
+│  ├── Text adventure UI (unique to VA21)            │
+│  ├── Native tiling window manager                   │
+│  ├── Obsidian-style Knowledge Vault                │
+│  └── Research Command Center                        │
+├─────────────────────────────────────────────────────┤
+│  💾 Debian/Alpine GNU/Linux Foundation             │
+│  ├── Full GNU toolkit                               │
+│  ├── Debian/Alpine package management               │
+│  ├── Flatpak integration                            │
+│  └── ISO releases for real hardware install         │
+└─────────────────────────────────────────────────────┘
 ```
 
 ## Components
@@ -378,31 +435,30 @@ docker-compose down
 
 ### Prerequisites
 
-You need either Docker or Podman installed:
+You need the build tools installed:
 
 ```bash
-# Docker (Ubuntu/Debian)
-sudo apt-get install docker.io docker-compose
+# Debian/Ubuntu
+sudo apt-get install debootstrap xorriso squashfs-tools
 
-# Podman (Ubuntu/Debian)  
-sudo apt-get install podman podman-compose
-
-# macOS
-brew install docker  # or podman
+# For building both editions
+./scripts/build_iso.sh all
 ```
 
-### Build and Run
+### Build ISO
 
 ```bash
 # Clone the repository
 git clone https://github.com/narasimhudumeetsworld/va21.git
 cd va21/va21_system/linux_os
 
-# Build and run (auto-detects docker/podman)
-./run.sh
+# Build Debian edition ISO
+./scripts/build_iso.sh debian
 
-# Or build only
-./run.sh build
+# Build Alpine edition ISO
+./scripts/build_iso.sh alpine
+
+# ISOs will be in output/ directory
 ```
 
 ## Usage - Zork-Style Interface
@@ -508,22 +564,18 @@ va21_system/linux_os/
 
 ## Running Modes
 
-### 1. Docker (Recommended)
+### 1. ISO Installation (Recommended)
 ```bash
-./run.sh docker
-# or
-docker-compose up -d
+# Download ISO from releases and write to USB
+sudo dd if=va21-debian.iso of=/dev/sdX bs=4M status=progress
+
+# Or use in VirtualBox
 ```
 
-### 2. Podman
+### 2. VirtualBox
 ```bash
-./run.sh podman
-```
-
-### 3. VirtualBox
-```bash
-./run.sh vbox
-# Follow instructions to import into VirtualBox
+# Create new VM with VA21 ISO as boot disk
+# Allocate 4GB+ RAM and 20GB+ disk
 ```
 
 ## Security Features
@@ -540,11 +592,11 @@ docker-compose up -d
 - **Quarantine**: Isolate detected threats
 - **Full Scan**: Scan files and directories
 
-### Container Security
-- **Isolation**: Runs in isolated container
+### System Security
+- **Sandboxed Terminals**: Isolated execution environments
 - **Resource Limits**: Controlled CPU/memory
-- **Non-root User**: Runs as 'researcher' user
-- **Read-only Layers**: Immutable base system
+- **Non-root User**: Runs as 'researcher' user by default
+- **Principle of Least Privilege**: Minimal permissions
 
 ## Hints System
 

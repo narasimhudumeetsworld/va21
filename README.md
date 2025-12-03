@@ -85,6 +85,33 @@ Complete multilingual voice processing with 1,600+ language support:
 
 **Indian Language Support:** Hindi, Tamil, Telugu, Kannada, Bengali, Marathi, Gujarati, Malayalam, Punjabi, and 100+ more!
 
+### ♿ Intelligent Accessibility (Unique to VA21!)
+
+VA21's accessibility goes **far beyond traditional screen readers**:
+
+| Traditional Screen Readers | VA21 Intelligent Accessibility |
+|---------------------------|-------------------------------|
+| Reads keywords: "menu", "button" | Explains purpose: "This saves your work" |
+| No context awareness | Understands your intent and current task |
+| Just announces elements | Asks clarifying questions when needed |
+| User must know commands | Natural conversation in any language |
+
+**How it works:**
+- **Hold Super Key**: Activates voice detection
+- **Speak naturally**: "I want to search the internet" or "Save my document"
+- **Helper AI understands**: Asks clarifying questions if needed
+- **FARA Layer executes**: Performs action in any application
+- **1,600+ languages**: Hindi, Tamil, Telugu, Spanish, French, and more
+
+**Example conversation:**
+```
+User: "I want to find something on the internet"
+VA21: "I can help you search. What would you like to look up?"
+User: "Climate change research papers"
+VA21: "Searching for climate change research papers. I'm using 
+      privacy-respecting search so your query isn't tracked."
+```
+
 ### 🔒 Guardian AI Security
 Powered by IBM Granite 4.0 via Ollama:
 - **Think → Vet → Act** methodology
@@ -172,6 +199,46 @@ Inspired by [Microsoft AutoGen](https://github.com/microsoft/autogen), [Agent Ze
 - **Task Automation**: Request automated tasks through natural conversation
 - **Easter Egg Activation**: Fun interactions unlock special features
 
+## 🏗️ VA21 OS - Complete Architecture
+
+```
+┌─────────────────────────────────────────────────────┐
+│          VA21 OS - Complete Architecture            │
+├─────────────────────────────────────────────────────┤
+│  🛡️ Security Layer (Guardian AI)                   │
+│  ├── IBM Granite 4.0 2B (Ollama) - Apache 2.0      │
+│  ├── IBM AI Privacy Toolkit - MIT                   │
+│  ├── LLM Guard - MIT                                │
+│  └── Think → Vet → Act methodology                  │
+├─────────────────────────────────────────────────────┤
+│  🎤 Voice Intelligence Layer                        │
+│  ├── Meta Omnilingual ASR (1,600+ langs) - Apache  │
+│  ├── Whisper/Solus AI (backup) - MIT               │
+│  ├── Rhasspy (wake words) - MIT                    │
+│  ├── Piper TTS (fast) - MIT                        │
+│  ├── Kokoro TTS (premium) - Apache 2.0             │
+│  └── Hold Super Key = Push-to-Talk (Accessibility) │
+├─────────────────────────────────────────────────────┤
+│  🤖 Multi-Agent System                             │
+│  ├── Microsoft AutoGen - MIT                        │
+│  ├── Agent Zero patterns - MIT                      │
+│  ├── OpenCode patterns (Build/Plan) - MIT          │
+│  └── LangChain orchestration - MIT                 │
+├─────────────────────────────────────────────────────┤
+│  🎮 Zork-Style Interface (Custom Created!)         │
+│  ├── Text adventure UI (unique to VA21)            │
+│  ├── Native tiling window manager                   │
+│  ├── Obsidian-style Knowledge Vault                │
+│  └── Research Command Center                        │
+├─────────────────────────────────────────────────────┤
+│  💾 Debian GNU/Linux Foundation                    │
+│  ├── Full GNU toolkit                               │
+│  ├── Debian package management                      │
+│  ├── Flatpak integration                            │
+│  └── ISO releases for real hardware install         │
+└─────────────────────────────────────────────────────┘
+```
+
 ## 🔒 Core Security Architecture
 
 ### Triple-AI System
@@ -208,18 +275,26 @@ Inspired by [Microsoft AutoGen](https://github.com/microsoft/autogen), [Agent Ze
 
 ## 🚀 Quick Installation
 
-### One-Line Install (Debian/Ubuntu)
+### From ISO (Recommended)
+
+Download the VA21 OS ISO from the [Releases page](../../releases) and install like any Linux distribution:
+
 ```bash
-curl -fsSL https://raw.githubusercontent.com/narasimhudumeetsworld/va21/main/install.sh | bash
+# Write ISO to USB drive
+sudo dd if=va21-os.iso of=/dev/sdX bs=4M status=progress
+
+# Or use in VirtualBox/VMware
+# Create VM → Use ISO as boot disk → Install
 ```
 
-### Docker Installation
-```bash
-cd va21-omni-agent
-docker-compose up -d
-```
+### Build from Source
 
-Access the interface at: **http://localhost:5000**
+```bash
+git clone https://github.com/narasimhudumeetsworld/va21.git
+cd va21/va21_system/linux_os
+./scripts/build_iso.sh debian
+# ISO will be in output/ directory
+```
 
 ## 📋 System Requirements
 
