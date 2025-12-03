@@ -1,14 +1,76 @@
-# VA21 OS - The Next Generation Secure Desktop Environment
+# VA21 OS - Secure AI-Powered Linux Operating System
 
-## 🛡️ Security-First AI-Powered Operating System
+**Om Vinayaka** 🙏
 
-VA21 OS is a revolutionary Debian-based operating system that combines enterprise-grade security with cutting-edge AI capabilities. Built on the rock-solid foundation of Debian GNU/Linux, VA21 OS represents a new paradigm in secure computing.
+## 🛡️ A Complete Linux Operating System
+
+VA21 OS is a **full Linux operating system** designed for researchers, writers, journalists, and security professionals. It's a real OS that you install on your computer - not an app, not a container.
 
 ![VA21 OS Interface](https://github.com/user-attachments/assets/a6013877-03bd-40c1-8bb5-d41e3385f1da)
 
-## ✨ What's New in VA21 OS
+### What is VA21 OS?
 
-### 🎤 Voice Intelligence Layer (NEW!)
+- **Full Linux OS** based on Debian GNU/Linux
+- **Zork-style text adventure interface** for unique interaction
+- **Native tiling window manager** for efficient multitasking
+- **Guardian AI security** powered by IBM Granite 4.0 via Ollama
+- **~5 GB base installation** (AI models downloaded during install)
+
+### Installation
+
+Download the ISO from the [Releases page](../../releases) and install like any Linux distribution:
+
+| Edition | Description | Size |
+|---------|-------------|------|
+| **VA21 OS Debian** | Full GNU toolkit, maximum compatibility | ~5 GB |
+| **VA21 OS Alpine** | Lightweight, fast boot | ~2 GB |
+
+```bash
+# Write ISO to USB drive
+sudo dd if=va21-os.iso of=/dev/sdX bs=4M status=progress
+
+# Or use in VirtualBox/VMware
+# Create VM → Use ISO as boot disk → Install
+```
+
+### Quick Start (From Source)
+
+```bash
+git clone https://github.com/narasimhudumeetsworld/va21.git
+cd va21/va21_system/linux_os
+./scripts/build_iso.sh debian
+# ISO will be in output/ directory
+```
+
+---
+
+## ✨ Features
+
+### 🎮 Zork-Style Interface
+
+VA21 OS features a unique text adventure interface inspired by classic Zork:
+
+```
+========================================
+   VA21 Research OS v1.0 (Vinayaka)
+========================================
+
+You awaken in the BOOT CHAMBER. The ancient Guardian AI 
+stirs to life, its amber eyes watching you carefully.
+
+"Welcome, Researcher," the Guardian speaks.
+
+> look
+
+You are in the BOOT CHAMBER.
+Exits: NORTH (Research Lab), EAST (Knowledge Vault)
+
+> go north
+
+You enter the RESEARCH LAB...
+```
+
+### 🎤 Voice Intelligence Layer
 Complete multilingual voice processing with 1,600+ language support:
 
 | Component | Technology | License | Purpose |
@@ -18,46 +80,30 @@ Complete multilingual voice processing with 1,600+ language support:
 | Wake Word | [Rhasspy](https://github.com/rhasspy/rhasspy) | MIT | Custom triggers |
 | TTS (Fast) | [Piper](https://github.com/rhasspy/piper) | MIT | Fast synthesis |
 | TTS (Premium) | [Kokoro](https://github.com/remsky/Kokoro-FastAPI) | Apache 2.0 | Premium voices |
-| LLM Processing | [LangChain](https://github.com/langchain-ai/langchain) + [Granite](https://huggingface.co/ibm-granite) | MIT + Apache 2.0 | AI reasoning |
+| LLM Processing | [LangChain](https://github.com/langchain-ai/langchain) + [Granite 4.0](https://ollama.com/library/granite4) | MIT + Apache 2.0 | AI reasoning |
 | Security | Guardian AI + [LLM Guard](https://github.com/protectai/llm-guard) | Proprietary + MIT | Safety layer |
 
-**Model Selection (RAM-Based):**
-| Use Case | Model Size | RAM Required | Accuracy | Device |
-|----------|------------|--------------|----------|--------|
-| Low-Power | 300M | ~2GB | Good | Raspberry Pi |
-| Balanced | 1B | ~4GB | Very Good | Consumer laptops |
-| High Performance | 3B | ~8GB | Excellent | Desktop/server |
-| Maximum | 7B | ~14GB | Best | High-end hardware |
+**Indian Language Support:** Hindi, Tamil, Telugu, Kannada, Bengali, Marathi, Gujarati, Malayalam, Punjabi, and 100+ more!
 
-**VA21 Default (7GB RAM):** 1B model (4GB) + 3GB for other AI = Excellent accuracy!
+### 🔒 Guardian AI Security
+Powered by IBM Granite 4.0 via Ollama:
+- **Think → Vet → Act** methodology
+- **Real-time threat analysis**
+- **ClamAV antivirus integration**
+- **Air gap browser protection**
 
-**Indian Language Support:** Hindi, Tamil, Telugu, Kannada, Bengali, Marathi, Gujarati, Malayalam, Punjabi, Awadhi, Maithili, Chhattisgarhi, Tulu, Bhojpuri, and 100+ more!
-
-### 🔒 AI Privacy & Security System (NEW!)
+### 🔒 AI Privacy & Security System
 Powered by [IBM AI Privacy Toolkit](https://github.com/IBM/ai-privacy-toolkit) (MIT) + [LLM Guard](https://github.com/protectai/llm-guard) (MIT):
 - **Data Anonymization**: GDPR-compliant AI processing
-- **Data Minimization**: Only essential data for predictions
-- **Differential Privacy**: Calibrated noise for privacy
-- **Privacy Attack Testing**: Membership inference defense
 - **Prompt Injection Detection**: Blocks malicious inputs
 - **Output Scanning**: Filters harmful content
 
-### 🚀 Secure LLM Pipeline (NEW!)
-Combining [LMDeploy](https://github.com/InternLM/lmdeploy) (Apache 2.0) + [LLM Guard](https://github.com/protectai/llm-guard) (MIT):
-- **Efficient Inference**: TurboMind engine with quantization
-- **Input Validation**: Scans prompts before LLM processing
-- **Output Verification**: Validates responses before delivery
-- **Guardian AI Integration**: Think>Vet>Act for all outputs
+### 🤖 Multi-Agent Task Automation System
+Inspired by [Microsoft AutoGen](https://github.com/microsoft/autogen), [Agent Zero](https://github.com/agent0ai/agent-zero), and [OpenCode](https://github.com/sst/opencode):
 
-### 🤖 Multi-Agent Task Automation System v2.0 (NEW!)
-Inspired by the best features from [Microsoft AutoGen](https://github.com/microsoft/autogen), [Agent Zero](https://github.com/agent0ai/agent-zero), and [OpenCode](https://github.com/sst/opencode):
-
-- **Microsoft AutoGen Integration** (MIT License - Backed by Microsoft Research):
-  - **Multi-Agent Conversation Framework**: Agents collaborate autonomously
-  - **Specialized Agents**: Code Agent, Research Agent, Reflection Agent
-  - **AgentTool Pattern**: Agents can use other agents as tools
-  - **Orchestrator Agent**: Coordinates all specialized agents
-  - **Reflection Capabilities**: Self-improvement and learning
+- **Multi-Agent Conversation Framework**: Agents collaborate autonomously
+- **Specialized Agents**: Code Agent, Research Agent, Reflection Agent
+- **Orchestrator Agent**: Coordinates all specialized agents
   - *Aligns with VA21's Microsoft FARA integration*
 
 - **Multi-Agent Roles** (inspired by OpenCode):
@@ -177,16 +223,23 @@ Access the interface at: **http://localhost:5000**
 
 ## 📋 System Requirements
 
+### Disk Space Requirements
+- **VA21 OS Base Installation**: ~5 GB (includes Zork UI, Guardian AI, all features)
+- **With All AI Models**: ~10 GB (full model suite downloaded during install)
+
+> **Note:** Guardian AI model is always included. Other AI models are downloaded on-demand during first use.
+> See [docs/MODEL_REQUIREMENTS.md](docs/MODEL_REQUIREMENTS.md) for detailed breakdown.
+
 ### Minimum Requirements (7GB RAM)
 - **Debian-based Linux** (Debian 12+, Ubuntu 22.04+, Linux Mint 21+)
 - **Python 3.8+**
 - **7GB RAM** (for standard usage with AI features)
-- **2GB disk space** for models and dependencies
+- **5GB disk space** for VA21 OS base installation
 - **Flatpak** (optional, for App Center)
 
 ### Recommended Requirements (10GB RAM)
 - **8-10GB RAM** (for heavy multitasking with all AI models)
-- **4GB disk space** for full model suite
+- **10GB disk space** for full installation with all AI models
 - **Modern CPU** (Intel Core i5/AMD Ryzen 5 or better)
 - **SSD storage** for faster model loading
 

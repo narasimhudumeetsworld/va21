@@ -1,10 +1,57 @@
 # VA21 OS Alpha Release Notes
 
-## Version 1.0.0-alpha.1 (Codename: Vinayaka)
+## Version 1.0.0-alpha.2 (Codename: Vinayaka)
 
 *Release Date: December 2024*
 
 *Om Vinayaka - The first step on the path to secure, intelligent computing.*
+
+---
+
+## 📊 Installation Size
+
+**VA21 OS Base Installation: ~5 GB** (without AI models)
+
+| Component | Size | Status |
+|-----------|------|--------|
+| VA21 Core System (Zork UI) | ~2 GB | ✅ Included |
+| Linux OS Base | ~1.5 GB | ✅ Included |
+| Python Environment | ~500 MB | ✅ Included |
+| Documentation & Assets | ~200 MB | ✅ Included |
+| Research Suite | ~300 MB | ✅ Included |
+| Frontend (React) | ~200 MB | ✅ Included |
+| Scripts & Tools | ~100 MB | ✅ Included |
+
+**AI Models (Downloaded via Ollama During Installation):**
+| Model | Size | Status |
+|-------|------|--------|
+| **Guardian AI (IBM Granite 4.0 2B)** | ~1.5 GB | 📥 During install |
+| Meta Omnilingual ASR | ~2 GB | 📥 On-demand |
+| Whisper (Backup ASR) | ~500 MB | 📥 On-demand |
+| Piper TTS Voices | ~150 MB | 📥 On-demand |
+| Kokoro TTS Premium | ~200 MB | 📥 On-demand |
+| IBM Granite 4.0 8B | ~5 GB | 📥 On-demand |
+
+See [docs/MODEL_REQUIREMENTS.md](docs/MODEL_REQUIREMENTS.md) for full details.
+
+---
+
+## 🦙 Ollama-Based AI Engine (NEW!)
+
+VA21 OS now uses **Ollama** for AI model management instead of ONNX:
+
+- ✅ Better cross-platform compatibility
+- ✅ Easier model management
+- ✅ Built-in quantization support
+- ✅ Simple API
+- ✅ Active community support
+
+**Guardian AI Model:** IBM Granite 4.0 2B (Apache 2.0)
+- https://ollama.com/library/granite4
+- ~1.5 GB download size
+- 128K context window
+- Fast, efficient security analysis
+- Enterprise-grade quality
 
 ---
 
@@ -16,10 +63,31 @@ This is the first public alpha release of VA21 OS, a revolutionary Debian-based 
 
 ---
 
+## ✅ All Features Included (Apache 2.0 / MIT Licensed)
+
+| Feature | Technology | License | Status |
+|---------|------------|---------|--------|
+| **Guardian AI** | IBM Granite 4.0 2B (Ollama) | Apache 2.0 | ✅ Integrated |
+| Speech Recognition | Meta Omnilingual ASR | Apache 2.0 | ✅ Integrated |
+| Backup ASR | Whisper/Solus AI | MIT | ✅ Integrated |
+| Wake Word | Rhasspy | MIT | ✅ Integrated |
+| Fast TTS | Piper TTS | MIT | ✅ Integrated |
+| Premium TTS | Kokoro TTS | Apache 2.0 | ✅ Integrated |
+| Privacy Toolkit | IBM AI Privacy Toolkit | MIT | ✅ Integrated |
+| LLM Security | LLM Guard | MIT | ✅ Integrated |
+| LLM Deployment | LMDeploy | Apache 2.0 | ✅ Integrated |
+| AI Orchestration | LangChain | MIT | ✅ Integrated |
+| LLM Model | IBM Granite 4.0 8B | Apache 2.0 | ✅ Integrated |
+| Multi-Agent | Microsoft AutoGen | MIT | ✅ Integrated |
+| Agent Patterns | Agent Zero | MIT | ✅ Integrated |
+| Code Agents | OpenCode | MIT | ✅ Integrated |
+
+---
+
 ## ✨ Key Features
 
 ### 🛡️ Security-First Architecture
-- **Guardian AI Security Core** - Always-active ONNX-based security analysis
+- **Guardian AI Security Core** - IBM Granite 4.0 powered via Ollama
 - **Air Gap Browser Protection** - Complete isolation from sensitive data
 - **5-Day Quarantine Protocol** - Safe integration of external intelligence
 - **Real-time Threat Analysis** - Every input analyzed before processing
