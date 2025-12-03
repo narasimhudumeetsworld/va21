@@ -8,6 +8,91 @@ VA21 OS is a revolutionary Debian-based operating system that combines enterpris
 
 ## ✨ What's New in VA21 OS
 
+### 🎤 Voice Intelligence Layer (NEW!)
+Complete multilingual voice processing with 1,600+ language support:
+
+| Component | Technology | License | Purpose |
+|-----------|------------|---------|---------|
+| ASR (Primary) | [Meta Omnilingual ASR](https://github.com/facebookresearch/fairseq) | Apache 2.0 | 1,600+ languages |
+| ASR (Secondary) | [Whisper/Solus AI](https://github.com/openai/whisper) | MIT | Offline backup |
+| Wake Word | [Rhasspy](https://github.com/rhasspy/rhasspy) | MIT | Custom triggers |
+| TTS (Fast) | [Piper](https://github.com/rhasspy/piper) | MIT | Fast synthesis |
+| TTS (Premium) | [Kokoro](https://github.com/remsky/Kokoro-FastAPI) | Apache 2.0 | Premium voices |
+| LLM Processing | [LangChain](https://github.com/langchain-ai/langchain) + [Granite](https://huggingface.co/ibm-granite) | MIT + Apache 2.0 | AI reasoning |
+| Security | Guardian AI + [LLM Guard](https://github.com/protectai/llm-guard) | Proprietary + MIT | Safety layer |
+
+**Model Selection (RAM-Based):**
+| Use Case | Model Size | RAM Required | Accuracy | Device |
+|----------|------------|--------------|----------|--------|
+| Low-Power | 300M | ~2GB | Good | Raspberry Pi |
+| Balanced | 1B | ~4GB | Very Good | Consumer laptops |
+| High Performance | 3B | ~8GB | Excellent | Desktop/server |
+| Maximum | 7B | ~14GB | Best | High-end hardware |
+
+**VA21 Default (7GB RAM):** 1B model (4GB) + 3GB for other AI = Excellent accuracy!
+
+**Indian Language Support:** Hindi, Tamil, Telugu, Kannada, Bengali, Marathi, Gujarati, Malayalam, Punjabi, Awadhi, Maithili, Chhattisgarhi, Tulu, Bhojpuri, and 100+ more!
+
+### 🔒 AI Privacy & Security System (NEW!)
+Powered by [IBM AI Privacy Toolkit](https://github.com/IBM/ai-privacy-toolkit) (MIT) + [LLM Guard](https://github.com/protectai/llm-guard) (MIT):
+- **Data Anonymization**: GDPR-compliant AI processing
+- **Data Minimization**: Only essential data for predictions
+- **Differential Privacy**: Calibrated noise for privacy
+- **Privacy Attack Testing**: Membership inference defense
+- **Prompt Injection Detection**: Blocks malicious inputs
+- **Output Scanning**: Filters harmful content
+
+### 🚀 Secure LLM Pipeline (NEW!)
+Combining [LMDeploy](https://github.com/InternLM/lmdeploy) (Apache 2.0) + [LLM Guard](https://github.com/protectai/llm-guard) (MIT):
+- **Efficient Inference**: TurboMind engine with quantization
+- **Input Validation**: Scans prompts before LLM processing
+- **Output Verification**: Validates responses before delivery
+- **Guardian AI Integration**: Think>Vet>Act for all outputs
+
+### 🤖 Multi-Agent Task Automation System v2.0 (NEW!)
+Inspired by the best features from [Microsoft AutoGen](https://github.com/microsoft/autogen), [Agent Zero](https://github.com/agent0ai/agent-zero), and [OpenCode](https://github.com/sst/opencode):
+
+- **Microsoft AutoGen Integration** (MIT License - Backed by Microsoft Research):
+  - **Multi-Agent Conversation Framework**: Agents collaborate autonomously
+  - **Specialized Agents**: Code Agent, Research Agent, Reflection Agent
+  - **AgentTool Pattern**: Agents can use other agents as tools
+  - **Orchestrator Agent**: Coordinates all specialized agents
+  - **Reflection Capabilities**: Self-improvement and learning
+  - *Aligns with VA21's Microsoft FARA integration*
+
+- **Multi-Agent Roles** (inspired by OpenCode):
+  - **Build Agent**: Full access for development work
+  - **Plan Agent**: Read-only for analysis and safe exploration
+  - **General Agent**: Complex multi-step task handling
+
+- **Agent Cooperation** (inspired by Agent Zero):
+  - Hierarchical superior/subordinate agent relationships
+  - Agent-to-agent communication protocols
+  - Persistent memory for solutions and instructions
+  - Dynamic tool creation by agents
+
+- **Enhanced VA21 Architecture**:
+  ```
+  Guardian AI + Orchestrator AI + Helper AI + AutoGen Agents + Embedding AI
+  ```
+  - Think>Vet>Act methodology for every action
+  - Sandboxed execution environment
+  - Real-time security monitoring
+
+### 🧠 Dynamic AI Quantization System (NEW!)
+- **Adaptive Performance**: AI models automatically quantize to 4-bit, 5-bit, or 8-bit based on available system memory
+- **Memory-Aware Loading**: Intelligent model loading and unloading
+- **Quality Preservation**: Optimal quality-to-memory tradeoffs
+
+### 📚 Tiered Memory System with Obsidian Brain Maps (NEW!)
+- **Three-Tier Architecture**:
+  - Working Memory (current context)
+  - Short-Term Memory (session)
+  - Long-Term Memory (persistent)
+- **Separate Knowledge Bases**: Each AI (Guardian, Helper, Agent) has its own memory space
+- **Interconnected Context**: Tiered tags and context-aware retrieval
+- **Anti-Hallucination Engine**: Validates all AI memory retrieval
+
 ### 🎨 Futuristic Interface & Easter Eggs
 - **Halo/Cortana Theme**: Type "cortana call the masterchief" to activate a stunning holographic interface inspired by the Halo universe
 - **Dark/Light Theme Toggle**: Switch between themes with Ctrl+Shift+T
@@ -38,13 +123,15 @@ VA21 OS is a revolutionary Debian-based operating system that combines enterpris
 - **Backup Knowledge**: AI knows your version history (sanitized for security)
 - **Natural Language Restoration**: Just ask "restore from yesterday"
 - **System Awareness**: Get status updates and recommendations
+- **Task Automation**: Request automated tasks through natural conversation
 - **Easter Egg Activation**: Fun interactions unlock special features
 
 ## 🔒 Core Security Architecture
 
-### Dual-AI System
-- **Guardian AI (Security Core)**: Always-active security analysis using ONNX models
-- **Orchestrator AI**: User-facing reasoning engine with flexible LLM integration
+### Triple-AI System
+- **Guardian AI (Security Core)**: Always-active security analysis using ONNX models with Think>Vet>Act methodology
+- **Helper AI (User Interface)**: User-facing assistant with backup and system knowledge
+- **Multi-Agent System (Automation)**: Task automation with Guardian AI oversight
 - **Air Gap Protection**: Complete isolation from screen content and sensitive data
 - **Principle of Least Privilege**: No direct website interactions or form submissions
 
@@ -54,6 +141,7 @@ VA21 OS is a revolutionary Debian-based operating system that combines enterpris
 - ✅ **5-Day Quarantine Protocol**: Safe integration of external intelligence
 - ✅ **Localhost-Only Operation**: No external network exposure
 - ✅ **Pattern-Based Detection**: Advanced malware and injection detection
+- ✅ **Anti-Hallucination Engine**: Prevents AI from making up information
 
 ## 🔬 Research Command Center
 
@@ -66,6 +154,7 @@ VA21 OS is a revolutionary Debian-based operating system that combines enterpris
 - **Wiki-Style Links**: Create interconnected notes with `[[link]]` syntax
 - **Knowledge Graph**: Visual representation of your research connections
 - **LLM Memory Integration**: Persistent memory for AI context
+- **Brain Maps**: Visual memory maps for each AI component
 
 ### Sensitive Information Protection
 - **Automatic Redaction**: Detect and redact API keys, passwords, tokens
@@ -104,16 +193,16 @@ Access the interface at: **http://localhost:5000**
 ### Memory Optimization
 VA21 uses **dynamic context-aware AI activation** to minimize RAM usage:
 - 🧠 **Lazy Loading** - Models loaded only when needed
-- 📦 **INT8 Quantization** - 50% model size reduction
+- 📦 **Dynamic Quantization** - 4-bit, 5-bit, or 8-bit based on available RAM
 - 🔄 **Context-Aware Unloading** - Automatic memory management
 - 💾 **Memory Mapping** - Efficient large file handling
 
-| Usage Scenario | RAM Required | Description |
-|---------------|--------------|-------------|
-| Minimal | ~3GB | Basic browsing, text editing |
-| Standard | ~5GB | Multiple apps, AI chat |
-| Heavy Multitasking | ~7GB | Many apps, FARA compatibility |
-| Full Development | ~9GB | All AI features, IDE, Docker |
+| Usage Scenario | RAM Required | Quantization | Description |
+|---------------|--------------|--------------|-------------|
+| Minimal | ~3GB | 4-bit | Basic browsing, text editing |
+| Standard | ~5GB | 5-bit | Multiple apps, AI chat |
+| Heavy Multitasking | ~7GB | 8-bit | Many apps, FARA compatibility |
+| Full Development | ~9GB | 8-bit/FP16 | All AI features, IDE, Docker |
 
 ## ⌨️ Keyboard Shortcuts
 
@@ -136,30 +225,56 @@ VA21 uses **dynamic context-aware AI activation** to minimize RAM usage:
 - **Backend**: Flask + Socket.IO Python server
 - **Frontend**: React.js with custom theming
 - **Package Management**: Flatpak + APT integration
-- **AI Models**: IBM Granite, Microsoft ONNX/FARA, Meta LLaMA
-- **Security**: Multi-layer protection with Guardian AI
+- **AI Models**: IBM Granite, Microsoft ONNX/FARA, Meta LLaMA, Meta Omnilingual ASR
+- **Voice**: Meta Omnilingual ASR, Whisper, Rhasspy, Piper TTS, Kokoro TTS
+- **Security**: Guardian AI, LLM Guard, IBM AI Privacy Toolkit
+- **Multi-Agent**: Microsoft AutoGen, Agent Zero patterns, OpenCode patterns
 
 ## 🙏 Acknowledgments
 
 VA21 OS is built on the shoulders of giants:
 
-### AI & Machine Learning
-- **IBM Research** - For [Granite language models](https://huggingface.co/collections/ibm-granite/granite-40-language-models) powering intelligent features
-- **Microsoft** - For [ONNX Runtime](https://onnxruntime.ai/), [FARA technology](https://github.com/microsoft/fara), and Phi models
-- **Meta AI** - For LLaMA models and PyTorch
-- **Hugging Face** - For democratizing AI model access
-- **Ollama** - For simple local LLM deployment
+### Voice Intelligence Layer
+- **Meta Omnilingual ASR** - [Apache 2.0] ⭐⭐⭐⭐⭐
+  1,600+ languages including 100+ Indian dialects (Released November 2025)
+- **OpenAI Whisper** - [github.com/openai/whisper](https://github.com/openai/whisper) (MIT) - Offline backup ASR
+- **Rhasspy** - [github.com/rhasspy/rhasspy](https://github.com/rhasspy/rhasspy) (MIT) - Wake word detection
+- **Piper TTS** - [github.com/rhasspy/piper](https://github.com/rhasspy/piper) (MIT) - Fast TTS synthesis
+- **Kokoro TTS** - [github.com/remsky/Kokoro-FastAPI](https://github.com/remsky/Kokoro-FastAPI) (Apache 2.0) - Premium voices
+
+### Security & Privacy
+- **IBM AI Privacy Toolkit** - [github.com/IBM/ai-privacy-toolkit](https://github.com/IBM/ai-privacy-toolkit) (MIT) - GDPR compliance
+- **LLM Guard** - [github.com/protectai/llm-guard](https://github.com/protectai/llm-guard) (MIT) - LLM security
+- **LMDeploy** - [github.com/InternLM/lmdeploy](https://github.com/InternLM/lmdeploy) (Apache 2.0) - Efficient LLM deployment
+
+### Multi-Agent Automation
+- **Microsoft AutoGen** - [github.com/microsoft/autogen](https://github.com/microsoft/autogen) (MIT) ⭐⭐⭐⭐⭐
+  Multi-agent conversation framework (Backed by Microsoft Research)
+- **Agent Zero** - [github.com/agent0ai/agent-zero](https://github.com/agent0ai/agent-zero) (MIT)
+  Multi-agent cooperation patterns
+- **OpenCode** - [github.com/sst/opencode](https://github.com/sst/opencode) (MIT)
+  Role-based agents (Build/Plan)
+
+### LLM & AI Processing
+- **LangChain** - [github.com/langchain-ai/langchain](https://github.com/langchain-ai/langchain) (MIT) - AI orchestration
+- **IBM Granite** - [huggingface.co/ibm-granite](https://huggingface.co/collections/ibm-granite/granite-40-language-models) (Apache 2.0)
+- **Microsoft** - ONNX Runtime, FARA, AutoGen, Phi models (MIT)
+- **Meta AI** - Omnilingual ASR (Apache 2.0), LLaMA, PyTorch
+- **Hugging Face** - Democratizing AI model access
+- **Ollama** - Simple local LLM deployment (MIT)
 
 ### Open Source Foundation
-
-- **Debian Project** - For creating the most stable and versatile Linux distribution
-- **Linux Foundation** - For their stewardship of the Linux kernel
+- **Debian Project** - Rock-solid OS foundation
+- **Linux Foundation** - Linux kernel stewardship
 - **Linux Community** - Every contributor who makes open source possible
-- **Flathub** - For revolutionizing Linux application distribution
+- **Flathub** - Revolutionizing Linux application distribution
 
 ## 📄 License
 
-This project is licensed under the Prayaga Vaibhav Proprietary License - All Rights Reserved.
+This project is licensed under a modified Apache License 2.0 with proprietary components.
+- **Permissive (Apache 2.0)**: Most features with acknowledgment
+- **Proprietary**: Guardian AI, Think>Vet>Act, Sandbox Testing, Anti-Hallucination Engine
+
 See [LICENSE](LICENSE) for full terms and acknowledgments.
 
 Copyright (c) 2024-2025 Prayaga Vaibhav. All rights reserved.
