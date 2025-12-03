@@ -12,6 +12,7 @@ Provides system-wide accessibility features including:
 - Zork-style interface for EVERY application
 - Om Vinayaka Accessibility Knowledge Base AI
 - Self-Learning System with LangChain + Obsidian integration
+- Context-Aware Summary Engine to prevent AI hallucinations
 
 Unlike traditional screen readers that just read keywords,
 VA21 explains what things do, asks clarifying questions,
@@ -23,11 +24,15 @@ Om Vinayaka Architecture:
 - Enables voice users to interact with ANY app in the full OS
 - Uses LangChain + Obsidian mind maps for knowledge storage
 - Self-learning system that gets smarter over time
+- Context-aware summary engine prevents AI overload
 - FARA layer executes actions across the entire OS
 
 Guardian AI Note:
 Guardian AI runs in a sandboxed Ollama at the kernel level,
 completely isolated from this user-facing accessibility system.
+
+License: Om Vinayaka Prayaga Vaibhav Inventions License
+Copyright (c) 2024-2025 Prayaga Vaibhav
 
 Om Vinayaka - May obstacles be removed from your computing journey.
 """
@@ -66,6 +71,15 @@ from .self_learning import (
     get_learning_engine,
 )
 
+from .summary_engine import (
+    SummaryEngine,
+    ContextAwareSummarizer,
+    ResourceCalculator,
+    get_summary_engine,
+    AI_CONTEXT_LIMITS,
+    PRIORITY_LEVELS,
+)
+
 __all__ = [
     # Main accessibility system
     'VA21AccessibilitySystem',
@@ -96,4 +110,12 @@ __all__ = [
     'UserPreference',
     'AppUsagePattern',
     'get_learning_engine',
+    
+    # Context-Aware Summary Engine
+    'SummaryEngine',
+    'ContextAwareSummarizer',
+    'ResourceCalculator',
+    'get_summary_engine',
+    'AI_CONTEXT_LIMITS',
+    'PRIORITY_LEVELS',
 ]

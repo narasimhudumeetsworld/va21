@@ -318,6 +318,53 @@ Inspired by [Microsoft AutoGen](https://github.com/microsoft/autogen), [Agent Ze
 - **Automatic Redaction**: Detect and redact API keys, passwords, tokens
 - **Category-Based Filtering**: Control what gets redacted
 
+### 🧠 Context-Aware Summary Engine
+Prevents AI hallucinations and context overflow:
+- **Automatic Summarization**: When AI context gets too large
+- **Full Preservation**: Complete knowledge stored in Obsidian vault
+- **Smart Compression**: Prioritizes critical context over background info
+- **Hallucination Prevention**: AI never loses important context
+
+## 💻 System Requirements
+
+### Minimum Requirements
+| Component | Requirement |
+|-----------|-------------|
+| **RAM** | 4 GB |
+| **CPU** | 2 cores |
+| **Storage** | 20 GB |
+| **Note** | AI features will be limited |
+
+### Recommended Requirements
+| Component | Requirement |
+|-----------|-------------|
+| **RAM** | 8 GB |
+| **CPU** | 4 cores |
+| **Storage** | 40 GB |
+| **Note** | Full AI experience |
+
+### Optimal Requirements
+| Component | Requirement |
+|-----------|-------------|
+| **RAM** | 16 GB |
+| **CPU** | 8 cores |
+| **Storage** | 80 GB |
+| **GPU** | NVIDIA with CUDA (optional) |
+| **Note** | Best performance with all features |
+
+### RAM Breakdown (Full Installation)
+| Component | RAM (MB) |
+|-----------|----------|
+| Base OS (Debian) | 512 |
+| Desktop Environment | 256 |
+| Guardian AI (Sandboxed Ollama) | 2048 |
+| User-facing Ollama | 2048 |
+| Om Vinayaka AI | 256 |
+| Voice Recognition | 512 |
+| Text-to-Speech | 256 |
+| Summary Engine | 64 |
+| **Total Calculated** | **~6 GB** |
+
 ## 🚀 Quick Installation
 
 ### From ISO (Recommended)
@@ -341,7 +388,7 @@ cd va21/va21_system/linux_os
 # ISO will be in output/ directory
 ```
 
-## 📋 System Requirements
+## 📋 Additional System Requirements
 
 ### Disk Space Requirements
 - **VA21 OS Base Installation**: ~5 GB (includes Zork UI, Guardian AI, all features)

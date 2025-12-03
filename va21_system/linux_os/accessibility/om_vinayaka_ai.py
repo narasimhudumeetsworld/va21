@@ -495,6 +495,10 @@ class OmVinayakaAI:
         self.learning_engine = None
         self._init_learning_engine()
         
+        # Initialize Summary Engine for context management
+        self.summary_engine = None
+        self._init_summary_engine()
+        
         # State
         self.is_active = False
         self.current_context: Dict = {}
@@ -510,6 +514,8 @@ class OmVinayakaAI:
         print(f"[Om Vinayaka] Accessibility AI initialized v{OM_VINAYAKA_VERSION}")
         if self.learning_engine:
             print("[Om Vinayaka] Self-Learning Engine: ACTIVE - I get smarter as you use me!")
+        if self.summary_engine:
+            print("[Om Vinayaka] Summary Engine: ACTIVE - Context-aware, no hallucinations!")
     
     def _init_learning_engine(self):
         """Initialize the Self-Learning Engine."""
@@ -519,6 +525,15 @@ class OmVinayakaAI:
         except ImportError as e:
             print(f"[Om Vinayaka] Self-learning not available: {e}")
             self.learning_engine = None
+    
+    def _init_summary_engine(self):
+        """Initialize the Summary Engine for context management."""
+        try:
+            from .summary_engine import get_summary_engine
+            self.summary_engine = get_summary_engine()
+        except ImportError as e:
+            print(f"[Om Vinayaka] Summary engine not available: {e}")
+            self.summary_engine = None
     
     def _load_registrations(self):
         """Load registered app interfaces."""
@@ -614,7 +629,7 @@ What would you like to accomplish today?
             interface_id = interface.app_id
         else:
             # Create a simple registration
-            interface_id = hashlib.md5(app_name.lower().encode()).hexdigest()[:12]
+            interface_id = hashlib.sha256(app_name.lower().encode()).hexdigest()[:12]
         
         # Register in our tracking
         self.registered_apps[app_name.lower()] = interface_id
@@ -720,13 +735,24 @@ What would you like to accomplish today?
         elif intent['type'] == 'question':
             result = self._handle_question(intent, current_app)
         elif intent['type'] == 'system_control':
-            return self._handle_system_control(intent)
+            result = self._handle_system_control(intent)
         elif intent['type'] == 'cli_tool':
-            return self._handle_cli_tool(intent)
+            result = self._handle_cli_tool(intent)
         elif intent['type'] == 'help':
-            return self._handle_help(intent, current_app)
+            result = self._handle_help(intent, current_app)
         else:
-            return self._ask_clarification(user_input, current_app)
+            result = self._ask_clarification(user_input, current_app)
+        
+        # Learn from this interaction if we have an action
+        if self.learning_engine and result.get('action'):
+            self.learning_engine.learn_command(
+                user_input, 
+                result['action'], 
+                current_app, 
+                True  # Assume success if we got an action
+            )
+        
+        return result
     
     def _understand_intent(self, user_input: str, current_app: str = None) -> Dict:
         """Understand the user's intent from their input."""
@@ -804,6 +830,24 @@ What would you like to accomplish today?
             'type': 'unknown',
             'input': user_input
         }
+    
+    def _get_action_response(self, action: str, current_app: str) -> str:
+        """Generate a response for a predicted action."""
+        action_responses = {
+            'save': f"Saving your work in {current_app or 'the application'}...",
+            'search': f"Searching in {current_app or 'the application'}...",
+            'open': f"Opening in {current_app or 'the application'}...",
+            'close': f"Closing {current_app or 'the application'}...",
+            'back': "Going back...",
+            'forward': "Going forward...",
+            'undo': "Undoing last action...",
+            'redo': "Redoing...",
+            'copy': "Copied to clipboard!",
+            'paste': "Pasting...",
+            'new_tab': "Opening new tab...",
+            'close_tab': "Closing tab...",
+        }
+        return action_responses.get(action, f"Executing {action}...")
     
     def _handle_app_action(self, intent: Dict, current_app: str) -> Dict:
         """Handle an action request for an application."""
@@ -1084,14 +1128,31 @@ What would you like to accomplish?
     
     def get_status(self) -> Dict:
         """Get the status of the Om Vinayaka AI."""
-        return {
+        status = {
             'version': OM_VINAYAKA_VERSION,
             'is_active': self.is_active,
             'registered_apps': len(self.registered_apps),
             'conversation_length': len(self.conversation_history),
             'mind_map_nodes': len(self.mind_map.nodes),
-            'cli_tools_supported': len(self.terminal_adapter.tool_interfaces)
+            'cli_tools_supported': len(self.terminal_adapter.tool_interfaces),
+            'learning_engine': self.learning_engine is not None,
+            'summary_engine': self.summary_engine is not None,
         }
+        
+        # Add learning stats if available
+        if self.learning_engine:
+            learning_stats = self.learning_engine.get_statistics()
+            status['patterns_learned'] = learning_stats.get('patterns_learned', 0)
+            status['total_interactions'] = learning_stats.get('total_interactions', 0)
+        
+        # Add summary engine stats if available
+        if self.summary_engine:
+            summary_stats = self.summary_engine.get_statistics()
+            status['summaries_created'] = summary_stats.get('summaries_created', 0)
+            status['tokens_saved'] = summary_stats.get('tokens_saved', 0)
+            status['hallucinations_prevented'] = summary_stats.get('hallucinations_prevented', 0)
+        
+        return status
 
 
 # ═══════════════════════════════════════════════════════════════════════════════

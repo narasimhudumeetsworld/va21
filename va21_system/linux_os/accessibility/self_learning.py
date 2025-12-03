@@ -828,7 +828,7 @@ class SelfLearningEngine:
         text = ' '.join(text.split())
         
         # Create a hash for the pattern
-        return hashlib.md5(text.encode()).hexdigest()[:16]
+        return hashlib.sha256(text.encode()).hexdigest()[:16]
     
     def predict_action(self, user_input: str, 
                        app_context: str = None) -> Optional[Tuple[str, float]]:
@@ -1036,7 +1036,7 @@ class SelfLearningEngine:
             context: The context (app, action, etc.)
             positive_feedback: Whether user responded positively
         """
-        narrative_key = hashlib.md5(f"{original}:{context}".encode()).hexdigest()[:16]
+        narrative_key = hashlib.sha256(f"{original}:{context}".encode()).hexdigest()[:16]
         
         if narrative_key not in self.narrative_improvements:
             self.narrative_improvements[narrative_key] = NarrativeImprovement(
@@ -1061,7 +1061,7 @@ class SelfLearningEngine:
         
         Returns the improved version if score is positive, else None.
         """
-        narrative_key = hashlib.md5(f"{original}:{context}".encode()).hexdigest()[:16]
+        narrative_key = hashlib.sha256(f"{original}:{context}".encode()).hexdigest()[:16]
         
         if narrative_key in self.narrative_improvements:
             imp = self.narrative_improvements[narrative_key]
@@ -1072,7 +1072,7 @@ class SelfLearningEngine:
     
     def set_narrative_improvement(self, original: str, improved: str, context: str):
         """Set an improved narrative for a context."""
-        narrative_key = hashlib.md5(f"{original}:{context}".encode()).hexdigest()[:16]
+        narrative_key = hashlib.sha256(f"{original}:{context}".encode()).hexdigest()[:16]
         
         if narrative_key not in self.narrative_improvements:
             self.narrative_improvements[narrative_key] = NarrativeImprovement(
