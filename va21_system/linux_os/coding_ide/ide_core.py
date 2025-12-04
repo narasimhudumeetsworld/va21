@@ -282,6 +282,8 @@ class CodingIDE:
                 print("[CodingIDE] Obsidian Vault connected for knowledge storage")
             except ImportError as e:
                 print(f"[CodingIDE] Obsidian Vault not available: {e}")
+            except Exception as e:
+                print(f"[CodingIDE] Obsidian Vault error: {e}")
         return self._obsidian_vault
     
     @property
@@ -302,6 +304,8 @@ class CodingIDE:
                 print("[CodingIDE] Writing Suite loaded for documentation")
             except ImportError as e:
                 print(f"[CodingIDE] Writing Suite not available: {e}")
+            except Exception as e:
+                print(f"[CodingIDE] Writing Suite error: {e}")
         return self._writing_suite
     
     @property
@@ -322,6 +326,8 @@ class CodingIDE:
                 print("[CodingIDE] Research Suite loaded")
             except ImportError as e:
                 print(f"[CodingIDE] Research Suite not available: {e}")
+            except Exception as e:
+                print(f"[CodingIDE] Research Suite error: {e}")
         return self._research_suite
     
     @property

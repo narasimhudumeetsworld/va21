@@ -654,10 +654,17 @@ class MultiAgentOrchestrator:
                 continue
             
             # Check if all dependencies are completed
-            deps_completed = all(
-                self.tasks.get(dep_id, Task(id="", title="", description="", task_type=AgentType.ORCHESTRATOR)).status == TaskStatus.COMPLETED
-                for dep_id in task.dependencies
-            )
+            deps_completed = True
+            for dep_id in task.dependencies:
+                dep_task = self.tasks.get(dep_id)
+                if dep_task is None:
+                    # Missing dependency - log warning and skip
+                    print(f"[Orchestrator] Warning: Dependency {dep_id} not found for task {task.id}")
+                    deps_completed = False
+                    break
+                if dep_task.status != TaskStatus.COMPLETED:
+                    deps_completed = False
+                    break
             
             if deps_completed:
                 return task

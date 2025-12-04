@@ -303,7 +303,10 @@ Be methodical and help users learn from the debugging process.""",
             except Exception:
                 pass
         
-        # Basic encoding (in production, use proper encryption)
+        # Note: Base64 is for obfuscation only, not security.
+        # For production use, implement proper encryption with the
+        # cryptography library or use system keyring (keyring package).
+        # This is a development/testing implementation.
         encoded = base64.b64encode(api_key.encode()).decode()
         keys[provider.value] = encoded
         

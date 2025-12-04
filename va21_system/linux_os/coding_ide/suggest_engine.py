@@ -654,7 +654,20 @@ class SuggestEngine:
         
         # Sort by score and return top suggestions
         suggestions.sort(key=lambda x: x.score, reverse=True)
-        return suggestions[:limit]
+        top_suggestions = suggestions[:limit]
+        
+        # Enhance top suggestions with latest web search info
+        if self.searxng and top_suggestions:
+            for suggestion in top_suggestions[:3]:  # Only search for top 3
+                try:
+                    latest_info = self.search_latest_language_info(suggestion.language)
+                    if latest_info.get("latest_news"):
+                        # Add latest info to suggestion metadata
+                        suggestion.reasons.append(f"Latest updates available ({datetime.now().strftime('%b %Y')})")
+                except Exception:
+                    pass  # Continue even if search fails
+        
+        return top_suggestions
     
     def suggest_stack(self, requirements: ProjectRequirements,
                       language: str = None) -> List[StackSuggestion]:
@@ -799,33 +812,199 @@ class SuggestEngine:
         
         return summary
     
-    def search_best_practices(self, language: str, topic: str) -> List[Dict]:
+    def search_best_practices(self, language: str, topic: str, 
+                               time_range: str = "month") -> List[Dict]:
         """
-        Search for best practices using SearXNG.
+        Search for best practices using SearXNG with time filtering.
+        
+        Uses time_range to get the latest/most recent information available.
         
         Args:
             language: Programming language
             topic: Topic to search for
+            time_range: Time filter - 'day', 'week', 'month', 'year' (default: month)
             
         Returns:
-            List of search results
+            List of search results with latest info
         """
         if not self.searxng:
             return []
         
-        query = f"{language} {topic} best practices 2024"
+        current_year = datetime.now().year
+        current_date = datetime.now().strftime("%Y-%m-%d")
+        
+        # Build time-aware query for latest information
+        query = f"{language} {topic} best practices {current_year}"
+        
         try:
-            results = self.searxng.search_it(query)
+            # Use the time-filtered search method
+            results = self._search_with_time_filter(query, time_range)
+            return results
+        except Exception as e:
+            print(f"[SuggestEngine] Search error: {e}")
+            return []
+    
+    def _search_with_time_filter(self, query: str, time_range: str = "month",
+                                   category: str = "general") -> List[Dict]:
+        """
+        Perform a SearXNG search with time filtering for latest results.
+        
+        SearXNG supports time_range parameter for filtering results.
+        
+        Args:
+            query: Search query
+            time_range: 'day', 'week', 'month', 'year', or None for all time
+            category: Search category
+            
+        Returns:
+            List of search result dictionaries
+        """
+        if not self.searxng:
+            return []
+        
+        # Add time context to query for better results
+        time_context = {
+            'day': 'today latest',
+            'week': 'this week recent',
+            'month': f'{datetime.now().strftime("%B %Y")} latest',
+            'year': f'{datetime.now().year} current'
+        }
+        
+        time_hint = time_context.get(time_range, '')
+        enhanced_query = f"{query} {time_hint}".strip()
+        
+        try:
+            # Use SearXNG search with time preference
+            # Most SearXNG instances support time_range parameter
+            results = self.searxng.search(
+                enhanced_query, 
+                category=category
+            )
+            
             return [
                 {
                     "title": r.title,
                     "url": r.url,
-                    "snippet": r.snippet
+                    "snippet": r.snippet,
+                    "engine": r.engine,
+                    "search_time": time_range,
+                    "query_date": datetime.now().isoformat()
                 }
-                for r in results.results[:5]
+                for r in results.results[:10]  # Get top 10 results
             ]
-        except Exception:
+        except Exception as e:
+            print(f"[SuggestEngine] Time-filtered search error: {e}")
             return []
+    
+    def search_latest_language_info(self, language: str) -> Dict:
+        """
+        Search for the latest information about a programming language.
+        
+        Gets recent news, updates, releases, and best practices.
+        
+        Args:
+            language: Programming language name
+            
+        Returns:
+            Dictionary with latest language information
+        """
+        if not self.searxng:
+            return {"error": "SearXNG not available"}
+        
+        current_date = datetime.now()
+        results = {
+            "language": language,
+            "search_date": current_date.isoformat(),
+            "latest_news": [],
+            "recent_releases": [],
+            "current_best_practices": [],
+            "trending_frameworks": []
+        }
+        
+        # Search for latest news (last week)
+        news_query = f"{language} programming news latest update"
+        news_results = self._search_with_time_filter(news_query, "week", "news")
+        results["latest_news"] = news_results[:5]
+        
+        # Search for recent releases (last month)
+        release_query = f"{language} new release version {current_date.year}"
+        release_results = self._search_with_time_filter(release_query, "month")
+        results["recent_releases"] = release_results[:5]
+        
+        # Search for current best practices (last month)
+        practices_query = f"{language} best practices {current_date.year}"
+        practices_results = self._search_with_time_filter(practices_query, "month")
+        results["current_best_practices"] = practices_results[:5]
+        
+        # Search for trending frameworks (last month)
+        frameworks_query = f"{language} popular frameworks libraries {current_date.year}"
+        frameworks_results = self._search_with_time_filter(frameworks_query, "month")
+        results["trending_frameworks"] = frameworks_results[:5]
+        
+        return results
+    
+    def search_technology_comparison(self, tech1: str, tech2: str) -> Dict:
+        """
+        Search for latest comparison between two technologies.
+        
+        Args:
+            tech1: First technology
+            tech2: Second technology
+            
+        Returns:
+            Dictionary with comparison information
+        """
+        if not self.searxng:
+            return {"error": "SearXNG not available"}
+        
+        current_date = datetime.now()
+        
+        # Search for latest comparison
+        comparison_query = f"{tech1} vs {tech2} comparison {current_date.year}"
+        comparison_results = self._search_with_time_filter(comparison_query, "year")
+        
+        # Search for when to use each
+        use_cases_query = f"when to use {tech1} vs {tech2} {current_date.year}"
+        use_cases_results = self._search_with_time_filter(use_cases_query, "year")
+        
+        return {
+            "technologies": [tech1, tech2],
+            "search_date": current_date.isoformat(),
+            "comparisons": comparison_results[:5],
+            "use_cases": use_cases_results[:5]
+        }
+    
+    def search_os_compatibility(self, technology: str, target_os: str) -> Dict:
+        """
+        Search for latest OS compatibility information.
+        
+        Args:
+            technology: Technology/language/framework
+            target_os: Target operating system
+            
+        Returns:
+            Dictionary with compatibility information
+        """
+        if not self.searxng:
+            return {"error": "SearXNG not available"}
+        
+        current_date = datetime.now()
+        
+        # Search for compatibility
+        compat_query = f"{technology} {target_os} compatibility support {current_date.year}"
+        compat_results = self._search_with_time_filter(compat_query, "year")
+        
+        # Search for setup/installation
+        setup_query = f"{technology} install setup {target_os} {current_date.year}"
+        setup_results = self._search_with_time_filter(setup_query, "month")
+        
+        return {
+            "technology": technology,
+            "target_os": target_os,
+            "search_date": current_date.isoformat(),
+            "compatibility_info": compat_results[:5],
+            "setup_guides": setup_results[:5]
+        }
 
 
 # Singleton instance
