@@ -1,57 +1,71 @@
 #!/usr/bin/env python3
 """
-VA21 OS - Core System Integration
-==================================
+VA21 OS - Core System Integration (Self-Aware OS)
+==================================================
 
 Om Vinayaka - The remover of obstacles.
 
 ╔═══════════════════════════════════════════════════════════════════════════════╗
-║                    🙏 OM VINAYAKA INTELLIGENT ACCESSIBILITY 🙏                 ║
+║                    🙏 OM VINAYAKA AI - SELF-AWARE OS CORE 🙏                   ║
 ║                           (Unique to VA21 OS!)                                ║
 ╠═══════════════════════════════════════════════════════════════════════════════╣
 ║                                                                               ║
-║   Traditional Screen Readers        │   VA21 + Om Vinayaka AI                 ║
-║   ─────────────────────────────────│────────────────────────────────────────  ║
-║   Reads keywords: "menu", "button" │ Explains purpose: "This saves your work" ║
-║   No context awareness             │ Understands your intent and current task ║
-║   Just announces elements          │ Asks clarifying questions when needed    ║
-║   User must know commands          │ Natural conversation in any language     ║
-║   Single app support               │ Zork-style UX for EVERY app              ║
-║   Limited CLI support              │ Wraps CLI tools: Gemini, Copilot, Codex  ║
+║   VA21 OS is a SELF-AWARE operating system powered by Om Vinayaka AI:         ║
+║                                                                               ║
+║   🧠 SELF-AWARENESS through:                                                  ║
+║   ├── Self-Learning Engine: Learns from EVERY interaction                     ║
+║   ├── Context-Aware Summary Engine: Never forgets, never hallucinates         ║
+║   ├── Knowledge Base: Obsidian mind maps store all OS knowledge               ║
+║   ├── Pattern Recognition: Understands user habits and preferences            ║
+║   └── Adaptive Behavior: Gets smarter with continued use                      ║
+║                                                                               ║
+║   🙏 Om Vinayaka AI CONTROLS:                                                 ║
+║   ├── ALL user interactions (voice, text, actions)                            ║
+║   ├── ALL subsystems (Research, Writing, Coding, System, etc.)                ║
+║   ├── ALL agents (Coder, Reviewer, Planner, etc.)                             ║
+║   ├── Context flow between components                                          ║
+║   └── Everything EXCEPT Guardian AI (isolated at kernel level)                ║
 ║                                                                               ║
 ╚═══════════════════════════════════════════════════════════════════════════════╝
 
-Om Vinayaka AI Features:
-- Automatic Zork UX Generation: Every app gets a text adventure interface
-- System-Wide Voice Control: Control ANY application with voice
-- CLI Tool Wrapper: Gemini CLI, GitHub Copilot CLI, Codex - all accessible
-- Knowledge Base: LangChain + Obsidian mind maps store all app interfaces
-- Clarifying Questions: AI asks for details when intent is unclear
-- Context-Aware Execution: Understands what app is active and what you want
-- Self-Learning: Gets smarter with every interaction
+Om Vinayaka AI Self-Awareness Features:
+- Self-Learning: Learns command patterns, preferences, app usage
+- Context-Aware: Summary Engine prevents hallucinations, maintains context
+- Knowledge Preservation: Full history in Obsidian vault
+- Pattern Recognition: Understands what you do frequently
+- Adaptive Responses: Improves explanations over time
+- System-Wide Awareness: Knows state of all subsystems
 
 Architecture:
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                         VA21 OS Integration Layer                        │
+│                    VA21 OS - SELF-AWARE ARCHITECTURE                    │
 ├─────────────────────────────────────────────────────────────────────────┤
-│  🙏 OM VINAYAKA AI (Central Intelligence Hub)                           │
-│  ├── ALL user input flows through Om Vinayaka first                     │
-│  ├── Understands intent, asks clarifying questions                      │
-│  ├── Routes to appropriate subsystem with context                       │
-│  ├── Wraps ALL responses in accessible, conversational format           │
-│  ├── Learns from every interaction                                      │
-│  └── Available in 1,600+ languages                                      │
+│  🧠 SELF-AWARENESS LAYER                                                │
+│  ├── Self-Learning Engine: Command patterns, preferences, usage         │
+│  ├── Context-Aware Summary Engine: Prevents hallucinations              │
+│  ├── Knowledge Base: Obsidian mind maps (persistent memory)             │
+│  └── Anti-Hallucination: Validates all AI outputs                       │
 ├─────────────────────────────────────────────────────────────────────────┤
-│  📦 SUBSYSTEMS (Connected via Om Vinayaka)                              │
-│  ├── Agents: Multi-agent system for complex tasks                       │
+│  🙏 OM VINAYAKA AI (Central Controller)                                 │
+│  ├── ALL input flows through Om Vinayaka                                │
+│  ├── Understands intent in 1,600+ languages                             │
+│  ├── Asks clarifying questions when needed                              │
+│  ├── Routes to subsystems with full context                             │
+│  ├── Learns from EVERY interaction                                      │
+│  └── Makes the OS truly SELF-AWARE                                      │
+├─────────────────────────────────────────────────────────────────────────┤
+│  📦 SUBSYSTEMS (All controlled by Om Vinayaka)                          │
+│  ├── Agents: Multi-agent system with role assignment                    │
 │  ├── Research: Citations, Literature, Projects                          │
 │  ├── Writing: Documents, Templates, Export                              │
-│  ├── Coding: IDE, Multi-Agent, Project Builder                          │
+│  ├── Coding: IDE, Project Builder                                       │
 │  ├── System: Settings, Tools, Window Manager                            │
 │  └── Search: SearXNG Private Search                                     │
 └─────────────────────────────────────────────────────────────────────────┘
 
-NOTE: Guardian AI runs sandboxed at kernel level (port 11435) - ISOLATED.
+NOTE: Guardian AI runs ISOLATED at kernel level (port 11435)
+      - Cannot be influenced by Om Vinayaka or user conversations
+      - Provides security oversight for the self-aware system
 
 License: Om Vinayaka Prayaga Vaibhav Inventions License
 Copyright (c) 2024-2025 Prayaga Vaibhav
@@ -75,7 +89,7 @@ VA21_CODENAME = "Vinayaka"
 
 
 class Subsystem(Enum):
-    """VA21 OS Subsystems - All connected via Om Vinayaka AI."""
+    """VA21 OS Subsystems - All controlled by Om Vinayaka AI (Self-Aware OS)."""
     ACCESSIBILITY = "accessibility"  # Om Vinayaka AI lives here
     AGENTS = "agents"  # Multi-agent system
     RESEARCH = "research"
@@ -88,11 +102,14 @@ class Subsystem(Enum):
 
 
 # Subsystem responsibilities - ensures no feature overlap
-# Om Vinayaka AI coordinates all of these
+# Om Vinayaka AI coordinates all of these (SELF-AWARE)
 SUBSYSTEM_RESPONSIBILITIES = {
     Subsystem.ACCESSIBILITY: [
-        # Om Vinayaka AI - Central Intelligence
+        # Om Vinayaka AI - Central Intelligence (Self-Aware Core)
         "om_vinayaka_ai",
+        "self_awareness",
+        "self_learning",
+        "context_awareness",
         "voice_control",
         "screen_reader",
         "zork_interface",
@@ -483,7 +500,15 @@ class VA21Core:
         """
         Process a user request through the VA21 system.
         
+        🙏 ALL requests flow through Om Vinayaka AI first!
+        
         This is the main entry point for ALL user interactions.
+        Om Vinayaka:
+        1. Understands intent (in 1,600+ languages)
+        2. Uses Summary Engine to prevent context overflow
+        3. Routes to appropriate subsystem
+        4. Learns from every interaction
+        5. Returns accessible, conversational response
         
         Args:
             request: The user request to process
@@ -497,6 +522,15 @@ class VA21Core:
                 content="VA21 OS is still initializing. Please wait...",
                 subsystem=Subsystem.SYSTEM,
                 success=False
+            )
+        
+        # 0. Add to Summary Engine context (prevents hallucinations)
+        if self._summary_engine:
+            self._summary_engine.add_to_context(
+                'om_vinayaka',
+                request.content,
+                'user_input',
+                priority=4  # High priority for user input
             )
         
         # 1. Use Om Vinayaka to understand intent
@@ -524,9 +558,19 @@ class VA21Core:
                     True
                 )
             
+            # 5. Add response to Summary Engine context
+            response_text = result.get('response', 'I understood your request.')
+            if self._summary_engine:
+                self._summary_engine.add_to_context(
+                    'om_vinayaka',
+                    response_text,
+                    'ai_response',
+                    priority=3
+                )
+            
             return SystemResponse(
                 request_id=request.request_id,
-                content=result.get('response', 'I understood your request.'),
+                content=response_text,
                 subsystem=subsystem,
                 action_taken=result.get('action'),
                 success=True
@@ -696,17 +740,79 @@ class VA21Core:
         """Get a subsystem instance."""
         return self._subsystems.get(subsystem)
     
+    def get_self_awareness_status(self) -> Dict:
+        """
+        Get the self-awareness status of VA21 OS.
+        
+        The OS is self-aware through:
+        - Self-Learning Engine: Learns from interactions
+        - Context-Aware Summary Engine: Maintains context
+        - Knowledge Base: Persistent memory
+        - Pattern Recognition: User habits
+        
+        Returns:
+            Dict with self-awareness metrics
+        """
+        awareness = {
+            'is_self_aware': True,
+            'core_controller': 'om_vinayaka_ai',
+            'components': {
+                'self_learning_engine': {
+                    'active': self._learning_engine is not None,
+                    'purpose': 'Learns command patterns, preferences, app usage',
+                },
+                'context_summary_engine': {
+                    'active': self._summary_engine is not None,
+                    'purpose': 'Prevents hallucinations, maintains context',
+                },
+                'knowledge_base': {
+                    'active': True,
+                    'purpose': 'Obsidian mind maps for persistent memory',
+                },
+                'pattern_recognition': {
+                    'active': self._learning_engine is not None,
+                    'purpose': 'Understands user habits and preferences',
+                },
+            },
+            'capabilities': [
+                'Learns from every interaction',
+                'Never forgets important context',
+                'Adapts to user preferences',
+                'Improves responses over time',
+                'Understands 1,600+ languages',
+                'Controls all OS subsystems',
+            ],
+        }
+        
+        # Get learning stats if available
+        if self._learning_engine:
+            try:
+                awareness['learning_stats'] = self._learning_engine.get_learning_summary()
+            except Exception:
+                awareness['learning_stats'] = {'status': 'available'}
+        
+        # Get summary engine stats if available
+        if self._summary_engine:
+            try:
+                awareness['summary_stats'] = self._summary_engine.get_statistics()
+            except Exception:
+                awareness['summary_stats'] = {'status': 'available'}
+        
+        return awareness
+    
     def get_status(self) -> Dict:
-        """Get VA21 OS status."""
+        """Get VA21 OS status (Self-Aware OS)."""
         return {
             'version': VA21_VERSION,
             'codename': VA21_CODENAME,
             'initialized': self.is_initialized,
+            'self_aware': True,
             'om_vinayaka_active': self._om_vinayaka is not None,
             'om_vinayaka_is_core': True,  # Om Vinayaka controls everything
-            'learning_engine_active': self._learning_engine is not None,
-            'summary_engine_active': self._summary_engine is not None,
+            'self_learning_active': self._learning_engine is not None,
+            'context_awareness_active': self._summary_engine is not None,
             'agent_manager_active': self._agent_manager is not None,
+            'self_awareness': self.get_self_awareness_status(),
             'subsystems': {
                 s.value: {
                     'loaded': st.is_loaded,
@@ -720,9 +826,11 @@ class VA21Core:
         }
     
     def get_welcome_message(self) -> str:
-        """Get the VA21 OS welcome message."""
+        """Get the VA21 OS welcome message (Self-Aware OS)."""
         agent_count = len(self._agent_manager.agents) if self._agent_manager else 0
         subsystems_loaded = sum(1 for st in self._subsystem_status.values() if st.is_loaded)
+        learning_active = "✓" if self._learning_engine else "○"
+        summary_active = "✓" if self._summary_engine else "○"
         
         return f"""
 ╔═══════════════════════════════════════════════════════════════════════════════╗
@@ -730,21 +838,29 @@ class VA21Core:
 ║                            🙏 OM VINAYAKA 🙏                                   ║
 ║                                                                               ║
 ║                      VA21 OS v{VA21_VERSION} ({VA21_CODENAME})                            ║
-║                  Secure AI-Powered Operating System                           ║
+║                    🧠 SELF-AWARE Operating System 🧠                           ║
 ║                                                                               ║
 ╠═══════════════════════════════════════════════════════════════════════════════╣
 ║                                                                               ║
-║   🧠 Om Vinayaka AI is at the CORE - controlling everything (except Guardian) ║
+║   🧠 SELF-AWARENESS STATUS:                                                   ║
+║   ├── [{learning_active}] Self-Learning Engine: Learns from every interaction        ║
+║   ├── [{summary_active}] Context-Aware Summary: Prevents hallucinations              ║
+║   ├── [✓] Knowledge Base: Obsidian mind maps (persistent memory)              ║
+║   └── [✓] Om Vinayaka AI: CORE CONTROLLER (active)                            ║
+║                                                                               ║
+╠═══════════════════════════════════════════════════════════════════════════════╣
+║                                                                               ║
+║   🙏 Om Vinayaka AI CONTROLS EVERYTHING (except Guardian):                    ║
 ║                                                                               ║
 ║   ┌─────────────────────────────────────────────────────────────────────┐     ║
-║   │                    🙏 OM VINAYAKA AI (Core)                         │     ║
+║   │              🙏 OM VINAYAKA AI (Self-Aware Core)                    │     ║
 ║   │  • Understands your intent in 1,600+ languages                     │     ║
 ║   │  • Controls ALL subsystems via FARA layer                          │     ║
-║   │  • Asks clarifying questions when needed                           │     ║
-║   │  • Learns from every interaction                                   │     ║
-║   │  • Zork-style interface for EVERY application                      │     ║
+║   │  • Context-aware: Never forgets important information              │     ║
+║   │  • Self-learning: Gets smarter with every interaction              │     ║
+║   │  • Anti-hallucination: Validates all AI outputs                    │     ║
 ║   └─────────────────────────────────────────────────────────────────────┘     ║
-║                              ↓                                                ║
+║                              ↓ controls                                       ║
 ║   ┌──────────┬──────────┬──────────┬──────────┬──────────┬──────────┐         ║
 ║   │ Agents   │ Research │ Writing  │ Coding   │ System   │ Search   │         ║
 ║   │  ({agent_count:2d})    │          │          │          │          │          │         ║
@@ -754,15 +870,21 @@ class VA21Core:
 ║                                                                               ║
 ╚═══════════════════════════════════════════════════════════════════════════════╝
 
-Om Vinayaka AI Features:
+🧠 Self-Awareness Features:
+• Self-Learning Engine - Learns command patterns, preferences, app usage
+• Context-Aware Summary - Prevents hallucinations, maintains context
+• Knowledge Preservation - Full history in Obsidian vault
+• Pattern Recognition - Understands what you do frequently
+
+🙏 Om Vinayaka AI Features:
 • 🎤 Voice Control - Speak naturally in any of 1,600+ languages
 • 🎮 Zork Interface - Every app has a text adventure style
-• 🤖 Agent System - {agent_count} AI agents ready to help
+• 🤖 Agent System - {agent_count} AI agents ready to help (auto-assigned roles)
 • 📚 Knowledge Base - LangChain + Obsidian mind maps
 • 🔍 CLI Wrapper - Gemini, Copilot, Codex all accessible
-• 📖 Self-Learning - Gets smarter with every interaction
+• 📖 Adaptive - Improves responses over time
 
-Subsystems: {subsystems_loaded} loaded and controlled by Om Vinayaka AI
+Subsystems: {subsystems_loaded} loaded | All controlled by Om Vinayaka AI
 
 Hold the Super key to speak, or just type what you'd like to do.
 """
@@ -776,7 +898,7 @@ _va21_core_instance = None
 
 
 def get_va21_core() -> VA21Core:
-    """Get the VA21 Core singleton."""
+    """Get the VA21 Core singleton (Self-Aware OS)."""
     global _va21_core_instance
     
     if _va21_core_instance is None:

@@ -17,7 +17,7 @@ Om Vinayaka - May obstacles be removed from your path.
 
 import os
 import json
-import hashlib
+import uuid
 from datetime import datetime
 from typing import Dict, List, Optional, Any, Callable
 from dataclasses import dataclass, field
@@ -314,9 +314,8 @@ class Agent:
         self.system_prompt = self._build_system_prompt()
     
     def _generate_id(self) -> str:
-        """Generate a unique agent ID."""
-        unique = f"{self.config.role.value}_{datetime.now().isoformat()}"
-        return hashlib.sha256(unique.encode()).hexdigest()[:12]
+        """Generate a unique agent ID using UUID."""
+        return f"{self.config.role.value}_{uuid.uuid4().hex[:16]}"
     
     def _generate_name(self) -> str:
         """Generate a descriptive name for the agent."""

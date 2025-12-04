@@ -37,9 +37,17 @@ except ImportError:
 # Ollama configuration (user-facing instance)
 # These can be overridden via environment variables:
 #   VA21_OLLAMA_HOST, VA21_OLLAMA_PORT, VA21_GUARDIAN_PORT
+
+def _safe_int(value: str, default: int) -> int:
+    """Safely convert string to int with default fallback."""
+    try:
+        return int(value)
+    except (ValueError, TypeError):
+        return default
+
 DEFAULT_OLLAMA_HOST = os.environ.get("VA21_OLLAMA_HOST", "127.0.0.1")
-DEFAULT_OLLAMA_PORT = int(os.environ.get("VA21_OLLAMA_PORT", "11434"))  # User-facing Ollama
-GUARDIAN_OLLAMA_PORT = int(os.environ.get("VA21_GUARDIAN_PORT", "11435"))  # Guardian AI (sandboxed)
+DEFAULT_OLLAMA_PORT = _safe_int(os.environ.get("VA21_OLLAMA_PORT", "11434"), 11434)
+GUARDIAN_OLLAMA_PORT = _safe_int(os.environ.get("VA21_GUARDIAN_PORT", "11435"), 11435)
 
 # Default models for different tasks
 # Can be overridden via VA21_MODEL_* environment variables

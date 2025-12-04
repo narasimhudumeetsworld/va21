@@ -384,11 +384,13 @@ DEPENDS: [task numbers or 'none']
         sorted_tasks = sorted(project.tasks, key=lambda t: t.priority)
         
         for task in sorted_tasks:
-            # Check dependencies
-            deps_complete = all(
-                results.get(dep, {}).success if isinstance(results.get(dep), AgentResult) else False
-                for dep in task.dependencies
-            )
+            # Check dependencies - all must be completed successfully
+            deps_complete = True
+            for dep in task.dependencies:
+                dep_result = results.get(dep)
+                if not isinstance(dep_result, AgentResult) or not dep_result.success:
+                    deps_complete = False
+                    break
             
             if task.dependencies and not deps_complete:
                 task.status = "blocked"
