@@ -35,16 +35,19 @@ except ImportError:
 # ═══════════════════════════════════════════════════════════════════════════════
 
 # Ollama configuration (user-facing instance)
-DEFAULT_OLLAMA_HOST = "127.0.0.1"
-DEFAULT_OLLAMA_PORT = 11434  # User-facing Ollama
-GUARDIAN_OLLAMA_PORT = 11435  # Guardian AI (sandboxed, kernel-level)
+# These can be overridden via environment variables:
+#   VA21_OLLAMA_HOST, VA21_OLLAMA_PORT, VA21_GUARDIAN_PORT
+DEFAULT_OLLAMA_HOST = os.environ.get("VA21_OLLAMA_HOST", "127.0.0.1")
+DEFAULT_OLLAMA_PORT = int(os.environ.get("VA21_OLLAMA_PORT", "11434"))  # User-facing Ollama
+GUARDIAN_OLLAMA_PORT = int(os.environ.get("VA21_GUARDIAN_PORT", "11435"))  # Guardian AI (sandboxed)
 
 # Default models for different tasks
+# Can be overridden via VA21_MODEL_* environment variables
 DEFAULT_MODELS = {
-    'general': 'granite3.3:2b',
-    'code': 'granite-code:3b',
-    'guardian': 'granite-guardian:2b',
-    'embedding': 'nomic-embed-text:latest',
+    'general': os.environ.get("VA21_MODEL_GENERAL", "granite3.3:2b"),
+    'code': os.environ.get("VA21_MODEL_CODE", "granite-code:3b"),
+    'guardian': os.environ.get("VA21_MODEL_GUARDIAN", "granite-guardian:2b"),
+    'embedding': os.environ.get("VA21_MODEL_EMBEDDING", "nomic-embed-text:latest"),
 }
 
 # API endpoints for different providers

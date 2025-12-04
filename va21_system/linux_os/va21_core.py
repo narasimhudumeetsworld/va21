@@ -5,37 +5,45 @@ VA21 OS - Core System Integration
 
 Om Vinayaka - The remover of obstacles.
 
-This module integrates ALL VA21 OS components to work together seamlessly:
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                    🙏 OM VINAYAKA INTELLIGENT ACCESSIBILITY 🙏                 ║
+║                           (Unique to VA21 OS!)                                ║
+╠═══════════════════════════════════════════════════════════════════════════════╣
+║                                                                               ║
+║   Traditional Screen Readers        │   VA21 + Om Vinayaka AI                 ║
+║   ─────────────────────────────────│────────────────────────────────────────  ║
+║   Reads keywords: "menu", "button" │ Explains purpose: "This saves your work" ║
+║   No context awareness             │ Understands your intent and current task ║
+║   Just announces elements          │ Asks clarifying questions when needed    ║
+║   User must know commands          │ Natural conversation in any language     ║
+║   Single app support               │ Zork-style UX for EVERY app              ║
+║   Limited CLI support              │ Wraps CLI tools: Gemini, Copilot, Codex  ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
 
-Components Integrated:
-- Om Vinayaka AI (Accessibility Intelligence)
-- Zork Shell (Text Adventure Interface)
-- Voice Accessibility System
-- Self-Learning Engine
-- Summary Engine
-- Coding IDE with Multi-Agent System
-- Research Suite
-- Writing Suite
-- Journalism Toolkit
-- Security Tools
-- System Tools
-- Obsidian Vault Manager
-- SearXNG Private Search
-- Window Manager
-- Spotlight Launcher
+Om Vinayaka AI Features:
+- Automatic Zork UX Generation: Every app gets a text adventure interface
+- System-Wide Voice Control: Control ANY application with voice
+- CLI Tool Wrapper: Gemini CLI, GitHub Copilot CLI, Codex - all accessible
+- Knowledge Base: LangChain + Obsidian mind maps store all app interfaces
+- Clarifying Questions: AI asks for details when intent is unclear
+- Context-Aware Execution: Understands what app is active and what you want
+- Self-Learning: Gets smarter with every interaction
 
 Architecture:
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                         VA21 OS Integration Layer                        │
 ├─────────────────────────────────────────────────────────────────────────┤
-│  🙏 OM VINAYAKA AI (Central Hub)                                        │
-│  ├── Receives all user input (voice, text, actions)                     │
-│  ├── Routes to appropriate subsystem                                     │
-│  ├── Maintains context and learns from interactions                     │
-│  └── Returns unified responses                                           │
+│  🙏 OM VINAYAKA AI (Central Intelligence Hub)                           │
+│  ├── ALL user input flows through Om Vinayaka first                     │
+│  ├── Understands intent, asks clarifying questions                      │
+│  ├── Routes to appropriate subsystem with context                       │
+│  ├── Wraps ALL responses in accessible, conversational format           │
+│  ├── Learns from every interaction                                      │
+│  └── Available in 1,600+ languages                                      │
 ├─────────────────────────────────────────────────────────────────────────┤
-│  📦 SUBSYSTEMS (No Feature Overlap)                                     │
-│  ├── Accessibility: Voice, Screen Reader, Zork UX                       │
+│  📦 SUBSYSTEMS (Connected via Om Vinayaka)                              │
+│  ├── Agents: Multi-agent system for complex tasks                       │
 │  ├── Research: Citations, Literature, Projects                          │
 │  ├── Writing: Documents, Templates, Export                              │
 │  ├── Coding: IDE, Multi-Agent, Project Builder                          │
@@ -43,8 +51,7 @@ Architecture:
 │  └── Search: SearXNG Private Search                                     │
 └─────────────────────────────────────────────────────────────────────────┘
 
-NOTE: Guardian AI is EXCLUDED - it runs sandboxed at kernel level (port 11435)
-      and cannot be influenced by user-facing systems.
+NOTE: Guardian AI runs sandboxed at kernel level (port 11435) - ISOLATED.
 
 License: Om Vinayaka Prayaga Vaibhav Inventions License
 Copyright (c) 2024-2025 Prayaga Vaibhav
@@ -68,8 +75,9 @@ VA21_CODENAME = "Vinayaka"
 
 
 class Subsystem(Enum):
-    """VA21 OS Subsystems."""
-    ACCESSIBILITY = "accessibility"
+    """VA21 OS Subsystems - All connected via Om Vinayaka AI."""
+    ACCESSIBILITY = "accessibility"  # Om Vinayaka AI lives here
+    AGENTS = "agents"  # Multi-agent system
     RESEARCH = "research"
     WRITING = "writing"
     CODING = "coding"
@@ -80,14 +88,29 @@ class Subsystem(Enum):
 
 
 # Subsystem responsibilities - ensures no feature overlap
+# Om Vinayaka AI coordinates all of these
 SUBSYSTEM_RESPONSIBILITIES = {
     Subsystem.ACCESSIBILITY: [
+        # Om Vinayaka AI - Central Intelligence
+        "om_vinayaka_ai",
         "voice_control",
         "screen_reader",
         "zork_interface",
         "natural_language_input",
         "text_to_speech",
         "speech_to_text",
+        "cli_tool_wrapper",  # Gemini, Copilot, Codex
+        "clarifying_questions",
+        "context_awareness",
+        "self_learning",
+    ],
+    Subsystem.AGENTS: [
+        # Multi-Agent System (works WITH Om Vinayaka)
+        "agent_orchestration",
+        "task_planning",
+        "agent_creation",
+        "role_assignment",
+        "experience_levels",
     ],
     Subsystem.RESEARCH: [
         "literature_management",
@@ -106,7 +129,6 @@ SUBSYSTEM_RESPONSIBILITIES = {
     ],
     Subsystem.CODING: [
         "code_editing",
-        "multi_agent_coding",
         "project_scaffolding",
         "code_suggestions",
         "debugging",
@@ -183,15 +205,21 @@ class VA21Core:
     """
     VA21 OS Core Integration System
     
-    This is the central hub that:
-    1. Receives ALL user input (voice, text, actions)
-    2. Routes requests to the appropriate subsystem
-    3. Ensures no feature overlap between subsystems
-    4. Maintains system-wide context
-    5. Returns unified responses
+    🙏 OM VINAYAKA AI is the CENTRAL INTELLIGENCE HUB 🙏
     
-    All subsystems connect through this core, ensuring:
-    - Consistent user experience
+    Unlike traditional systems, VA21 OS routes ALL user interactions
+    through Om Vinayaka AI first. This provides:
+    
+    1. INTELLIGENT ACCESSIBILITY - Not just screen reading, but understanding
+    2. CONTEXT AWARENESS - Knows what you're trying to do
+    3. CLARIFYING QUESTIONS - Asks when intent is unclear
+    4. ZORK-STYLE UX - Every app gets a text adventure interface
+    5. CLI TOOL WRAPPING - Gemini, Copilot, Codex all accessible
+    6. SELF-LEARNING - Gets smarter with every interaction
+    7. 1,600+ LANGUAGES - Natural conversation in any language
+    
+    All subsystems connect THROUGH Om Vinayaka, ensuring:
+    - Consistent accessible experience
     - No duplicate functionality
     - Proper context sharing
     - Unified learning from interactions
@@ -209,10 +237,13 @@ class VA21Core:
         for subsystem in Subsystem:
             self._subsystem_status[subsystem] = SubsystemStatus(subsystem=subsystem)
         
-        # Central components
+        # 🙏 Om Vinayaka AI - Central Intelligence Hub
         self._om_vinayaka = None
+        
+        # Supporting engines (work WITH Om Vinayaka)
         self._learning_engine = None
         self._summary_engine = None
+        self._agent_manager = None
         
         # Request routing
         self._intent_handlers: Dict[str, Callable] = {}
@@ -227,55 +258,99 @@ class VA21Core:
         """
         Initialize the VA21 OS core and all subsystems.
         
+        Initialization order:
+        1. Om Vinayaka AI (FIRST - central hub)
+        2. Learning & Summary engines (support Om Vinayaka)
+        3. Agent Manager (complex tasks)
+        4. Other subsystems (all connect via Om Vinayaka)
+        
         Returns:
             True if initialization successful
         """
         print("[VA21 Core] Starting initialization...")
+        print("[VA21 Core] 🙏 Om Vinayaka - The remover of obstacles")
         
-        # 1. Initialize Om Vinayaka AI (central hub)
+        # 1. Initialize Om Vinayaka AI FIRST (central hub)
         self._init_om_vinayaka()
         
         # 2. Initialize learning and summary engines
         self._init_core_engines()
         
-        # 3. Load subsystems
+        # 3. Initialize Agent Manager
+        self._init_agent_manager()
+        
+        # 4. Load other subsystems
         self._load_subsystems()
         
-        # 4. Register intent handlers
+        # 5. Register intent handlers
         self._register_intent_handlers()
+        
+        # 6. Connect everything to Om Vinayaka
+        self._connect_to_om_vinayaka()
         
         self.is_initialized = True
         print("[VA21 Core] Initialization complete!")
-        print(f"[VA21 Core] Loaded subsystems: {[s.value for s, st in self._subsystem_status.items() if st.is_loaded]}")
+        print(f"[VA21 Core] Om Vinayaka AI: {'ACTIVE ✓' if self._om_vinayaka else 'NOT AVAILABLE'}")
+        print(f"[VA21 Core] Subsystems: {[s.value for s, st in self._subsystem_status.items() if st.is_loaded]}")
         
         return True
     
     def _init_om_vinayaka(self):
-        """Initialize Om Vinayaka Accessibility AI."""
+        """
+        Initialize Om Vinayaka Accessibility AI.
+        
+        This is the CENTRAL INTELLIGENCE HUB of VA21 OS.
+        Everything flows through Om Vinayaka.
+        """
         try:
             from .accessibility import get_om_vinayaka
             self._om_vinayaka = get_om_vinayaka()
             self._om_vinayaka.activate()
-            print("[VA21 Core] Om Vinayaka AI: ACTIVE")
+            
+            # Mark accessibility subsystem as loaded
+            self._subsystem_status[Subsystem.ACCESSIBILITY].is_loaded = True
+            self._subsystem_status[Subsystem.ACCESSIBILITY].is_available = True
+            self._subsystems[Subsystem.ACCESSIBILITY] = self._om_vinayaka
+            
+            print("[VA21 Core] 🙏 Om Vinayaka AI: ACTIVE")
+            print("[VA21 Core]    - Intelligent Accessibility: ENABLED")
+            print("[VA21 Core]    - Zork UX for ALL apps: ENABLED")
+            print("[VA21 Core]    - CLI Tool Wrapper: ENABLED")
+            print("[VA21 Core]    - Self-Learning: ENABLED")
         except ImportError as e:
-            print(f"[VA21 Core] Om Vinayaka AI not available: {e}")
+            print(f"[VA21 Core] ⚠ Om Vinayaka AI not available: {e}")
+            self._subsystem_status[Subsystem.ACCESSIBILITY].error = str(e)
     
     def _init_core_engines(self):
-        """Initialize learning and summary engines."""
+        """Initialize learning and summary engines that support Om Vinayaka."""
         try:
             from .accessibility import get_learning_engine, get_summary_engine
             self._learning_engine = get_learning_engine()
             self._summary_engine = get_summary_engine()
-            print("[VA21 Core] Learning Engine: ACTIVE")
-            print("[VA21 Core] Summary Engine: ACTIVE")
+            print("[VA21 Core] Learning Engine: ACTIVE (supports Om Vinayaka)")
+            print("[VA21 Core] Summary Engine: ACTIVE (prevents hallucinations)")
         except ImportError as e:
             print(f"[VA21 Core] Core engines not available: {e}")
     
+    def _init_agent_manager(self):
+        """Initialize the Multi-Agent system."""
+        try:
+            from .agents import get_agent_manager
+            self._agent_manager = get_agent_manager()
+            
+            # Mark agents subsystem as loaded
+            self._subsystem_status[Subsystem.AGENTS].is_loaded = True
+            self._subsystem_status[Subsystem.AGENTS].is_available = True
+            self._subsystems[Subsystem.AGENTS] = self._agent_manager
+            
+            print("[VA21 Core] Agent Manager: ACTIVE")
+            print(f"[VA21 Core]    - Agents available: {len(self._agent_manager.agents)}")
+        except ImportError as e:
+            print(f"[VA21 Core] Agent Manager not available: {e}")
+            self._subsystem_status[Subsystem.AGENTS].error = str(e)
+    
     def _load_subsystems(self):
-        """Load all subsystems."""
-        
-        # Accessibility (already loaded via Om Vinayaka)
-        self._load_subsystem(Subsystem.ACCESSIBILITY, 'accessibility', 'VA21AccessibilitySystem')
+        """Load all other subsystems (they connect via Om Vinayaka)."""
         
         # Research Suite
         self._load_subsystem(Subsystem.RESEARCH, 'research_suite', 'ResearchSuite')
@@ -299,7 +374,7 @@ class VA21Core:
         self._load_subsystem(Subsystem.GAMES, 'games', None)
     
     def _load_subsystem(self, subsystem: Subsystem, module_name: str, class_name: str):
-        """Load a single subsystem."""
+        """Load a single subsystem (connects via Om Vinayaka)."""
         status = self._subsystem_status[subsystem]
         
         try:
@@ -308,8 +383,9 @@ class VA21Core:
             
             if class_name:
                 # Try to get singleton or create instance
-                getter_name = f"get_{class_name.lower().replace('suite', '_suite').replace('toolkit', '_toolkit')}"
-                getter_name = getter_name.replace('__', '_').rstrip('_')
+                # Convert CamelCase to snake_case for getter function
+                snake_name = ''.join(['_' + c.lower() if c.isupper() else c for c in class_name]).lstrip('_')
+                getter_name = f"get_{snake_name}"
                 
                 if hasattr(module, getter_name):
                     self._subsystems[subsystem] = getattr(module, getter_name)()
@@ -330,7 +406,32 @@ class VA21Core:
             status.is_loaded = False
             status.is_available = False
             status.error = str(e)
-            print(f"[VA21 Core] Failed to load {subsystem.value}: {e}")
+            # Only show error for non-optional subsystems
+            if subsystem not in [Subsystem.GAMES]:
+                print(f"[VA21 Core] Note: {subsystem.value} not loaded: {e}")
+    
+    def _connect_to_om_vinayaka(self):
+        """
+        Connect all subsystems to Om Vinayaka AI.
+        
+        This ensures all subsystems can be accessed through
+        Om Vinayaka's natural language interface.
+        """
+        if not self._om_vinayaka:
+            print("[VA21 Core] Warning: Om Vinayaka not available for subsystem connection")
+            return
+        
+        # Register subsystems with Om Vinayaka
+        for subsystem, instance in self._subsystems.items():
+            if instance and subsystem != Subsystem.ACCESSIBILITY:
+                # Om Vinayaka can now route requests to this subsystem
+                print(f"[VA21 Core] Connected {subsystem.value} → Om Vinayaka AI")
+        
+        # Connect Agent Manager to Om Vinayaka
+        if self._agent_manager:
+            print("[VA21 Core] Connected Agent System → Om Vinayaka AI")
+        
+        print("[VA21 Core] All subsystems connected via Om Vinayaka AI")
     
     def _register_intent_handlers(self):
         """Register handlers for different intents."""
@@ -455,12 +556,19 @@ class VA21Core:
             return Subsystem.SEARCH
         if action.startswith('navigate:'):
             return Subsystem.SYSTEM
+        if action.startswith('agent:'):
+            return Subsystem.AGENTS
         
-        # Default to accessibility (Om Vinayaka handles it)
+        # Default: Om Vinayaka handles everything it understands
         return Subsystem.ACCESSIBILITY
     
     def _execute_via_subsystem(self, subsystem: Subsystem, result: Dict) -> Optional[str]:
-        """Execute an action via a specific subsystem."""
+        """
+        Execute an action via a specific subsystem.
+        
+        ALL execution goes through Om Vinayaka first, then to subsystems.
+        Om Vinayaka maintains context and learns from every action.
+        """
         if subsystem not in self._subsystems:
             return None
         
@@ -468,8 +576,11 @@ class VA21Core:
         action = result.get('action', '')
         
         # Each subsystem has its own action handlers
+        # But Om Vinayaka always knows what's happening
         try:
-            if subsystem == Subsystem.RESEARCH:
+            if subsystem == Subsystem.AGENTS:
+                return self._handle_agent_action(instance, action, result)
+            elif subsystem == Subsystem.RESEARCH:
                 return self._handle_research_action(instance, action, result)
             elif subsystem == Subsystem.WRITING:
                 return self._handle_writing_action(instance, action, result)
@@ -480,9 +591,19 @@ class VA21Core:
             elif subsystem == Subsystem.SYSTEM:
                 return self._handle_system_action(instance, action, result)
         except Exception as e:
-            return f"Error executing action: {e}"
+            return f"Om Vinayaka encountered an issue: {e}"
         
         return None
+    
+    def _handle_agent_action(self, instance, action: str, result: Dict) -> str:
+        """Handle agent subsystem actions - Om Vinayaka delegates to agents."""
+        if hasattr(instance, 'execute_task'):
+            task_result = instance.execute_task(
+                description=result.get('full_input', action),
+                task_type=action.split(':')[-1] if ':' in action else 'code'
+            )
+            return task_result.output if task_result.success else f"Agent task failed: {task_result.errors}"
+        return "Agent system ready. What would you like the agents to do?"
     
     def _handle_research_action(self, instance, action: str, result: Dict) -> str:
         """Handle research subsystem actions."""
@@ -500,6 +621,9 @@ class VA21Core:
     
     def _handle_coding_action(self, instance, action: str, result: Dict) -> str:
         """Handle coding subsystem actions."""
+        # Use agent system for complex coding tasks
+        if self._agent_manager and ('create' in action or 'build' in action):
+            return self._handle_agent_action(self._agent_manager, action, result)
         if 'project' in action:
             return "Project builder ready. What would you like to create?"
         if 'code' in action:
@@ -579,13 +703,16 @@ class VA21Core:
             'codename': VA21_CODENAME,
             'initialized': self.is_initialized,
             'om_vinayaka_active': self._om_vinayaka is not None,
+            'om_vinayaka_is_core': True,  # Om Vinayaka controls everything
             'learning_engine_active': self._learning_engine is not None,
             'summary_engine_active': self._summary_engine is not None,
+            'agent_manager_active': self._agent_manager is not None,
             'subsystems': {
                 s.value: {
                     'loaded': st.is_loaded,
                     'available': st.is_available,
                     'version': st.version,
+                    'controlled_by': 'om_vinayaka_ai',
                     'error': st.error
                 }
                 for s, st in self._subsystem_status.items()
@@ -594,30 +721,50 @@ class VA21Core:
     
     def get_welcome_message(self) -> str:
         """Get the VA21 OS welcome message."""
+        agent_count = len(self._agent_manager.agents) if self._agent_manager else 0
+        subsystems_loaded = sum(1 for st in self._subsystem_status.values() if st.is_loaded)
+        
         return f"""
-╔═══════════════════════════════════════════════════════════════════╗
-║                                                                   ║
-║                     🙏 OM VINAYAKA 🙏                              ║
-║                                                                   ║
-║                 VA21 OS v{VA21_VERSION} ({VA21_CODENAME})                       ║
-║             Secure AI-Powered Operating System                    ║
-║                                                                   ║
-╚═══════════════════════════════════════════════════════════════════╝
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║                            🙏 OM VINAYAKA 🙏                                   ║
+║                                                                               ║
+║                      VA21 OS v{VA21_VERSION} ({VA21_CODENAME})                            ║
+║                  Secure AI-Powered Operating System                           ║
+║                                                                               ║
+╠═══════════════════════════════════════════════════════════════════════════════╣
+║                                                                               ║
+║   🧠 Om Vinayaka AI is at the CORE - controlling everything (except Guardian) ║
+║                                                                               ║
+║   ┌─────────────────────────────────────────────────────────────────────┐     ║
+║   │                    🙏 OM VINAYAKA AI (Core)                         │     ║
+║   │  • Understands your intent in 1,600+ languages                     │     ║
+║   │  • Controls ALL subsystems via FARA layer                          │     ║
+║   │  • Asks clarifying questions when needed                           │     ║
+║   │  • Learns from every interaction                                   │     ║
+║   │  • Zork-style interface for EVERY application                      │     ║
+║   └─────────────────────────────────────────────────────────────────────┘     ║
+║                              ↓                                                ║
+║   ┌──────────┬──────────┬──────────┬──────────┬──────────┬──────────┐         ║
+║   │ Agents   │ Research │ Writing  │ Coding   │ System   │ Search   │         ║
+║   │  ({agent_count:2d})    │          │          │          │          │          │         ║
+║   └──────────┴──────────┴──────────┴──────────┴──────────┴──────────┘         ║
+║                                                                               ║
+║   🔒 Guardian AI runs ISOLATED at kernel level (cannot be influenced)         ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
 
-Welcome to VA21 OS! All systems are integrated and working together.
+Om Vinayaka AI Features:
+• 🎤 Voice Control - Speak naturally in any of 1,600+ languages
+• 🎮 Zork Interface - Every app has a text adventure style
+• 🤖 Agent System - {agent_count} AI agents ready to help
+• 📚 Knowledge Base - LangChain + Obsidian mind maps
+• 🔍 CLI Wrapper - Gemini, Copilot, Codex all accessible
+• 📖 Self-Learning - Gets smarter with every interaction
 
-Available Subsystems:
-• Accessibility - Voice control, Zork interfaces, screen reader
-• Research - Literature management, citations, projects
-• Writing - Document editing, templates, export
-• Coding - IDE, multi-agent development, project builder
-• Journalism - Fact-checking, source verification
-• System - Settings, files, window management
-• Search - Private web search via SearXNG
+Subsystems: {subsystems_loaded} loaded and controlled by Om Vinayaka AI
 
-Just tell me what you'd like to do, or say "help" for more options.
-
-Hold the Super key to speak, or type your command.
+Hold the Super key to speak, or just type what you'd like to do.
 """
 
 

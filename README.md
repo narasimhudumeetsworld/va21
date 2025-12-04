@@ -1,19 +1,21 @@
 # VA21 OS - Secure AI-Powered Linux Operating System
 
-**Om Vinayaka** 🙏
+**Om Vinayaka** 🙏 - The Remover of Obstacles
 
 ## 🛡️ A Complete Linux Operating System
 
 VA21 OS is a **full Linux operating system** designed for researchers, writers, journalists, and security professionals. It's a real OS that you install on your computer - not an app, not a container.
 
-![VA21 OS Interface](
+**🙏 Om Vinayaka AI at the CORE** - Controls everything except Guardian AI (sandboxed security)
 
 ### What is VA21 OS?
 
 - **Full Linux OS** based on Debian GNU/Linux
-- **Zork-style text adventure interface** for unique interaction
-- **Native tiling window manager** for efficient multitasking
-- **Guardian AI security** powered by IBM Granite 4.0 via Ollama
+- **Om Vinayaka AI** at the core - intelligent accessibility controlling all subsystems
+- **Zork-style text adventure interface** for EVERY application
+- **Local AI via Ollama** - Privacy-first, your data never leaves your device
+- **1,600+ language support** via Meta Omnilingual ASR
+- **Guardian AI security** powered by IBM Granite 4.0 (sandboxed at kernel level)
 - **~5 GB base installation** (AI models downloaded during install)
 
 ### Installation
@@ -44,6 +46,74 @@ cd va21/va21_system/linux_os
 
 ---
 
+## 🏗️ Complete System Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                  VA21 OS - Complete Architecture                        │
+├─────────────────────────────────────────────────────────────────────────┤
+│  🛡️ KERNEL LEVEL - Guardian AI (Sandboxed Ollama - Port 11435)         │
+│  ├── IBM Granite 4.0 2B - Isolated security AI                         │
+│  ├── Completely separate from user-facing AI                           │
+│  ├── Cannot be influenced by user conversations                        │
+│  ├── Think → Vet → Act methodology                                     │
+│  └── Independent threat analysis and blocking                          │
+├─────────────────────────────────────────────────────────────────────────┤
+│  🙏 OM VINAYAKA AI - CORE CONTROLLER (User-facing Ollama - Port 11434) │
+│  ├── CONTROLS ALL SUBSYSTEMS (except Guardian)                         │
+│  ├── Automatic Zork UX for every app when installed                    │
+│  ├── System-wide voice control for ALL applications                    │
+│  ├── CLI tool wrappers (Gemini, Copilot, Codex, etc.)                  │
+│  ├── LangChain + Obsidian mind maps knowledge base                     │
+│  ├── Self-learning system that improves over time                      │
+│  ├── Clarifying questions to understand user intent                    │
+│  └── FARA layer executes actions across entire OS                      │
+├─────────────────────────────────────────────────────────────────────────┤
+│  🎤 Voice Intelligence Layer (Controlled by Om Vinayaka)               │
+│  ├── Meta Omnilingual ASR (1,600+ langs) - Apache 2.0                  │
+│  ├── Whisper/Solus AI (backup) - MIT                                   │
+│  ├── Rhasspy (wake words) - MIT                                        │
+│  ├── Piper TTS (fast) - MIT                                            │
+│  ├── Kokoro TTS (premium) - Apache 2.0                                 │
+│  └── Hold Super Key = Push-to-Talk (Accessibility)                     │
+├─────────────────────────────────────────────────────────────────────────┤
+│  🤖 Multi-Agent System (Controlled by Om Vinayaka)                     │
+│  ├── Automatic role assignment (Coder, Reviewer, Planner, etc.)        │
+│  ├── Experience levels (Junior, Mid, Senior, Expert)                   │
+│  ├── Context summaries for each agent                                  │
+│  ├── Microsoft AutoGen patterns - MIT                                  │
+│  └── LangChain orchestration - MIT                                     │
+├─────────────────────────────────────────────────────────────────────────┤
+│  🎮 Zork-Style Interface (Custom Created!)                             │
+│  ├── Text adventure UI for EVERY application                           │
+│  ├── Automatic interface generation on app install                     │
+│  ├── Native tiling window manager                                      │
+│  ├── Obsidian-style Knowledge Vault                                    │
+│  └── Research Command Center                                           │
+├─────────────────────────────────────────────────────────────────────────┤
+│  💻 Sandboxed Terminals with Zork Accessibility                        │
+│  ├── Gemini CLI, Codex, GitHub Copilot CLI support                     │
+│  ├── Natural language to CLI command translation                       │
+│  ├── Zork narrative wrapping for all output                            │
+│  └── Voice control for terminal applications                           │
+├─────────────────────────────────────────────────────────────────────────┤
+│  🧠 Self-Learning System                                               │
+│  ├── Learns common command patterns                                    │
+│  ├── Tracks user preferences                                           │
+│  ├── Monitors app usage patterns                                       │
+│  ├── Improves narratives over time                                     │
+│  └── Gets smarter with continued use!                                  │
+├─────────────────────────────────────────────────────────────────────────┤
+│  💾 Debian GNU/Linux Foundation                                        │
+│  ├── Full GNU toolkit                                                  │
+│  ├── Debian package management                                         │
+│  ├── Flatpak integration                                               │
+│  └── ISO releases for real hardware install                            │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## ✨ Features
 
 ### 🎮 Zork-Style Interface
@@ -70,20 +140,20 @@ Exits: NORTH (Research Lab), EAST (Knowledge Vault)
 You enter the RESEARCH LAB...
 ```
 
-### 🎤 Voice Intelligence Layer
-Complete multilingual voice processing with 1,600+ language support:
+### 🎤 Voice Intelligence Layer (Meta Omnilingual ASR)
+
+Complete multilingual voice processing with **1,600+ language support** including **100+ Indian dialects**:
 
 | Component | Technology | License | Purpose |
 |-----------|------------|---------|---------|
-| ASR (Primary) | [Meta Omnilingual ASR](https://github.com/facebookresearch/fairseq) | Apache 2.0 | 1,600+ languages |
-| ASR (Secondary) | [Whisper/Solus AI](https://github.com/openai/whisper) | MIT | Offline backup |
-| Wake Word | [Rhasspy](https://github.com/rhasspy/rhasspy) | MIT | Custom triggers |
-| TTS (Fast) | [Piper](https://github.com/rhasspy/piper) | MIT | Fast synthesis |
-| TTS (Premium) | [Kokoro](https://github.com/remsky/Kokoro-FastAPI) | Apache 2.0 | Premium voices |
-| LLM Processing | [LangChain](https://github.com/langchain-ai/langchain) + [Granite 4.0](https://ollama.com/library/granite4) | MIT + Apache 2.0 | AI reasoning |
-| Security | Guardian AI + [LLM Guard](https://github.com/protectai/llm-guard) | Proprietary + MIT | Safety layer |
+| **ASR (Primary)** | [Meta Omnilingual ASR](https://github.com/facebookresearch/fairseq) ⭐⭐⭐⭐⭐ | Apache 2.0 | 1,600+ languages (Released Nov 2025) |
+| **ASR (Backup)** | [OpenAI Whisper](https://github.com/openai/whisper) | MIT | Offline backup ASR |
+| **Wake Word** | [Rhasspy](https://github.com/rhasspy/rhasspy) | MIT | Custom wake word detection |
+| **TTS (Fast)** | [Piper TTS](https://github.com/rhasspy/piper) | MIT | Fast speech synthesis |
+| **TTS (Premium)** | [Kokoro TTS](https://github.com/remsky/Kokoro-FastAPI) | Apache 2.0 | Premium natural voices |
+| **Local LLM** | [Ollama](https://ollama.com) + [IBM Granite](https://huggingface.co/ibm-granite) | MIT + Apache 2.0 | Privacy-first local AI |
 
-**Indian Language Support:** Hindi, Tamil, Telugu, Kannada, Bengali, Marathi, Gujarati, Malayalam, Punjabi, and 100+ more!
+**Indian Language Support:** Hindi, Tamil, Telugu, Kannada, Bengali, Marathi, Gujarati, Malayalam, Punjabi, Odia, Assamese, and **100+ more dialects!**
 
 ### ♿ Intelligent Accessibility with Om Vinayaka AI (Unique to VA21!)
 
@@ -146,34 +216,60 @@ Powered by [IBM AI Privacy Toolkit](https://github.com/IBM/ai-privacy-toolkit) (
 - **Prompt Injection Detection**: Blocks malicious inputs
 - **Output Scanning**: Filters harmful content
 
-### 🤖 Multi-Agent Task Automation System
-Inspired by [Microsoft AutoGen](https://github.com/microsoft/autogen), [Agent Zero](https://github.com/agent0ai/agent-zero), and [OpenCode](https://github.com/sst/opencode):
+### 🤖 Multi-Agent System with Automatic Role Assignment (NEW!)
 
-- **Multi-Agent Conversation Framework**: Agents collaborate autonomously
-- **Specialized Agents**: Code Agent, Research Agent, Reflection Agent
-- **Orchestrator Agent**: Coordinates all specialized agents
-  - *Aligns with VA21's Microsoft FARA integration*
+VA21 OS includes a powerful multi-agent system that works seamlessly with Om Vinayaka AI:
 
-- **Multi-Agent Roles** (inspired by OpenCode):
-  - **Build Agent**: Full access for development work
-  - **Plan Agent**: Read-only for analysis and safe exploration
-  - **General Agent**: Complex multi-step task handling
+**Automatic Agent Assignment:**
+| Role | Experience | Responsibilities |
+|------|------------|------------------|
+| Orchestrator | Expert (10+ years) | Coordinates all agents, assigns tasks |
+| Planner | Senior (5-10 years) | Breaks down complex tasks, estimates effort |
+| Coder | Mid-Senior | Writes clean, efficient code |
+| Reviewer | Senior | Reviews code for quality and security |
+| Researcher | Mid | Researches topics, gathers information |
+| Debugger | Senior | Identifies and fixes bugs |
 
-- **Agent Cooperation** (inspired by Agent Zero):
-  - Hierarchical superior/subordinate agent relationships
-  - Agent-to-agent communication protocols
-  - Persistent memory for solutions and instructions
-  - Dynamic tool creation by agents
+**How it works:**
+1. **You describe what you need** - "Build me a web scraper for news articles"
+2. **Om Vinayaka AI understands** - Asks clarifying questions if needed
+3. **Planner breaks it down** - Creates actionable task list
+4. **Agents are auto-assigned** - Based on task type and complexity
+5. **Work is executed** - Each agent focuses on their specialty
+6. **Results are unified** - Om Vinayaka presents the final output
 
-- **Enhanced VA21 Architecture**:
-  ```
-  Guardian AI + Orchestrator AI + Helper AI + AutoGen Agents + Embedding AI
-  ```
-  - Think>Vet>Act methodology for every action
-  - Sandboxed execution environment
-  - Real-time security monitoring
+**Local AI with Ollama (Privacy-First):**
+```bash
+# VA21 uses local Ollama by default - your data never leaves your device!
+# Models supported:
+- granite3.3:2b     # General tasks (IBM Granite)
+- granite-code:3b   # Code generation
+- granite-guardian:2b # Security (sandboxed)
 
-### 🧠 Dynamic AI Quantization System (NEW!)
+# Or use external APIs (optional):
+export OPENAI_API_KEY="your-key"      # OpenAI
+export ANTHROPIC_API_KEY="your-key"   # Anthropic Claude
+export GROQ_API_KEY="your-key"        # Groq (fast)
+```
+
+**Agent Cooperation Architecture:**
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    🙏 OM VINAYAKA AI (Hub)                      │
+│         Understands intent, routes to agents, learns            │
+├─────────────────────────────────────────────────────────────────┤
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐           │
+│  │Orchestr. │ │ Planner  │ │  Coder   │ │ Reviewer │           │
+│  │ (Expert) │ │ (Senior) │ │  (Mid)   │ │ (Senior) │           │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘           │
+│         │           │            │            │                 │
+│         └───────────┴────────────┴────────────┘                 │
+│                    LOCAL OLLAMA (Privacy)                       │
+│                    or External APIs (Optional)                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### 🧠 Dynamic AI Quantization System
 - **Adaptive Performance**: AI models automatically quantize to 4-bit, 5-bit, or 8-bit based on available system memory
 - **Memory-Aware Loading**: Intelligent model loading and unloading
 - **Quality Preservation**: Optimal quality-to-memory tradeoffs
@@ -286,20 +382,48 @@ Inspired by [Microsoft AutoGen](https://github.com/microsoft/autogen), [Agent Ze
 
 ## 🔒 Core Security Architecture
 
-### Triple-AI System
-- **Guardian AI (Security Core)**: Always-active security analysis using ONNX models with Think>Vet>Act methodology
-- **Helper AI (User Interface)**: User-facing assistant with backup and system knowledge
-- **Multi-Agent System (Automation)**: Task automation with Guardian AI oversight
-- **Air Gap Protection**: Complete isolation from screen content and sensitive data
+### Triple-AI System (Om Vinayaka at Core)
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         SECURITY ARCHITECTURE                           │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  🛡️ GUARDIAN AI (Kernel Level - Port 11435) [ISOLATED]                 │
+│  ├── IBM Granite Guardian 2B model                                      │
+│  ├── Think → Vet → Act methodology                                      │
+│  ├── CANNOT be influenced by user conversations                         │
+│  └── Independent threat analysis                                        │
+│                                                                         │
+│  ════════════════════ ISOLATION BARRIER ════════════════════            │
+│                                                                         │
+│  🙏 OM VINAYAKA AI (Core Controller - Port 11434)                       │
+│  ├── Controls ALL user-facing subsystems                                │
+│  ├── Intelligent accessibility for 1,600+ languages                     │
+│  ├── Self-learning system                                               │
+│  ├── Anti-Hallucination Engine                                          │
+│  │                                                                      │
+│  │   ┌─────────┬─────────┬─────────┬─────────┬─────────┐                │
+│  └───┤ Agents  │ Research│ Writing │ Coding  │ System  │                │
+│      └─────────┴─────────┴─────────┴─────────┴─────────┘                │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+- **Guardian AI (Security Core)**: Sandboxed at kernel level - ISOLATED from Om Vinayaka
+- **Om Vinayaka AI (Core Controller)**: Controls all user-facing systems with intelligent accessibility
+- **Multi-Agent System**: Task automation controlled BY Om Vinayaka AI
+- **Air Gap Protection**: Complete isolation between Guardian and user-facing AI
 - **Principle of Least Privilege**: No direct website interactions or form submissions
 
 ### Security Features
-- ✅ **Real-time Threat Analysis**: Every input analyzed before processing
+- ✅ **Real-time Threat Analysis**: Every input analyzed by Guardian before processing
 - ✅ **Self-Analysis & Healing**: Autonomous code security scanning
 - ✅ **5-Day Quarantine Protocol**: Safe integration of external intelligence
 - ✅ **Localhost-Only Operation**: No external network exposure
 - ✅ **Pattern-Based Detection**: Advanced malware and injection detection
-- ✅ **Anti-Hallucination Engine**: Prevents AI from making up information
+- ✅ **Anti-Hallucination Engine**: Om Vinayaka prevents AI from making up information
+- ✅ **Om Vinayaka at Core**: All user interactions flow through intelligent accessibility
 
 ## 🔬 Research Command Center
 
@@ -441,14 +565,58 @@ VA21 uses **dynamic context-aware AI activation** to minimize RAM usage:
 
 ## 🏗️ Technical Stack
 
-- **OS Base**: Debian GNU/Linux
-- **Backend**: Flask + Socket.IO Python server
-- **Frontend**: React.js with custom theming
-- **Package Management**: Flatpak + APT integration
-- **AI Models**: IBM Granite, Microsoft ONNX/FARA, Meta LLaMA, Meta Omnilingual ASR
-- **Voice**: Meta Omnilingual ASR, Whisper, Rhasspy, Piper TTS, Kokoro TTS
-- **Security**: Guardian AI, LLM Guard, IBM AI Privacy Toolkit
-- **Multi-Agent**: Microsoft AutoGen, Agent Zero patterns, OpenCode patterns
+VA21 OS is built with privacy-first, local-first technologies:
+
+### Core System
+| Component | Technology | License |
+|-----------|------------|---------|
+| **OS Base** | Debian GNU/Linux | DFSG |
+| **Window Manager** | Custom Tiling WM | Apache 2.0 |
+| **Shell** | Zork-Style Interface | Apache 2.0 |
+| **Package Manager** | Flatpak + APT | Various |
+
+### 🙏 Om Vinayaka AI Stack (Central Intelligence)
+| Component | Technology | License | Purpose |
+|-----------|------------|---------|---------|
+| **Local LLM** | [Ollama](https://ollama.com) | MIT | Privacy-first local AI |
+| **AI Models** | [IBM Granite](https://huggingface.co/ibm-granite) | Apache 2.0 | General + Code + Security |
+| **Orchestration** | [LangChain](https://github.com/langchain-ai/langchain) | MIT | AI workflow management |
+| **Knowledge Base** | Obsidian-style Vault | - | Mind maps + Wiki links |
+| **FARA Layer** | Microsoft FARA Integration | MIT | Universal app control |
+
+### 🎤 Voice Intelligence Layer
+| Component | Technology | License | Purpose |
+|-----------|------------|---------|---------|
+| **ASR (Primary)** | Meta Omnilingual ASR ⭐⭐⭐⭐⭐ | Apache 2.0 | 1,600+ languages |
+| **ASR (Backup)** | [OpenAI Whisper](https://github.com/openai/whisper) | MIT | Offline backup |
+| **Wake Word** | [Rhasspy](https://github.com/rhasspy/rhasspy) | MIT | "Hey VA21" detection |
+| **TTS (Fast)** | [Piper TTS](https://github.com/rhasspy/piper) | MIT | Fast synthesis |
+| **TTS (Premium)** | [Kokoro TTS](https://github.com/remsky/Kokoro-FastAPI) | Apache 2.0 | Natural voices |
+
+### 🤖 Multi-Agent System
+| Component | Technology | License | Purpose |
+|-----------|------------|---------|---------|
+| **Framework** | [Microsoft AutoGen](https://github.com/microsoft/autogen) ⭐⭐⭐⭐⭐ | MIT | Agent conversation |
+| **Patterns** | [Agent Zero](https://github.com/agent0ai/agent-zero) | MIT | Cooperation patterns |
+| **Roles** | [OpenCode](https://github.com/sst/opencode) | MIT | Build/Plan agents |
+| **Deployment** | [LMDeploy](https://github.com/InternLM/lmdeploy) | Apache 2.0 | Efficient inference |
+
+### 🔒 Security & Privacy
+| Component | Technology | License | Purpose |
+|-----------|------------|---------|---------|
+| **Guardian AI** | Sandboxed Ollama (port 11435) | Proprietary | Kernel-level security |
+| **LLM Security** | [LLM Guard](https://github.com/protectai/llm-guard) | MIT | Prompt injection defense |
+| **Privacy** | [IBM AI Privacy Toolkit](https://github.com/IBM/ai-privacy-toolkit) | MIT | GDPR compliance |
+| **Antivirus** | ClamAV | GPL | Malware protection |
+
+### 🏢 Key Technology Partners
+| Partner | Contributions |
+|---------|---------------|
+| **IBM** | Granite AI models, AI Privacy Toolkit |
+| **Microsoft** | ONNX Runtime, FARA, AutoGen, Phi models |
+| **Meta AI** | Omnilingual ASR (1,600+ languages), LLaMA, PyTorch |
+| **Hugging Face** | Model hosting, Transformers library |
+| **Ollama** | Local LLM deployment |
 
 ## 🙏 Acknowledgments
 
