@@ -2,12 +2,12 @@
 venv/
 __pycache__/
 *.pyc
+*.pyo
 
-# macOS
+# OS files
 .DS_Store
 
-# Xcode / Swift build
-.build/
-*.xcodeproj
-*.xcworkspace
-DerivedData/
+# Build outputs
+build/
+dist/
+*.iso
