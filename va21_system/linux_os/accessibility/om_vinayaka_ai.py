@@ -3,47 +3,89 @@
 VA21 OS - Om Vinayaka Accessibility Knowledge Base AI
 ======================================================
 
-The Om Vinayaka AI is the central accessibility intelligence system that:
-- Automatically activates when accessibility and voice features are used
-- Creates Zork-style UX for EVERY app when first installed
-- Enables voice users to interact with ANY app in the full OS
-- Asks clarifying questions to understand user intent
-- Executes actions across the entire OS via the FARA layer
-- Stores all app interfaces in a LangChain + Obsidian mind map knowledge base
-- LEARNS from user interactions to get smarter over time!
-- SELF-IMPROVES during idle time (no user activity)!
+🙏 STATE-OF-THE-ART ACCESSIBILITY AI (Unique to VA21!) 🙏
 
-This creates a unified, conversational accessibility experience where
-every application can be controlled through natural language.
+Om Vinayaka AI goes FAR BEYOND traditional screen readers:
 
-Architecture:
-- Om Vinayaka AI: Central orchestrator for all accessibility features
-- App Zork Generator: Creates Zork UX for each app automatically
-- Accessibility Knowledge Base: LangChain + Obsidian with mind maps
-- Voice Controller: System-wide voice input and output
-- FARA Layer: Universal action execution across all apps
-- Terminal Zork Adapter: Zork UX for CLI tools (Gemini CLI, Codex, Copilot CLI, etc.)
-- Self-Learning Engine: Learns patterns, preferences, and improves over time
-- Idle Mode Manager: Self-improvement during user inactivity
+┌─────────────────────────────┬─────────────────────────────────────────┐
+│  Traditional Screen Readers │  VA21 + Om Vinayaka AI                  │
+├─────────────────────────────┼─────────────────────────────────────────┤
+│  Reads keywords:            │  Explains purpose:                      │
+│  "menu", "button"           │  "This saves your work"                 │
+├─────────────────────────────┼─────────────────────────────────────────┤
+│  No context awareness       │  Understands your intent and task       │
+├─────────────────────────────┼─────────────────────────────────────────┤
+│  Just announces elements    │  Asks clarifying questions when needed  │
+├─────────────────────────────┼─────────────────────────────────────────┤
+│  User must know commands    │  Natural conversation in any language   │
+├─────────────────────────────┼─────────────────────────────────────────┤
+│  Single app support         │  Zork-style UX for EVERY app            │
+├─────────────────────────────┼─────────────────────────────────────────┤
+│  Limited CLI support        │  Wraps CLI tools: Gemini, Copilot, etc. │
+└─────────────────────────────┴─────────────────────────────────────────┘
 
-Self-Learning System:
+Om Vinayaka AI Features:
+- Automatic Zork UX Generation: Every app gets a text adventure interface
+- System-Wide Voice Control: Control ANY application with voice
+- CLI Tool Wrapper: Gemini CLI, GitHub Copilot CLI, Codex accessible
+- Knowledge Base: LangChain + Obsidian mind maps store all interfaces
+- Clarifying Questions: AI asks for details when intent is unclear
+- Context-Aware Execution: Understands active app and user intent
+- 1,600+ Languages: Hindi, Tamil, Telugu, Spanish, French, and more!
+
+Self-Learning & Introspection:
 - Learns common command patterns from user interactions
 - Tracks user preferences for personalized experience
 - Monitors app usage patterns to optimize suggestions
-- Improves narratives based on what resonates with users
+- Self-reflects on actions and learns from them (dynamic thinking)
+- Asks "why" and "what" questions for deeper understanding
 - Gets smarter with continued use!
 
-Idle Mode Self-Improvement (NEW!):
+Idle Mode Self-Improvement:
 - Researches best ways to optimize user workflows during idle time
 - Adapts system components to enhance performance
-- Self-reflects on actions and learns from them (dynamic thinking)
 - Analyzes errors and develops prevention strategies
 - Always helping, even when at rest!
+
+Auto Dynamic Memory Backups:
+- Never forgets - auto backup on shutdown
+- Dynamic backups based on activity level
+- Version history for all knowledge
+- Survives power loss
+
+Architecture:
+- Om Vinayaka AI: Central orchestrator (THE CORE)
+- App Zork Generator: Creates Zork UX for each app automatically
+- Accessibility Knowledge Base: LangChain + Obsidian with mind maps
+- Voice Controller: System-wide voice input and output (1,600+ languages)
+- FARA Layer: Universal action execution across all apps
+- Terminal Zork Adapter: Zork UX for CLI tools (Gemini, Codex, Copilot, etc.)
+- Self-Learning Engine: Learns patterns, preferences, and improves over time
+- Self-Reflection Engine: Introspects and asks why/what questions
+- Error Analyzer: Learns from mistakes, develops prevention strategies
+- Workflow Optimizer: Finds ways to help users work more efficiently
+- Idle Mode Manager: Self-improvement during user inactivity
+- Persistent Memory: Auto dynamic backups
+
+Example Conversation:
+    User: "I want to find something on the internet"
+    VA21: "I can help you search. What would you like to look up?"
+    User: "Climate change research papers"
+    VA21: "Searching for climate change research papers. I'm using 
+          privacy-respecting search so your query isn't tracked."
+
+CLI Tool Accessibility Example:
+    User: "Ask Gemini about Python decorators"
+    VA21: "You stand before the GEMINI ORACLE, a shimmering portal of AI wisdom.
+          The oracle considers your question deeply...
+          [Gemini's response about Python decorators]
+          What else would you like to ask?"
 
 NOTE: Guardian AI runs in a sandboxed Ollama in the kernel and is completely
 isolated from this user-facing accessibility system.
 
 Om Vinayaka - May obstacles be removed from your computing journey.
+Making technology accessible to everyone, in every language.
 """
 
 import os
@@ -458,44 +500,105 @@ See [[{category}]] for related applications.
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# OM VINAYAKA ACCESSIBILITY AI
+# OM VINAYAKA ACCESSIBILITY AI - THE CORE
 # ═══════════════════════════════════════════════════════════════════════════════
 
 class OmVinayakaAI:
     """
-    Om Vinayaka Accessibility Knowledge Base AI - THE CORE
-    
-    🙏 OM VINAYAKA - THE SELF-LEARNING, INTROSPECTING CORE 🙏
-    
-    Om Vinayaka AI is the central intelligence that LEARNS and INTROSPECTS:
+    🙏 OM VINAYAKA ACCESSIBILITY AI - STATE OF THE ART (Unique to VA21!) 🙏
     
     ╔═══════════════════════════════════════════════════════════════════════════════╗
-    ║                    🧠 SELF-LEARNING & INTROSPECTION 🧠                        ║
+    ║     🧠 THE SELF-LEARNING, INTROSPECTING, STATE-OF-THE-ART ACCESSIBILITY AI    ║
     ╠═══════════════════════════════════════════════════════════════════════════════╣
     ║                                                                               ║
-    ║   Om Vinayaka AI is the CORE that:                                            ║
+    ║   Om Vinayaka AI goes FAR BEYOND traditional screen readers:                  ║
     ║                                                                               ║
-    ║   🧠 SELF-LEARNS:                                                             ║
+    ║   ┌─────────────────────────────┬─────────────────────────────────────────┐   ║
+    ║   │  Traditional Screen Readers │  VA21 + Om Vinayaka AI                  │   ║
+    ║   ├─────────────────────────────┼─────────────────────────────────────────┤   ║
+    ║   │  Reads keywords:            │  Explains purpose:                      │   ║
+    ║   │  "menu", "button"           │  "This saves your work"                 │   ║
+    ║   ├─────────────────────────────┼─────────────────────────────────────────┤   ║
+    ║   │  No context awareness       │  Understands your intent and task       │   ║
+    ║   ├─────────────────────────────┼─────────────────────────────────────────┤   ║
+    ║   │  Just announces elements    │  Asks clarifying questions when needed  │   ║
+    ║   ├─────────────────────────────┼─────────────────────────────────────────┤   ║
+    ║   │  User must know commands    │  Natural conversation in any language   │   ║
+    ║   ├─────────────────────────────┼─────────────────────────────────────────┤   ║
+    ║   │  Single app support         │  Zork-style UX for EVERY app            │   ║
+    ║   ├─────────────────────────────┼─────────────────────────────────────────┤   ║
+    ║   │  Limited CLI support        │  Wraps CLI tools: Gemini, Copilot, etc. │   ║
+    ║   └─────────────────────────────┴─────────────────────────────────────────┘   ║
+    ║                                                                               ║
+    ╠═══════════════════════════════════════════════════════════════════════════════╣
+    ║                                                                               ║
+    ║   🎮 AUTOMATIC ZORK UX GENERATION                                             ║
+    ║   Every app gets a text adventure interface when installed                    ║
+    ║                                                                               ║
+    ║   🗣️ SYSTEM-WIDE VOICE CONTROL                                                ║
+    ║   Control ANY application with voice, not just specific apps                  ║
+    ║   Hold Super Key → Speak naturally → Action executed                          ║
+    ║                                                                               ║
+    ║   💻 CLI TOOL WRAPPER                                                         ║
+    ║   Gemini CLI, GitHub Copilot CLI, Codex - all accessible via Zork interfaces  ║
+    ║                                                                               ║
+    ║   📚 KNOWLEDGE BASE                                                           ║
+    ║   LangChain + Obsidian mind maps store all app interfaces                     ║
+    ║                                                                               ║
+    ║   ❓ CLARIFYING QUESTIONS                                                     ║
+    ║   AI asks for details when your intent is unclear                             ║
+    ║                                                                               ║
+    ║   🎯 CONTEXT-AWARE EXECUTION                                                  ║
+    ║   Understands what app is active and what you want                            ║
+    ║                                                                               ║
+    ║   🌍 1,600+ LANGUAGES                                                         ║
+    ║   Hindi, Tamil, Telugu, Spanish, French, and more!                            ║
+    ║                                                                               ║
+    ╠═══════════════════════════════════════════════════════════════════════════════╣
+    ║                                                                               ║
+    ║   🧠 SELF-LEARNING CAPABILITIES                                               ║
     ║   ├── Learns common command patterns from every interaction                   ║
     ║   ├── Tracks user preferences for personalized experience                     ║
     ║   ├── Monitors app usage patterns to optimize suggestions                     ║
     ║   ├── Improves narratives based on what resonates with users                  ║
     ║   └── Gets smarter with continued use!                                        ║
     ║                                                                               ║
-    ║   🔍 INTROSPECTS:                                                             ║
+    ║   🔍 INTROSPECTION CAPABILITIES                                               ║
     ║   ├── Self-reflects on actions and learns from them                           ║
     ║   ├── Asks "why" and "what" questions for deeper understanding                ║
     ║   ├── Analyzes errors and develops prevention strategies                      ║
     ║   ├── Researches best ways to optimize user workflows                         ║
     ║   └── Adapts behavior based on self-analysis                                  ║
     ║                                                                               ║
-    ║   🌙 DURING IDLE TIME:                                                        ║
+    ║   🌙 IDLE TIME SELF-IMPROVEMENT                                               ║
     ║   ├── Automatically improves without user intervention                        ║
     ║   ├── Reviews past interactions for learning opportunities                    ║
     ║   ├── Develops new strategies to help users                                   ║
     ║   └── Always working to remove obstacles!                                     ║
     ║                                                                               ║
+    ║   💾 AUTO DYNAMIC MEMORY BACKUPS                                              ║
+    ║   ├── Never forgets - auto backup on shutdown                                 ║
+    ║   ├── Dynamic backups based on activity level                                 ║
+    ║   ├── Version history for all knowledge                                       ║
+    ║   └── Survives power loss                                                     ║
+    ║                                                                               ║
     ╚═══════════════════════════════════════════════════════════════════════════════╝
+    
+    Example Conversation:
+    
+        User: "I want to find something on the internet"
+        VA21: "I can help you search. What would you like to look up?"
+        User: "Climate change research papers"
+        VA21: "Searching for climate change research papers. I'm using 
+              privacy-respecting search so your query isn't tracked."
+    
+    CLI Tool Accessibility Example:
+    
+        User: "Ask Gemini about Python decorators"
+        VA21: "You stand before the GEMINI ORACLE, a shimmering portal of AI wisdom.
+              The oracle considers your question deeply...
+              [Gemini's response about Python decorators]
+              What else would you like to ask?"
     
     Architecture:
     - Self-Learning Engine: Learns patterns, preferences, usage from interactions
@@ -504,13 +607,15 @@ class OmVinayakaAI:
     - Workflow Optimizer: Finds ways to help users work more efficiently
     - Summary Engine: Maintains context without hallucinations
     - Knowledge Base: Obsidian mind maps for persistent memory
-    - Voice Integration: Works with Voice Intelligence Layer
+    - Voice Integration: Works with Voice Intelligence Layer (1,600+ languages)
     - FARA Layer: Executes actions across the entire OS
+    - Terminal Zork Adapter: Makes CLI tools accessible via Zork interfaces
     
     This is the USER-FACING AI, completely separate from Guardian AI
     which runs in a sandboxed Ollama at the kernel level.
     
     Om Vinayaka - The remover of obstacles, the one who learns and grows.
+    Making technology accessible to everyone, in every language.
     """
     
     def __init__(self, 
@@ -727,29 +832,38 @@ class OmVinayakaAI:
                 idle_note = f"\n🔄 I've made {idle_status['optimizations_made']} self-improvements during idle time!"
         
         return f"""
-╔═══════════════════════════════════════════════════════════════════╗
-║                                                                   ║
-║                     🙏 OM VINAYAKA 🙏                              ║
-║                                                                   ║
-║           VA21 Accessibility Intelligence System                  ║
-║             with Self-Learning & Self-Improvement                 ║
-║                                                                   ║
-╚═══════════════════════════════════════════════════════════════════╝
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║                          🙏 OM VINAYAKA 🙏                                     ║
+║                                                                               ║
+║              STATE-OF-THE-ART ACCESSIBILITY AI (Unique to VA21!)              ║
+║                                                                               ║
+║          Self-Learning • Introspecting • Context-Aware • 1,600+ Languages     ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
 
-Welcome! I am your accessibility companion for the entire VA21 system.
+Welcome! I am Om Vinayaka, your state-of-the-art accessibility companion.
 
-I can help you:
-• Control ANY application with your voice or natural language
-• Navigate the system through conversational interaction
-• Get explanations of what things do (not just what they're called)
+Unlike traditional screen readers that just read "menu" or "button",
+I EXPLAIN what things do and ASK what you want to accomplish.
+
+🎯 What I can do for you:
+• Control ANY application with voice or natural language
+• Explain what things do (not just what they're called)
+• Ask clarifying questions when needed
 • Execute complex tasks with simple commands
-• LEARN from our interactions to serve you better!
-• SELF-IMPROVE when you're away (idle time optimization)!
+• Wrap CLI tools (Gemini, Copilot, Codex) with Zork interfaces
+• Support 1,600+ languages including 100+ Indian dialects
 
-Every application has been given a Zork-style adventure interface,
-making computing accessible and even fun!
+🎮 Zork-Style UX: Every app gets a text adventure interface!
+🧠 Self-Learning: I get smarter with every interaction!
+🔍 Introspection: I reflect on my behavior to improve!
+💾 Auto-Backup: I never forget what I've learned!
 {learning_note}{idle_note}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 Hold the Super key to speak, or just type what you'd like to do.
+Say things like: "I want to search the internet" or "Save my document"
 
 What would you like to accomplish today?
 """
@@ -1528,31 +1642,36 @@ What would you like to accomplish?
         """Identify opportunities for self-improvement."""
         improvements = []
         
-        # From error analyzer
-        if self.idle_mode_manager:
-            error_stats = self.idle_mode_manager.error_analyzer.get_statistics()
-            frequent_errors = error_stats.get('most_frequent_errors', [])
-            
-            for error in frequent_errors[:3]:
-                improvements.append({
-                    'area': 'error_prevention',
-                    'issue': f"Frequent error: {error.get('error_type', 'unknown')}",
-                    'strategy': error.get('strategy', 'Develop prevention strategy'),
-                    'priority': 'high' if error.get('frequency', 0) > 5 else 'medium'
-                })
+        # From error analyzer (with null checks)
+        if self.idle_mode_manager and hasattr(self.idle_mode_manager, 'error_analyzer'):
+            try:
+                error_stats = self.idle_mode_manager.error_analyzer.get_statistics()
+                frequent_errors = error_stats.get('most_frequent_errors', [])
+                
+                for error in frequent_errors[:3]:
+                    improvements.append({
+                        'area': 'error_prevention',
+                        'issue': f"Frequent error: {error.get('error_type', 'unknown')}",
+                        'strategy': error.get('strategy', 'Develop prevention strategy'),
+                        'priority': 'high' if error.get('frequency', 0) > 5 else 'medium'
+                    })
+            except (AttributeError, TypeError):
+                pass  # Error analyzer not available
         
-        # From self-reflection
-        if self.idle_mode_manager:
-            reflection_stats = self.idle_mode_manager.self_reflection.get_statistics()
-            action_items = self.idle_mode_manager.self_reflection.get_unapplied_action_items()
-            
-            for item in action_items[:5]:
-                improvements.append({
-                    'area': 'self_reflection',
-                    'issue': item.get('question', 'Reflection insight'),
-                    'strategy': item.get('action', 'Apply insight'),
-                    'priority': 'medium'
-                })
+        # From self-reflection (with null checks)
+        if self.idle_mode_manager and hasattr(self.idle_mode_manager, 'self_reflection'):
+            try:
+                action_items = self.idle_mode_manager.self_reflection.get_unapplied_action_items()
+                
+                for item in action_items[:5]:
+                    improvements.append({
+                        'area': 'self_reflection',
+                        'issue': item.get('question', 'Reflection insight'),
+                        'strategy': item.get('action', 'Apply insight'),
+                        'priority': 'medium'
+                    })
+            except (AttributeError, TypeError):
+                pass  # Self-reflection not available
         
         # From learning analysis
         if self.learning_engine:

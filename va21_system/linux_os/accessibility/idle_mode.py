@@ -259,7 +259,7 @@ class WorkflowOptimizer:
                 with open(patterns_file, 'r') as f:
                     return json.load(f)
             except (json.JSONDecodeError, IOError, OSError) as e:
-                print(f"[WorkflowOptimizer] Could not load patterns: {e}")
+                print(f"[WorkflowOptimizer] Could not load patterns from {patterns_file}: {e}. Starting with empty patterns.")
         return {}
     
     def _identify_workflow_in_context(self, context: str, 
@@ -727,7 +727,7 @@ class SelfReflectionEngine:
                 with open(stats_file, 'r') as f:
                     return json.load(f)
             except (json.JSONDecodeError, IOError, OSError) as e:
-                print(f"[SelfReflectionEngine] Could not load stats: {e}")
+                print(f"[SelfReflectionEngine] Could not load stats from {stats_file}: {e}. Operating with default stats.")
         return {}
     
     def _answer_reflection_question(self, q_type: str, question: str,
@@ -1196,7 +1196,7 @@ class IdleModeManager:
                 with open(stats_file, 'r') as f:
                     return json.load(f)
             except (json.JSONDecodeError, IOError, OSError) as e:
-                print(f"[IdleModeManager] Could not load stats: {e}")
+                print(f"[IdleModeManager] Could not load stats from {stats_file}: {e}. Operating with default stats.")
         return {}
     
     def record_error(self, error_type: str, error_message: str, 

@@ -3,38 +3,62 @@
 VA21 OS - Accessibility Module
 ==============================
 
+🙏 STATE-OF-THE-ART ACCESSIBILITY (Unique to VA21!) 🙏
+
+Om Vinayaka AI goes FAR BEYOND traditional screen readers:
+
+┌─────────────────────────────┬─────────────────────────────────────────┐
+│  Traditional Screen Readers │  VA21 + Om Vinayaka AI                  │
+├─────────────────────────────┼─────────────────────────────────────────┤
+│  Reads keywords:            │  Explains purpose:                      │
+│  "menu", "button"           │  "This saves your work"                 │
+├─────────────────────────────┼─────────────────────────────────────────┤
+│  No context awareness       │  Understands your intent and task       │
+├─────────────────────────────┼─────────────────────────────────────────┤
+│  Just announces elements    │  Asks clarifying questions when needed  │
+├─────────────────────────────┼─────────────────────────────────────────┤
+│  User must know commands    │  Natural conversation in any language   │
+├─────────────────────────────┼─────────────────────────────────────────┤
+│  Single app support         │  Zork-style UX for EVERY app            │
+├─────────────────────────────┼─────────────────────────────────────────┤
+│  Limited CLI support        │  Wraps CLI tools: Gemini, Copilot, etc. │
+└─────────────────────────────┴─────────────────────────────────────────┘
+
 Provides system-wide accessibility features including:
 - Intelligent screen reader with natural language explanations
 - Voice control for all applications via FARA layer
 - Helper AI with conversational interaction
 - Push-to-talk voice input (Hold Super key)
-- Support for 1,600+ languages
+- Support for 1,600+ languages including 100+ Indian dialects
 - Zork-style interface for EVERY application
-- Om Vinayaka Accessibility Knowledge Base AI
+- Om Vinayaka Accessibility Knowledge Base AI (THE CORE)
 - Self-Learning System with LangChain + Obsidian integration
+- Self-Reflection & Introspection (dynamic thinking)
 - Context-Aware Summary Engine to prevent AI hallucinations
-- Idle Mode Self-Improvement System (NEW!)
+- Idle Mode Self-Improvement System
+- Auto Dynamic Memory Backups
 
-Unlike traditional screen readers that just read keywords,
-VA21 explains what things do, asks clarifying questions,
-and executes actions based on natural language.
+Om Vinayaka AI Features:
+- Automatic Zork UX Generation: Every app gets a text adventure interface
+- System-Wide Voice Control: Control ANY application with voice
+- CLI Tool Wrapper: Gemini CLI, GitHub Copilot CLI, Codex accessible
+- Knowledge Base: LangChain + Obsidian mind maps store all interfaces
+- Clarifying Questions: AI asks for details when intent is unclear
+- Context-Aware Execution: Understands active app and user intent
+- Self-Learning: Gets smarter with every interaction
+- Introspection: Reflects on behavior, asks why/what questions
+- Idle Self-Improvement: Optimizes workflows, learns from errors
+- Auto Backup: Never forgets, survives power loss
 
-Om Vinayaka Architecture:
-- Automatically activated when accessibility/voice features are used
-- Creates Zork-style UX for every app when installed
-- Enables voice users to interact with ANY app in the full OS
-- Uses LangChain + Obsidian mind maps for knowledge storage
-- Self-learning system that gets smarter over time
-- Context-aware summary engine prevents AI overload
-- FARA layer executes actions across the entire OS
-- Idle mode self-improvement during user inactivity (NEW!)
+Example Conversation:
+    User: "I want to find something on the internet"
+    VA21: "I can help you search. What would you like to look up?"
+    User: "Climate change research papers"
+    VA21: "Searching for climate change research papers."
 
-Idle Mode Self-Improvement Features (NEW!):
-- Researches best ways to optimize user workflows during idle time
-- Adapts system components to enhance performance
-- Self-reflects on actions and learns from them (dynamic thinking)
-- Analyzes errors and develops prevention strategies
-- Always helping, even when at rest!
+CLI Tool Accessibility Example:
+    User: "Ask Gemini about Python decorators"
+    VA21: "You stand before the GEMINI ORACLE..."
 
 Guardian AI Note:
 Guardian AI runs in a sandboxed Ollama at the kernel level,
@@ -44,6 +68,7 @@ License: Om Vinayaka Prayaga Vaibhav Inventions License
 Copyright (c) 2024-2025 Prayaga Vaibhav
 
 Om Vinayaka - May obstacles be removed from your computing journey.
+Making technology accessible to everyone, in every language.
 """
 
 from .voice_accessibility import (
