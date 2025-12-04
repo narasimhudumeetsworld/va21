@@ -261,6 +261,7 @@ class VA21Core:
         self._learning_engine = None
         self._summary_engine = None
         self._agent_manager = None
+        self._persistent_memory = None  # Never forgets!
         
         # Request routing
         self._intent_handlers: Dict[str, Callable] = {}
@@ -276,10 +277,11 @@ class VA21Core:
         Initialize the VA21 OS core and all subsystems.
         
         Initialization order:
-        1. Om Vinayaka AI (FIRST - central hub)
-        2. Learning & Summary engines (support Om Vinayaka)
-        3. Agent Manager (complex tasks)
-        4. Other subsystems (all connect via Om Vinayaka)
+        1. Persistent Memory (FIRST - restore previous state)
+        2. Om Vinayaka AI (central hub)
+        3. Learning & Summary engines (support Om Vinayaka)
+        4. Agent Manager (complex tasks)
+        5. Other subsystems (all connect via Om Vinayaka)
         
         Returns:
             True if initialization successful
@@ -287,7 +289,10 @@ class VA21Core:
         print("[VA21 Core] Starting initialization...")
         print("[VA21 Core] 🙏 Om Vinayaka - The remover of obstacles")
         
-        # 1. Initialize Om Vinayaka AI FIRST (central hub)
+        # 0. Initialize Persistent Memory FIRST (restore previous knowledge)
+        self._init_persistent_memory()
+        
+        # 1. Initialize Om Vinayaka AI (central hub)
         self._init_om_vinayaka()
         
         # 2. Initialize learning and summary engines
@@ -308,9 +313,40 @@ class VA21Core:
         self.is_initialized = True
         print("[VA21 Core] Initialization complete!")
         print(f"[VA21 Core] Om Vinayaka AI: {'ACTIVE ✓' if self._om_vinayaka else 'NOT AVAILABLE'}")
+        print(f"[VA21 Core] Persistent Memory: {'ACTIVE ✓' if self._persistent_memory else 'NOT AVAILABLE'}")
         print(f"[VA21 Core] Subsystems: {[s.value for s, st in self._subsystem_status.items() if st.is_loaded]}")
         
         return True
+    
+    def _init_persistent_memory(self):
+        """
+        Initialize Persistent Memory System.
+        
+        This ensures VA21 OS NEVER FORGETS:
+        - Auto backup before shutdown
+        - Backup every 30 minutes
+        - Version history
+        - Survives power loss
+        """
+        try:
+            from .accessibility.persistent_memory import get_persistent_memory
+            self._persistent_memory = get_persistent_memory()
+            
+            print("[VA21 Core] 💾 Persistent Memory: ACTIVE")
+            print("[VA21 Core]    - Auto backup on shutdown: ENABLED")
+            print("[VA21 Core]    - Periodic backup (30 min): ENABLED")
+            print("[VA21 Core]    - Version history: ENABLED")
+            print("[VA21 Core]    - Knowledge preservation: ENABLED")
+            
+            # Check for previous state to restore
+            status = self._persistent_memory.get_status()
+            if status.get('last_backup'):
+                print(f"[VA21 Core]    - Last backup: {status['last_backup']}")
+            if status.get('total_learned_patterns', 0) > 0:
+                print(f"[VA21 Core]    - Restored {status['total_learned_patterns']} learned patterns")
+            
+        except ImportError as e:
+            print(f"[VA21 Core] ⚠ Persistent Memory not available: {e}")
     
     def _init_om_vinayaka(self):
         """
@@ -567,6 +603,18 @@ class VA21Core:
                     'ai_response',
                     priority=3
                 )
+            
+            # 6. Save to Persistent Memory (never forget!)
+            if self._persistent_memory:
+                self._persistent_memory.save_learned_pattern('interaction', {
+                    'input': request.content,
+                    'action': result.get('action', 'unknown'),
+                    'subsystem': subsystem.value,
+                    'source_app': request.source_app,
+                    'request_type': request.request_type,
+                })
+                # Also record as interaction for dynamic backup
+                self._persistent_memory.record_activity('interaction')
             
             return SystemResponse(
                 request_id=request.request_id,
