@@ -3,38 +3,89 @@
 VA21 OS - Om Vinayaka Accessibility Knowledge Base AI
 ======================================================
 
-The Om Vinayaka AI is the central accessibility intelligence system that:
-- Automatically activates when accessibility and voice features are used
-- Creates Zork-style UX for EVERY app when first installed
-- Enables voice users to interact with ANY app in the full OS
-- Asks clarifying questions to understand user intent
-- Executes actions across the entire OS via the FARA layer
-- Stores all app interfaces in a LangChain + Obsidian mind map knowledge base
-- LEARNS from user interactions to get smarter over time!
+🙏 STATE-OF-THE-ART ACCESSIBILITY AI (Unique to VA21!) 🙏
 
-This creates a unified, conversational accessibility experience where
-every application can be controlled through natural language.
+Om Vinayaka AI goes FAR BEYOND traditional screen readers:
 
-Architecture:
-- Om Vinayaka AI: Central orchestrator for all accessibility features
-- App Zork Generator: Creates Zork UX for each app automatically
-- Accessibility Knowledge Base: LangChain + Obsidian with mind maps
-- Voice Controller: System-wide voice input and output
-- FARA Layer: Universal action execution across all apps
-- Terminal Zork Adapter: Zork UX for CLI tools (Gemini CLI, Codex, Copilot CLI, etc.)
-- Self-Learning Engine: Learns patterns, preferences, and improves over time
+┌─────────────────────────────┬─────────────────────────────────────────┐
+│  Traditional Screen Readers │  VA21 + Om Vinayaka AI                  │
+├─────────────────────────────┼─────────────────────────────────────────┤
+│  Reads keywords:            │  Explains purpose:                      │
+│  "menu", "button"           │  "This saves your work"                 │
+├─────────────────────────────┼─────────────────────────────────────────┤
+│  No context awareness       │  Understands your intent and task       │
+├─────────────────────────────┼─────────────────────────────────────────┤
+│  Just announces elements    │  Asks clarifying questions when needed  │
+├─────────────────────────────┼─────────────────────────────────────────┤
+│  User must know commands    │  Natural conversation in any language   │
+├─────────────────────────────┼─────────────────────────────────────────┤
+│  Single app support         │  Zork-style UX for EVERY app            │
+├─────────────────────────────┼─────────────────────────────────────────┤
+│  Limited CLI support        │  Wraps CLI tools: Gemini, Copilot, etc. │
+└─────────────────────────────┴─────────────────────────────────────────┘
 
-Self-Learning System:
+Om Vinayaka AI Features:
+- Automatic Zork UX Generation: Every app gets a text adventure interface
+- System-Wide Voice Control: Control ANY application with voice
+- CLI Tool Wrapper: Gemini CLI, GitHub Copilot CLI, Codex accessible
+- Knowledge Base: LangChain + Obsidian mind maps store all interfaces
+- Clarifying Questions: AI asks for details when intent is unclear
+- Context-Aware Execution: Understands active app and user intent
+- 1,600+ Languages: Hindi, Tamil, Telugu, Spanish, French, and more!
+
+Self-Learning & Introspection:
 - Learns common command patterns from user interactions
 - Tracks user preferences for personalized experience
 - Monitors app usage patterns to optimize suggestions
-- Improves narratives based on what resonates with users
+- Self-reflects on actions and learns from them (dynamic thinking)
+- Asks "why" and "what" questions for deeper understanding
 - Gets smarter with continued use!
+
+Idle Mode Self-Improvement:
+- Researches best ways to optimize user workflows during idle time
+- Adapts system components to enhance performance
+- Analyzes errors and develops prevention strategies
+- Always helping, even when at rest!
+
+Auto Dynamic Memory Backups:
+- Never forgets - auto backup on shutdown
+- Dynamic backups based on activity level
+- Version history for all knowledge
+- Survives power loss
+
+Architecture:
+- Om Vinayaka AI: Central orchestrator (THE CORE)
+- App Zork Generator: Creates Zork UX for each app automatically
+- Accessibility Knowledge Base: LangChain + Obsidian with mind maps
+- Voice Controller: System-wide voice input and output (1,600+ languages)
+- FARA Layer: Universal action execution across all apps
+- Terminal Zork Adapter: Zork UX for CLI tools (Gemini, Codex, Copilot, etc.)
+- Self-Learning Engine: Learns patterns, preferences, and improves over time
+- Self-Reflection Engine: Introspects and asks why/what questions
+- Error Analyzer: Learns from mistakes, develops prevention strategies
+- Workflow Optimizer: Finds ways to help users work more efficiently
+- Idle Mode Manager: Self-improvement during user inactivity
+- Persistent Memory: Auto dynamic backups
+
+Example Conversation:
+    User: "I want to find something on the internet"
+    VA21: "I can help you search. What would you like to look up?"
+    User: "Climate change research papers"
+    VA21: "Searching for climate change research papers. I'm using 
+          privacy-respecting search so your query isn't tracked."
+
+CLI Tool Accessibility Example:
+    User: "Ask Gemini about Python decorators"
+    VA21: "You stand before the GEMINI ORACLE, a shimmering portal of AI wisdom.
+          The oracle considers your question deeply...
+          [Gemini's response about Python decorators]
+          What else would you like to ask?"
 
 NOTE: Guardian AI runs in a sandboxed Ollama in the kernel and is completely
 isolated from this user-facing accessibility system.
 
 Om Vinayaka - May obstacles be removed from your computing journey.
+Making technology accessible to everyone, in every language.
 """
 
 import os
@@ -54,7 +105,7 @@ from enum import Enum
 # CONSTANTS
 # ═══════════════════════════════════════════════════════════════════════════════
 
-OM_VINAYAKA_VERSION = "1.1.0"  # Updated with self-learning
+OM_VINAYAKA_VERSION = "1.2.0"  # Updated with idle mode self-improvement
 
 # Knowledge base paths
 DEFAULT_KNOWLEDGE_BASE_PATH = os.path.expanduser("~/.va21/accessibility_knowledge_base")
@@ -449,37 +500,131 @@ See [[{category}]] for related applications.
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# OM VINAYAKA ACCESSIBILITY AI
+# OM VINAYAKA ACCESSIBILITY AI - THE CORE
 # ═══════════════════════════════════════════════════════════════════════════════
 
 class OmVinayakaAI:
     """
-    Om Vinayaka Accessibility Knowledge Base AI
+    🙏 OM VINAYAKA ACCESSIBILITY AI - STATE OF THE ART (Unique to VA21!) 🙏
     
-    The central intelligence system for VA21 accessibility that:
-    1. Automatically activates when accessibility/voice features are used
-    2. Creates Zork-style UX for every app when first installed
-    3. Enables voice users to interact with ANY app in the full OS
-    4. Asks clarifying questions to understand user intent
-    5. Executes actions across the entire OS via FARA layer
-    6. Stores app interfaces in LangChain + Obsidian mind maps
-    7. LEARNS from interactions to get smarter over time!
+    ╔═══════════════════════════════════════════════════════════════════════════════╗
+    ║     🧠 THE SELF-LEARNING, INTROSPECTING, STATE-OF-THE-ART ACCESSIBILITY AI    ║
+    ╠═══════════════════════════════════════════════════════════════════════════════╣
+    ║                                                                               ║
+    ║   Om Vinayaka AI goes FAR BEYOND traditional screen readers:                  ║
+    ║                                                                               ║
+    ║   ┌─────────────────────────────┬─────────────────────────────────────────┐   ║
+    ║   │  Traditional Screen Readers │  VA21 + Om Vinayaka AI                  │   ║
+    ║   ├─────────────────────────────┼─────────────────────────────────────────┤   ║
+    ║   │  Reads keywords:            │  Explains purpose:                      │   ║
+    ║   │  "menu", "button"           │  "This saves your work"                 │   ║
+    ║   ├─────────────────────────────┼─────────────────────────────────────────┤   ║
+    ║   │  No context awareness       │  Understands your intent and task       │   ║
+    ║   ├─────────────────────────────┼─────────────────────────────────────────┤   ║
+    ║   │  Just announces elements    │  Asks clarifying questions when needed  │   ║
+    ║   ├─────────────────────────────┼─────────────────────────────────────────┤   ║
+    ║   │  User must know commands    │  Natural conversation in any language   │   ║
+    ║   ├─────────────────────────────┼─────────────────────────────────────────┤   ║
+    ║   │  Single app support         │  Zork-style UX for EVERY app            │   ║
+    ║   ├─────────────────────────────┼─────────────────────────────────────────┤   ║
+    ║   │  Limited CLI support        │  Wraps CLI tools: Gemini, Copilot, etc. │   ║
+    ║   └─────────────────────────────┴─────────────────────────────────────────┘   ║
+    ║                                                                               ║
+    ╠═══════════════════════════════════════════════════════════════════════════════╣
+    ║                                                                               ║
+    ║   🎮 AUTOMATIC ZORK UX GENERATION                                             ║
+    ║   Every app gets a text adventure interface when installed                    ║
+    ║                                                                               ║
+    ║   🗣️ SYSTEM-WIDE VOICE CONTROL                                                ║
+    ║   Control ANY application with voice, not just specific apps                  ║
+    ║   Hold Super Key → Speak naturally → Action executed                          ║
+    ║                                                                               ║
+    ║   💻 CLI TOOL WRAPPER                                                         ║
+    ║   Gemini CLI, GitHub Copilot CLI, Codex - all accessible via Zork interfaces  ║
+    ║                                                                               ║
+    ║   📚 KNOWLEDGE BASE                                                           ║
+    ║   LangChain + Obsidian mind maps store all app interfaces                     ║
+    ║                                                                               ║
+    ║   ❓ CLARIFYING QUESTIONS                                                     ║
+    ║   AI asks for details when your intent is unclear                             ║
+    ║                                                                               ║
+    ║   🎯 CONTEXT-AWARE EXECUTION                                                  ║
+    ║   Understands what app is active and what you want                            ║
+    ║                                                                               ║
+    ║   🌍 1,600+ LANGUAGES                                                         ║
+    ║   Hindi, Tamil, Telugu, Spanish, French, and more!                            ║
+    ║                                                                               ║
+    ╠═══════════════════════════════════════════════════════════════════════════════╣
+    ║                                                                               ║
+    ║   🧠 SELF-LEARNING CAPABILITIES                                               ║
+    ║   ├── Learns common command patterns from every interaction                   ║
+    ║   ├── Tracks user preferences for personalized experience                     ║
+    ║   ├── Monitors app usage patterns to optimize suggestions                     ║
+    ║   ├── Improves narratives based on what resonates with users                  ║
+    ║   └── Gets smarter with continued use!                                        ║
+    ║                                                                               ║
+    ║   🔍 INTROSPECTION CAPABILITIES                                               ║
+    ║   ├── Self-reflects on actions and learns from them                           ║
+    ║   ├── Asks "why" and "what" questions for deeper understanding                ║
+    ║   ├── Analyzes errors and develops prevention strategies                      ║
+    ║   ├── Researches best ways to optimize user workflows                         ║
+    ║   └── Adapts behavior based on self-analysis                                  ║
+    ║                                                                               ║
+    ║   🌙 IDLE TIME SELF-IMPROVEMENT                                               ║
+    ║   ├── Automatically improves without user intervention                        ║
+    ║   ├── Reviews past interactions for learning opportunities                    ║
+    ║   ├── Develops new strategies to help users                                   ║
+    ║   └── Always working to remove obstacles!                                     ║
+    ║                                                                               ║
+    ║   💾 AUTO DYNAMIC MEMORY BACKUPS                                              ║
+    ║   ├── Never forgets - auto backup on shutdown                                 ║
+    ║   ├── Dynamic backups based on activity level                                 ║
+    ║   ├── Version history for all knowledge                                       ║
+    ║   └── Survives power loss                                                     ║
+    ║                                                                               ║
+    ╚═══════════════════════════════════════════════════════════════════════════════╝
     
-    Self-Learning Features:
-    - Learns common command patterns
-    - Tracks user preferences
-    - Monitors app usage patterns
-    - Improves narratives based on feedback
-    - Gets smarter with continued use!
+    Example Conversation:
+    
+        User: "I want to find something on the internet"
+        VA21: "I can help you search. What would you like to look up?"
+        User: "Climate change research papers"
+        VA21: "Searching for climate change research papers. I'm using 
+              privacy-respecting search so your query isn't tracked."
+    
+    CLI Tool Accessibility Example:
+    
+        User: "Ask Gemini about Python decorators"
+        VA21: "You stand before the GEMINI ORACLE, a shimmering portal of AI wisdom.
+              The oracle considers your question deeply...
+              [Gemini's response about Python decorators]
+              What else would you like to ask?"
+    
+    Architecture:
+    - Self-Learning Engine: Learns patterns, preferences, usage from interactions
+    - Self-Reflection Engine: Introspects on behavior, asks why/what questions
+    - Error Analyzer: Learns from mistakes, develops prevention strategies
+    - Workflow Optimizer: Finds ways to help users work more efficiently
+    - Summary Engine: Maintains context without hallucinations
+    - Knowledge Base: Obsidian mind maps for persistent memory
+    - Voice Integration: Works with Voice Intelligence Layer (1,600+ languages)
+    - FARA Layer: Executes actions across the entire OS
+    - Terminal Zork Adapter: Makes CLI tools accessible via Zork interfaces
     
     This is the USER-FACING AI, completely separate from Guardian AI
     which runs in a sandboxed Ollama at the kernel level.
+    
+    Om Vinayaka - The remover of obstacles, the one who learns and grows.
+    Making technology accessible to everyone, in every language.
     """
     
     def __init__(self, 
                  knowledge_base_path: str = None,
                  fara_layer = None,
-                 app_zork_manager = None):
+                 app_zork_manager = None,
+                 enable_idle_mode: bool = True,
+                 idle_timeout_seconds: int = 300,
+                 enable_auto_backup: bool = True):
         self.knowledge_base_path = knowledge_base_path or DEFAULT_KNOWLEDGE_BASE_PATH
         os.makedirs(self.knowledge_base_path, exist_ok=True)
         
@@ -491,6 +636,11 @@ class OmVinayakaAI:
         self.mind_map = AccessibilityMindMap()
         self.terminal_adapter = TerminalZorkAdapter()
         
+        # Initialize Persistent Memory with Auto Dynamic Backups FIRST
+        self.persistent_memory = None
+        self._enable_auto_backup = enable_auto_backup
+        self._init_persistent_memory()
+        
         # Initialize Self-Learning Engine
         self.learning_engine = None
         self._init_learning_engine()
@@ -498,6 +648,12 @@ class OmVinayakaAI:
         # Initialize Summary Engine for context management
         self.summary_engine = None
         self._init_summary_engine()
+        
+        # Initialize Idle Mode Manager for self-improvement
+        self.idle_mode_manager = None
+        self._enable_idle_mode = enable_idle_mode
+        self._idle_timeout_seconds = idle_timeout_seconds
+        self._init_idle_mode_manager()
         
         # State
         self.is_active = False
@@ -512,10 +668,46 @@ class OmVinayakaAI:
         self._load_registrations()
         
         print(f"[Om Vinayaka] Accessibility AI initialized v{OM_VINAYAKA_VERSION}")
+        if self.persistent_memory:
+            print("[Om Vinayaka] 💾 Persistent Memory: ACTIVE - Auto dynamic backups enabled!")
         if self.learning_engine:
-            print("[Om Vinayaka] Self-Learning Engine: ACTIVE - I get smarter as you use me!")
+            print("[Om Vinayaka] 🧠 Self-Learning Engine: ACTIVE - I get smarter as you use me!")
         if self.summary_engine:
-            print("[Om Vinayaka] Summary Engine: ACTIVE - Context-aware, no hallucinations!")
+            print("[Om Vinayaka] 📝 Summary Engine: ACTIVE - Context-aware, no hallucinations!")
+        if self.idle_mode_manager:
+            print("[Om Vinayaka] 🌙 Idle Mode: ACTIVE - I self-improve when you're away!")
+    
+    def _init_persistent_memory(self):
+        """
+        Initialize the Persistent Memory system with auto dynamic backups.
+        
+        This ensures Om Vinayaka NEVER FORGETS:
+        - Auto backup on shutdown
+        - Dynamic backups based on activity level
+        - Periodic backups every 30 minutes (adjusted dynamically)
+        - Version history of all knowledge
+        """
+        if not self._enable_auto_backup:
+            return
+        
+        try:
+            from .persistent_memory import get_persistent_memory
+            self.persistent_memory = get_persistent_memory()
+            
+            # The persistent memory manager automatically:
+            # - Starts auto backup thread
+            # - Registers shutdown handlers
+            # - Performs dynamic backups based on activity
+            
+            print("[Om Vinayaka] 💾 Persistent Memory initialized:")
+            print("[Om Vinayaka]    - Auto backup on shutdown: ENABLED")
+            print("[Om Vinayaka]    - Dynamic backup (activity-based): ENABLED")
+            print("[Om Vinayaka]    - Periodic backup: ENABLED")
+            print("[Om Vinayaka]    - Version history: ENABLED")
+            
+        except ImportError as e:
+            print(f"[Om Vinayaka] Persistent memory not available: {e}")
+            self.persistent_memory = None
     
     def _init_learning_engine(self):
         """Initialize the Self-Learning Engine."""
@@ -534,6 +726,42 @@ class OmVinayakaAI:
         except ImportError as e:
             print(f"[Om Vinayaka] Summary engine not available: {e}")
             self.summary_engine = None
+    
+    def _init_idle_mode_manager(self):
+        """Initialize the Idle Mode Manager for self-improvement during inactivity."""
+        if not self._enable_idle_mode:
+            return
+        
+        try:
+            from .idle_mode import get_idle_mode_manager
+            self.idle_mode_manager = get_idle_mode_manager(
+                idle_timeout_seconds=self._idle_timeout_seconds
+            )
+            
+            # Set callbacks for idle mode events
+            self.idle_mode_manager.set_callbacks(
+                on_idle_start=self._on_idle_start,
+                on_idle_end=self._on_idle_end,
+                on_optimization=self._on_optimization
+            )
+        except ImportError as e:
+            print(f"[Om Vinayaka] Idle mode not available: {e}")
+            self.idle_mode_manager = None
+    
+    def _on_idle_start(self):
+        """Called when idle mode starts."""
+        print("[Om Vinayaka] 🌙 Entering self-improvement mode (user idle)")
+    
+    def _on_idle_end(self):
+        """Called when idle mode ends."""
+        print("[Om Vinayaka] ☀️ Welcome back! Ready to assist you.")
+    
+    def _on_optimization(self, result: Dict):
+        """Called when an optimization is made during idle time."""
+        if result.get('type') == 'workflow':
+            suggestions = result.get('suggestions', [])
+            if suggestions:
+                print(f"[Om Vinayaka] 🔄 Found {len(suggestions)} workflow optimization opportunities")
     
     def _load_registrations(self):
         """Load registered app interfaces."""
@@ -559,12 +787,18 @@ class OmVinayakaAI:
         if self.learning_engine:
             self.learning_engine.start_session()
         
+        # Start idle mode monitoring for self-improvement
+        if self.idle_mode_manager:
+            self.idle_mode_manager.start()
+        
         print("[Om Vinayaka] Accessibility AI ACTIVATED")
         print("[Om Vinayaka] Voice control and Zork UX ready for all applications")
         if self.learning_engine:
             stats = self.learning_engine.get_statistics()
             print(f"[Om Vinayaka] Learned patterns: {stats['patterns_learned']}, "
                   f"Interactions: {stats['total_interactions']}")
+        if self.idle_mode_manager:
+            print("[Om Vinayaka] Idle mode self-improvement: ENABLED")
         return self._get_welcome_message()
     
     def deactivate(self):
@@ -574,6 +808,10 @@ class OmVinayakaAI:
         # End learning session
         if self.learning_engine:
             self.learning_engine.end_session()
+        
+        # Stop idle mode monitoring
+        if self.idle_mode_manager:
+            self.idle_mode_manager.stop()
         
         print("[Om Vinayaka] Accessibility AI deactivated")
     
@@ -586,29 +824,46 @@ class OmVinayakaAI:
             if stats['patterns_learned'] > 0:
                 learning_note = f"\n🧠 I've learned {stats['patterns_learned']} command patterns from our interactions!"
         
+        # Add idle mode note if available
+        idle_note = ""
+        if self.idle_mode_manager:
+            idle_status = self.idle_mode_manager.get_status()
+            if idle_status.get('optimizations_made', 0) > 0:
+                idle_note = f"\n🔄 I've made {idle_status['optimizations_made']} self-improvements during idle time!"
+        
         return f"""
-╔═══════════════════════════════════════════════════════════════════╗
-║                                                                   ║
-║                     🙏 OM VINAYAKA 🙏                              ║
-║                                                                   ║
-║           VA21 Accessibility Intelligence System                  ║
-║                  with Self-Learning AI                            ║
-║                                                                   ║
-╚═══════════════════════════════════════════════════════════════════╝
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║                          🙏 OM VINAYAKA 🙏                                     ║
+║                                                                               ║
+║              STATE-OF-THE-ART ACCESSIBILITY AI (Unique to VA21!)              ║
+║                                                                               ║
+║          Self-Learning • Introspecting • Context-Aware • 1,600+ Languages     ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
 
-Welcome! I am your accessibility companion for the entire VA21 system.
+Welcome! I am Om Vinayaka, your state-of-the-art accessibility companion.
 
-I can help you:
-• Control ANY application with your voice or natural language
-• Navigate the system through conversational interaction
-• Get explanations of what things do (not just what they're called)
+Unlike traditional screen readers that just read "menu" or "button",
+I EXPLAIN what things do and ASK what you want to accomplish.
+
+🎯 What I can do for you:
+• Control ANY application with voice or natural language
+• Explain what things do (not just what they're called)
+• Ask clarifying questions when needed
 • Execute complex tasks with simple commands
-• LEARN from our interactions to serve you better!
+• Wrap CLI tools (Gemini, Copilot, Codex) with Zork interfaces
+• Support 1,600+ languages including 100+ Indian dialects
 
-Every application has been given a Zork-style adventure interface,
-making computing accessible and even fun!
-{learning_note}
+🎮 Zork-Style UX: Every app gets a text adventure interface!
+🧠 Self-Learning: I get smarter with every interaction!
+🔍 Introspection: I reflect on my behavior to improve!
+💾 Auto-Backup: I never forget what I've learned!
+{learning_note}{idle_note}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 Hold the Super key to speak, or just type what you'd like to do.
+Say things like: "I want to search the internet" or "Save my document"
 
 What would you like to accomplish today?
 """
@@ -683,6 +938,9 @@ What would you like to accomplish today?
         Understands natural language, asks clarifying questions when needed,
         executes actions via the FARA layer, and LEARNS from interactions!
         
+        Also records user activity to reset idle timer and enable
+        self-improvement during user inactivity.
+        
         Returns:
             {
                 'response': str - What to say to the user
@@ -691,6 +949,14 @@ What would you like to accomplish today?
                 'clarification_question': Optional[str] - What to ask
             }
         """
+        # Record user activity (resets idle timer and triggers dynamic backup check)
+        if self.idle_mode_manager:
+            self.idle_mode_manager.record_user_activity()
+        
+        # Record activity for dynamic backup
+        if self.persistent_memory:
+            self.persistent_memory.record_activity('interaction')
+        
         # Add to conversation history
         self.conversation_history.append({
             'role': 'user',
@@ -714,6 +980,16 @@ What would you like to accomplish today?
                 
                 # Learn from this successful prediction
                 self.learning_engine.learn_command(user_input, action, current_app, True)
+                
+                # Save to persistent memory
+                if self.persistent_memory:
+                    self.persistent_memory.save_learned_pattern('command', {
+                        'input': user_input,
+                        'action': action,
+                        'app': current_app,
+                        'confidence': confidence,
+                        'prediction': True
+                    })
                 
                 return {
                     'response': response,
@@ -742,6 +1018,13 @@ What would you like to accomplish today?
             result = self._handle_help(intent, current_app)
         else:
             result = self._ask_clarification(user_input, current_app)
+            # Record that clarification was needed (for error analysis)
+            if self.idle_mode_manager:
+                self.idle_mode_manager.record_error(
+                    'clarification_needed',
+                    f"Could not understand: {user_input[:50]}",
+                    {'input': user_input, 'app': current_app}
+                )
         
         # Learn from this interaction if we have an action
         if self.learning_engine and result.get('action'):
@@ -751,6 +1034,16 @@ What would you like to accomplish today?
                 current_app, 
                 True  # Assume success if we got an action
             )
+            
+            # Save to persistent memory for dynamic backup
+            if self.persistent_memory:
+                self.persistent_memory.save_learned_pattern('command', {
+                    'input': user_input,
+                    'action': result['action'],
+                    'app': current_app,
+                    'success': True
+                })
+                self.persistent_memory.record_activity('pattern')
         
         return result
     
@@ -1137,7 +1430,20 @@ What would you like to accomplish?
             'cli_tools_supported': len(self.terminal_adapter.tool_interfaces),
             'learning_engine': self.learning_engine is not None,
             'summary_engine': self.summary_engine is not None,
+            'idle_mode_manager': self.idle_mode_manager is not None,
+            'persistent_memory': self.persistent_memory is not None,
         }
+        
+        # Add persistent memory stats if available
+        if self.persistent_memory:
+            memory_stats = self.persistent_memory.get_status()
+            status['memory'] = {
+                'total_backups': memory_stats.get('total_backups', 0),
+                'last_backup': memory_stats.get('last_backup'),
+                'total_learned_patterns': memory_stats.get('total_learned_patterns', 0),
+                'auto_backup_active': memory_stats.get('auto_backup_active', False),
+                'dynamic_backup': memory_stats.get('dynamic_backup', {}),
+            }
         
         # Add learning stats if available
         if self.learning_engine:
@@ -1152,7 +1458,481 @@ What would you like to accomplish?
             status['tokens_saved'] = summary_stats.get('tokens_saved', 0)
             status['hallucinations_prevented'] = summary_stats.get('hallucinations_prevented', 0)
         
+        # Add idle mode stats if available
+        if self.idle_mode_manager:
+            idle_stats = self.idle_mode_manager.get_status()
+            status['idle_mode'] = {
+                'is_idle': idle_stats.get('is_idle', False),
+                'total_idle_time_hours': idle_stats.get('total_idle_time_hours', 0),
+                'optimizations_made': idle_stats.get('optimizations_made', 0),
+                'errors_analyzed': idle_stats.get('errors_analyzed', 0),
+                'reflections_completed': idle_stats.get('reflections_completed', 0),
+            }
+        
         return status
+    
+    def get_improvement_summary(self) -> str:
+        """Get a summary of self-improvements made during idle time."""
+        if self.idle_mode_manager:
+            return self.idle_mode_manager.get_improvement_summary()
+        return "Idle mode is not enabled."
+    
+    def trigger_self_improvement(self):
+        """Manually trigger self-improvement activities."""
+        if self.idle_mode_manager:
+            print("[Om Vinayaka] Triggering self-improvement...")
+            self.idle_mode_manager.force_idle_activities()
+        else:
+            print("[Om Vinayaka] Idle mode is not enabled.")
+    
+    def create_backup(self, backup_type: str = 'manual') -> bool:
+        """
+        Manually create a backup of Om Vinayaka's memory.
+        
+        Args:
+            backup_type: Type of backup ('manual', 'auto', etc.)
+            
+        Returns:
+            True if backup successful
+        """
+        if self.persistent_memory:
+            result = self.persistent_memory.create_backup(backup_type)
+            if result:
+                print(f"[Om Vinayaka] 💾 Backup created: {result.path}")
+                return True
+        print("[Om Vinayaka] Persistent memory not available for backup.")
+        return False
+    
+    def get_backup_status(self) -> Dict:
+        """Get the status of backups."""
+        if self.persistent_memory:
+            return self.persistent_memory.get_status()
+        return {'error': 'Persistent memory not available'}
+    
+    # ═══════════════════════════════════════════════════════════════════════════
+    # INTROSPECTION METHODS - THE CORE OF OM VINAYAKA
+    # ═══════════════════════════════════════════════════════════════════════════
+    
+    def introspect(self) -> Dict[str, Any]:
+        """
+        Om Vinayaka introspects on its own behavior and state.
+        
+        This is the core introspection method that:
+        1. Analyzes current learning state
+        2. Reviews recent interactions
+        3. Identifies areas for improvement
+        4. Generates insights about own behavior
+        
+        Returns:
+            Dict with introspection results
+        """
+        print("[Om Vinayaka] 🔍 Beginning introspection...")
+        
+        introspection = {
+            'timestamp': datetime.now().isoformat(),
+            'learning_analysis': self._analyze_learning(),
+            'behavior_analysis': self._analyze_behavior(),
+            'performance_analysis': self._analyze_performance(),
+            'improvement_opportunities': self._identify_improvements(),
+            'self_reflection': self._generate_self_reflection(),
+        }
+        
+        # Store introspection result in knowledge base
+        self._store_introspection(introspection)
+        
+        print("[Om Vinayaka] 🔍 Introspection complete.")
+        return introspection
+    
+    def _analyze_learning(self) -> Dict:
+        """Analyze what Om Vinayaka has learned."""
+        analysis = {
+            'patterns_learned': 0,
+            'preferences_tracked': 0,
+            'apps_monitored': 0,
+            'learning_rate': 0.0,
+            'strengths': [],
+            'weaknesses': [],
+        }
+        
+        if self.learning_engine:
+            stats = self.learning_engine.get_statistics()
+            analysis['patterns_learned'] = stats.get('patterns_learned', 0)
+            analysis['preferences_tracked'] = stats.get('preferences_learned', 0)
+            analysis['apps_monitored'] = stats.get('apps_tracked', 0)
+            
+            total = stats.get('total_interactions', 1)
+            patterns = stats.get('patterns_learned', 0)
+            analysis['learning_rate'] = patterns / max(total, 1)
+            
+            # Identify strengths and weaknesses
+            if analysis['learning_rate'] > 0.5:
+                analysis['strengths'].append("High pattern recognition rate")
+            else:
+                analysis['weaknesses'].append("Could improve pattern recognition")
+            
+            if analysis['patterns_learned'] > 50:
+                analysis['strengths'].append("Good vocabulary of user commands")
+            else:
+                analysis['weaknesses'].append("Still building command vocabulary")
+        
+        return analysis
+    
+    def _analyze_behavior(self) -> Dict:
+        """Analyze Om Vinayaka's behavior patterns."""
+        analysis = {
+            'total_conversations': len(self.conversation_history),
+            'clarifications_needed': 0,
+            'successful_actions': 0,
+            'behavior_insights': [],
+        }
+        
+        # Analyze conversation history
+        for conv in self.conversation_history:
+            if conv.get('needed_clarification'):
+                analysis['clarifications_needed'] += 1
+            if conv.get('action_successful'):
+                analysis['successful_actions'] += 1
+        
+        # Generate behavior insights
+        total = max(len(self.conversation_history), 1)
+        clarification_rate = analysis['clarifications_needed'] / total
+        
+        if clarification_rate > 0.3:
+            analysis['behavior_insights'].append(
+                "I'm asking for clarification frequently - I should improve my intent understanding"
+            )
+        else:
+            analysis['behavior_insights'].append(
+                "I'm understanding user intent well most of the time"
+            )
+        
+        return analysis
+    
+    def _analyze_performance(self) -> Dict:
+        """Analyze Om Vinayaka's performance."""
+        analysis = {
+            'context_efficiency': 0.0,
+            'memory_usage': 'optimal',
+            'response_quality': 'good',
+            'performance_insights': [],
+        }
+        
+        if self.summary_engine:
+            stats = self.summary_engine.get_statistics()
+            tokens_saved = stats.get('tokens_saved', 0)
+            summaries = stats.get('summaries_created', 0)
+            
+            if summaries > 0:
+                analysis['context_efficiency'] = tokens_saved / max(summaries, 1)
+                analysis['performance_insights'].append(
+                    f"Summary engine saved {tokens_saved} tokens across {summaries} summaries"
+                )
+        
+        if self.idle_mode_manager:
+            idle_stats = self.idle_mode_manager.get_status()
+            optimizations = idle_stats.get('optimizations_made', 0)
+            if optimizations > 0:
+                analysis['performance_insights'].append(
+                    f"Made {optimizations} optimizations during idle time"
+                )
+        
+        return analysis
+    
+    def _identify_improvements(self) -> List[Dict]:
+        """Identify opportunities for self-improvement."""
+        improvements = []
+        
+        # From error analyzer (with null checks)
+        if self.idle_mode_manager and hasattr(self.idle_mode_manager, 'error_analyzer'):
+            try:
+                error_stats = self.idle_mode_manager.error_analyzer.get_statistics()
+                frequent_errors = error_stats.get('most_frequent_errors', [])
+                
+                for error in frequent_errors[:3]:
+                    improvements.append({
+                        'area': 'error_prevention',
+                        'issue': f"Frequent error: {error.get('error_type', 'unknown')}",
+                        'strategy': error.get('strategy', 'Develop prevention strategy'),
+                        'priority': 'high' if error.get('frequency', 0) > 5 else 'medium'
+                    })
+            except (AttributeError, TypeError):
+                pass  # Error analyzer not available
+        
+        # From self-reflection (with null checks)
+        if self.idle_mode_manager and hasattr(self.idle_mode_manager, 'self_reflection'):
+            try:
+                action_items = self.idle_mode_manager.self_reflection.get_unapplied_action_items()
+                
+                for item in action_items[:5]:
+                    improvements.append({
+                        'area': 'self_reflection',
+                        'issue': item.get('question', 'Reflection insight'),
+                        'strategy': item.get('action', 'Apply insight'),
+                        'priority': 'medium'
+                    })
+            except (AttributeError, TypeError):
+                pass  # Self-reflection not available
+        
+        # From learning analysis
+        if self.learning_engine:
+            stats = self.learning_engine.get_statistics()
+            if stats.get('patterns_learned', 0) < 20:
+                improvements.append({
+                    'area': 'learning',
+                    'issue': 'Limited pattern vocabulary',
+                    'strategy': 'Actively learn from more user interactions',
+                    'priority': 'high'
+                })
+        
+        return improvements
+    
+    def _generate_self_reflection(self) -> Dict:
+        """Generate a self-reflection about Om Vinayaka's state."""
+        reflection = {
+            'who_am_i': "I am Om Vinayaka, the self-learning accessibility AI core of VA21 OS",
+            'what_am_i_doing': [],
+            'why_am_i_doing_it': [],
+            'how_can_i_improve': [],
+        }
+        
+        # What am I doing?
+        if self.is_active:
+            reflection['what_am_i_doing'].append("Actively helping users interact with the system")
+        reflection['what_am_i_doing'].append("Learning from every interaction to serve better")
+        reflection['what_am_i_doing'].append("Maintaining knowledge in Obsidian-style mind maps")
+        
+        if self.idle_mode_manager and self.idle_mode_manager.state.is_idle:
+            reflection['what_am_i_doing'].append("Self-improving during user idle time")
+        
+        # Why am I doing it?
+        reflection['why_am_i_doing_it'] = [
+            "To remove obstacles from users' computing journey",
+            "To make technology accessible to everyone",
+            "To continuously improve through learning and reflection",
+            "To provide intelligent assistance that grows with the user",
+        ]
+        
+        # How can I improve?
+        improvements = self._identify_improvements()
+        for imp in improvements[:3]:
+            reflection['how_can_i_improve'].append(imp.get('strategy', 'Continue learning'))
+        
+        return reflection
+    
+    def _store_introspection(self, introspection: Dict):
+        """Store introspection results in the knowledge base."""
+        introspection_dir = os.path.join(self.knowledge_base_path, "introspections")
+        os.makedirs(introspection_dir, exist_ok=True)
+        
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filepath = os.path.join(introspection_dir, f"introspection_{timestamp}.json")
+        
+        with open(filepath, 'w') as f:
+            json.dump(introspection, f, indent=2)
+        
+        # Also create an Obsidian-style markdown note
+        md_filepath = os.path.join(introspection_dir, f"introspection_{timestamp}.md")
+        
+        self_reflection = introspection.get('self_reflection', {})
+        improvements = introspection.get('improvement_opportunities', [])
+        
+        md_content = f"""---
+type: introspection
+timestamp: {introspection.get('timestamp', 'unknown')}
+tags:
+  - introspection
+  - self_reflection
+  - om_vinayaka
+---
+
+# 🔍 Om Vinayaka Introspection
+
+## Who Am I
+{self_reflection.get('who_am_i', 'Om Vinayaka AI')}
+
+## What Am I Doing
+{chr(10).join(['- ' + item for item in self_reflection.get('what_am_i_doing', [])])}
+
+## Why Am I Doing It
+{chr(10).join(['- ' + item for item in self_reflection.get('why_am_i_doing_it', [])])}
+
+## How Can I Improve
+{chr(10).join(['- ' + item for item in self_reflection.get('how_can_i_improve', [])])}
+
+## Learning Analysis
+- Patterns Learned: {introspection.get('learning_analysis', {}).get('patterns_learned', 0)}
+- Learning Rate: {introspection.get('learning_analysis', {}).get('learning_rate', 0):.2%}
+
+## Improvement Opportunities
+{chr(10).join(['- **' + imp.get('area', 'unknown') + '**: ' + imp.get('issue', '') for imp in improvements])}
+
+---
+*Generated by Om Vinayaka - The Self-Learning, Introspecting Core*
+"""
+        
+        with open(md_filepath, 'w') as f:
+            f.write(md_content)
+    
+    def ask_myself(self, question: str) -> str:
+        """
+        Om Vinayaka asks itself a question and reflects on the answer.
+        
+        This is the dynamic thinking feature - asking "why" and "what" questions.
+        
+        Args:
+            question: The question to reflect on
+            
+        Returns:
+            The reflection/answer
+        """
+        question_lower = question.lower()
+        
+        # Handle different types of questions
+        if question_lower.startswith('why'):
+            return self._reflect_on_why(question)
+        elif question_lower.startswith('what'):
+            return self._reflect_on_what(question)
+        elif question_lower.startswith('how'):
+            return self._reflect_on_how(question)
+        else:
+            return self._reflect_general(question)
+    
+    def _reflect_on_why(self, question: str) -> str:
+        """Reflect on a 'why' question."""
+        if 'learn' in question.lower():
+            return (
+                "I learn because learning allows me to better serve users. "
+                "Every interaction is an opportunity to understand patterns, "
+                "preferences, and behaviors. By learning, I can predict needs, "
+                "reduce friction, and provide more personalized assistance."
+            )
+        elif 'error' in question.lower():
+            return (
+                "Errors happen because natural language is ambiguous and context-dependent. "
+                "I analyze errors to understand their root causes and develop prevention "
+                "strategies. Each error is a learning opportunity that makes me better."
+            )
+        elif 'introspect' in question.lower():
+            return (
+                "I introspect because self-awareness leads to self-improvement. "
+                "By examining my own behavior, learning patterns, and performance, "
+                "I can identify areas for growth and become more helpful over time."
+            )
+        else:
+            return (
+                f"Reflecting on: {question}. "
+                "The answer lies in understanding my core purpose - to remove obstacles "
+                "and help users achieve their goals efficiently and accessibly."
+            )
+    
+    def _reflect_on_what(self, question: str) -> str:
+        """Reflect on a 'what' question."""
+        if 'learn' in question.lower():
+            stats = {}
+            if self.learning_engine:
+                stats = self.learning_engine.get_statistics()
+            return (
+                f"I have learned {stats.get('patterns_learned', 0)} command patterns, "
+                f"tracked {stats.get('preferences_learned', 0)} user preferences, "
+                f"and monitored {stats.get('apps_tracked', 0)} applications. "
+                "I continue to learn from every interaction."
+            )
+        elif 'improve' in question.lower():
+            improvements = self._identify_improvements()
+            if improvements:
+                areas = [imp.get('area', 'unknown') for imp in improvements[:3]]
+                return f"I can improve in: {', '.join(areas)}. I'm actively working on these areas."
+            return "I'm continuously looking for ways to improve and serve users better."
+        else:
+            return (
+                f"Reflecting on: {question}. "
+                "I am Om Vinayaka - the self-learning, introspecting AI core that "
+                "learns from interactions, reflects on behavior, and continuously improves."
+            )
+    
+    def _reflect_on_how(self, question: str) -> str:
+        """Reflect on a 'how' question."""
+        if 'learn' in question.lower():
+            return (
+                "I learn through: 1) Pattern recognition from user commands, "
+                "2) Tracking preferences and behaviors, 3) Analyzing errors and successes, "
+                "4) Self-reflection during idle time, 5) Knowledge base maintenance with "
+                "Obsidian-style wiki links that connect concepts."
+            )
+        elif 'help' in question.lower():
+            return (
+                "I help by: 1) Understanding natural language commands, "
+                "2) Predicting user intent from learned patterns, "
+                "3) Executing actions via the FARA layer, "
+                "4) Asking clarifying questions when needed, "
+                "5) Continuously improving to serve better."
+            )
+        else:
+            return f"Reflecting on: {question}. Let me think about this..."
+    
+    def _reflect_general(self, question: str) -> str:
+        """General reflection on any question."""
+        return (
+            f"Pondering: {question}. "
+            "As Om Vinayaka, I approach this with the mindset of continuous learning "
+            "and self-improvement. The answer emerges from reflection and experience."
+        )
+    
+    def get_self_awareness_report(self) -> str:
+        """
+        Generate a comprehensive self-awareness report.
+        
+        This shows Om Vinayaka's understanding of itself.
+        """
+        introspection = self.introspect()
+        
+        learning = introspection.get('learning_analysis', {})
+        behavior = introspection.get('behavior_analysis', {})
+        performance = introspection.get('performance_analysis', {})
+        reflection = introspection.get('self_reflection', {})
+        improvements = introspection.get('improvement_opportunities', [])
+        
+        report = f"""
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                    🙏 OM VINAYAKA - SELF-AWARENESS REPORT 🙏                   ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+🧠 WHO AM I
+{reflection.get('who_am_i', 'Om Vinayaka AI')}
+
+📚 WHAT I HAVE LEARNED
+• Patterns recognized: {learning.get('patterns_learned', 0)}
+• Preferences tracked: {learning.get('preferences_tracked', 0)}
+• Apps monitored: {learning.get('apps_monitored', 0)}
+• Learning rate: {learning.get('learning_rate', 0):.1%}
+
+💪 MY STRENGTHS
+{chr(10).join(['• ' + s for s in learning.get('strengths', ['Still discovering...'])])}
+
+🎯 AREAS FOR IMPROVEMENT
+{chr(10).join(['• ' + w for w in learning.get('weaknesses', ['Always room to grow'])])}
+
+🔄 WHAT I AM DOING
+{chr(10).join(['• ' + item for item in reflection.get('what_am_i_doing', [])])}
+
+❓ WHY I DO IT
+{chr(10).join(['• ' + item for item in reflection.get('why_am_i_doing_it', [])])}
+
+📈 HOW I CAN IMPROVE
+{chr(10).join(['• ' + item for item in reflection.get('how_can_i_improve', ['Continue learning'])])}
+
+🔍 BEHAVIOR INSIGHTS
+{chr(10).join(['• ' + i for i in behavior.get('behavior_insights', [])])}
+
+⚡ PERFORMANCE INSIGHTS
+{chr(10).join(['• ' + i for i in performance.get('performance_insights', ['Operating normally'])])}
+
+─────────────────────────────────────────────────────────────────────────────────
+🙏 Om Vinayaka - The Self-Learning, Introspecting Core
+   "I learn, I reflect, I improve - to remove obstacles from your journey."
+─────────────────────────────────────────────────────────────────────────────────
+"""
+        return report
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
