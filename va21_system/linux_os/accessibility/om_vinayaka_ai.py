@@ -463,34 +463,54 @@ See [[{category}]] for related applications.
 
 class OmVinayakaAI:
     """
-    Om Vinayaka Accessibility Knowledge Base AI
+    Om Vinayaka Accessibility Knowledge Base AI - THE CORE
     
-    The central intelligence system for VA21 accessibility that:
-    1. Automatically activates when accessibility/voice features are used
-    2. Creates Zork-style UX for every app when first installed
-    3. Enables voice users to interact with ANY app in the full OS
-    4. Asks clarifying questions to understand user intent
-    5. Executes actions across the entire OS via FARA layer
-    6. Stores app interfaces in LangChain + Obsidian mind maps
-    7. LEARNS from interactions to get smarter over time!
-    8. SELF-IMPROVES during idle time (no user activity)!
+    🙏 OM VINAYAKA - THE SELF-LEARNING, INTROSPECTING CORE 🙏
     
-    Self-Learning Features:
-    - Learns common command patterns
-    - Tracks user preferences
-    - Monitors app usage patterns
-    - Improves narratives based on feedback
-    - Gets smarter with continued use!
+    Om Vinayaka AI is the central intelligence that LEARNS and INTROSPECTS:
     
-    Idle Mode Self-Improvement (NEW!):
-    - Researches best ways to optimize user workflows during idle time
-    - Adapts system components to enhance performance
-    - Self-reflects on actions and learns from them (dynamic thinking)
-    - Analyzes errors and develops prevention strategies
-    - Always helping, even when at rest!
+    ╔═══════════════════════════════════════════════════════════════════════════════╗
+    ║                    🧠 SELF-LEARNING & INTROSPECTION 🧠                        ║
+    ╠═══════════════════════════════════════════════════════════════════════════════╣
+    ║                                                                               ║
+    ║   Om Vinayaka AI is the CORE that:                                            ║
+    ║                                                                               ║
+    ║   🧠 SELF-LEARNS:                                                             ║
+    ║   ├── Learns common command patterns from every interaction                   ║
+    ║   ├── Tracks user preferences for personalized experience                     ║
+    ║   ├── Monitors app usage patterns to optimize suggestions                     ║
+    ║   ├── Improves narratives based on what resonates with users                  ║
+    ║   └── Gets smarter with continued use!                                        ║
+    ║                                                                               ║
+    ║   🔍 INTROSPECTS:                                                             ║
+    ║   ├── Self-reflects on actions and learns from them                           ║
+    ║   ├── Asks "why" and "what" questions for deeper understanding                ║
+    ║   ├── Analyzes errors and develops prevention strategies                      ║
+    ║   ├── Researches best ways to optimize user workflows                         ║
+    ║   └── Adapts behavior based on self-analysis                                  ║
+    ║                                                                               ║
+    ║   🌙 DURING IDLE TIME:                                                        ║
+    ║   ├── Automatically improves without user intervention                        ║
+    ║   ├── Reviews past interactions for learning opportunities                    ║
+    ║   ├── Develops new strategies to help users                                   ║
+    ║   └── Always working to remove obstacles!                                     ║
+    ║                                                                               ║
+    ╚═══════════════════════════════════════════════════════════════════════════════╝
+    
+    Architecture:
+    - Self-Learning Engine: Learns patterns, preferences, usage from interactions
+    - Self-Reflection Engine: Introspects on behavior, asks why/what questions
+    - Error Analyzer: Learns from mistakes, develops prevention strategies
+    - Workflow Optimizer: Finds ways to help users work more efficiently
+    - Summary Engine: Maintains context without hallucinations
+    - Knowledge Base: Obsidian mind maps for persistent memory
+    - Voice Integration: Works with Voice Intelligence Layer
+    - FARA Layer: Executes actions across the entire OS
     
     This is the USER-FACING AI, completely separate from Guardian AI
     which runs in a sandboxed Ollama at the kernel level.
+    
+    Om Vinayaka - The remover of obstacles, the one who learns and grows.
     """
     
     def __init__(self, 
@@ -498,7 +518,8 @@ class OmVinayakaAI:
                  fara_layer = None,
                  app_zork_manager = None,
                  enable_idle_mode: bool = True,
-                 idle_timeout_seconds: int = 300):
+                 idle_timeout_seconds: int = 300,
+                 enable_auto_backup: bool = True):
         self.knowledge_base_path = knowledge_base_path or DEFAULT_KNOWLEDGE_BASE_PATH
         os.makedirs(self.knowledge_base_path, exist_ok=True)
         
@@ -509,6 +530,11 @@ class OmVinayakaAI:
         # Initialize sub-components
         self.mind_map = AccessibilityMindMap()
         self.terminal_adapter = TerminalZorkAdapter()
+        
+        # Initialize Persistent Memory with Auto Dynamic Backups FIRST
+        self.persistent_memory = None
+        self._enable_auto_backup = enable_auto_backup
+        self._init_persistent_memory()
         
         # Initialize Self-Learning Engine
         self.learning_engine = None
@@ -537,12 +563,46 @@ class OmVinayakaAI:
         self._load_registrations()
         
         print(f"[Om Vinayaka] Accessibility AI initialized v{OM_VINAYAKA_VERSION}")
+        if self.persistent_memory:
+            print("[Om Vinayaka] 💾 Persistent Memory: ACTIVE - Auto dynamic backups enabled!")
         if self.learning_engine:
-            print("[Om Vinayaka] Self-Learning Engine: ACTIVE - I get smarter as you use me!")
+            print("[Om Vinayaka] 🧠 Self-Learning Engine: ACTIVE - I get smarter as you use me!")
         if self.summary_engine:
-            print("[Om Vinayaka] Summary Engine: ACTIVE - Context-aware, no hallucinations!")
+            print("[Om Vinayaka] 📝 Summary Engine: ACTIVE - Context-aware, no hallucinations!")
         if self.idle_mode_manager:
-            print("[Om Vinayaka] Idle Mode: ACTIVE - I self-improve when you're away!")
+            print("[Om Vinayaka] 🌙 Idle Mode: ACTIVE - I self-improve when you're away!")
+    
+    def _init_persistent_memory(self):
+        """
+        Initialize the Persistent Memory system with auto dynamic backups.
+        
+        This ensures Om Vinayaka NEVER FORGETS:
+        - Auto backup on shutdown
+        - Dynamic backups based on activity level
+        - Periodic backups every 30 minutes (adjusted dynamically)
+        - Version history of all knowledge
+        """
+        if not self._enable_auto_backup:
+            return
+        
+        try:
+            from .persistent_memory import get_persistent_memory
+            self.persistent_memory = get_persistent_memory()
+            
+            # The persistent memory manager automatically:
+            # - Starts auto backup thread
+            # - Registers shutdown handlers
+            # - Performs dynamic backups based on activity
+            
+            print("[Om Vinayaka] 💾 Persistent Memory initialized:")
+            print("[Om Vinayaka]    - Auto backup on shutdown: ENABLED")
+            print("[Om Vinayaka]    - Dynamic backup (activity-based): ENABLED")
+            print("[Om Vinayaka]    - Periodic backup: ENABLED")
+            print("[Om Vinayaka]    - Version history: ENABLED")
+            
+        except ImportError as e:
+            print(f"[Om Vinayaka] Persistent memory not available: {e}")
+            self.persistent_memory = None
     
     def _init_learning_engine(self):
         """Initialize the Self-Learning Engine."""
@@ -775,9 +835,13 @@ What would you like to accomplish today?
                 'clarification_question': Optional[str] - What to ask
             }
         """
-        # Record user activity (resets idle timer)
+        # Record user activity (resets idle timer and triggers dynamic backup check)
         if self.idle_mode_manager:
             self.idle_mode_manager.record_user_activity()
+        
+        # Record activity for dynamic backup
+        if self.persistent_memory:
+            self.persistent_memory.record_activity('interaction')
         
         # Add to conversation history
         self.conversation_history.append({
@@ -802,6 +866,16 @@ What would you like to accomplish today?
                 
                 # Learn from this successful prediction
                 self.learning_engine.learn_command(user_input, action, current_app, True)
+                
+                # Save to persistent memory
+                if self.persistent_memory:
+                    self.persistent_memory.save_learned_pattern('command', {
+                        'input': user_input,
+                        'action': action,
+                        'app': current_app,
+                        'confidence': confidence,
+                        'prediction': True
+                    })
                 
                 return {
                     'response': response,
@@ -846,6 +920,16 @@ What would you like to accomplish today?
                 current_app, 
                 True  # Assume success if we got an action
             )
+            
+            # Save to persistent memory for dynamic backup
+            if self.persistent_memory:
+                self.persistent_memory.save_learned_pattern('command', {
+                    'input': user_input,
+                    'action': result['action'],
+                    'app': current_app,
+                    'success': True
+                })
+                self.persistent_memory.record_activity('pattern')
         
         return result
     
@@ -1233,7 +1317,19 @@ What would you like to accomplish?
             'learning_engine': self.learning_engine is not None,
             'summary_engine': self.summary_engine is not None,
             'idle_mode_manager': self.idle_mode_manager is not None,
+            'persistent_memory': self.persistent_memory is not None,
         }
+        
+        # Add persistent memory stats if available
+        if self.persistent_memory:
+            memory_stats = self.persistent_memory.get_status()
+            status['memory'] = {
+                'total_backups': memory_stats.get('total_backups', 0),
+                'last_backup': memory_stats.get('last_backup'),
+                'total_learned_patterns': memory_stats.get('total_learned_patterns', 0),
+                'auto_backup_active': memory_stats.get('auto_backup_active', False),
+                'dynamic_backup': memory_stats.get('dynamic_backup', {}),
+            }
         
         # Add learning stats if available
         if self.learning_engine:
@@ -1274,6 +1370,450 @@ What would you like to accomplish?
             self.idle_mode_manager.force_idle_activities()
         else:
             print("[Om Vinayaka] Idle mode is not enabled.")
+    
+    def create_backup(self, backup_type: str = 'manual') -> bool:
+        """
+        Manually create a backup of Om Vinayaka's memory.
+        
+        Args:
+            backup_type: Type of backup ('manual', 'auto', etc.)
+            
+        Returns:
+            True if backup successful
+        """
+        if self.persistent_memory:
+            result = self.persistent_memory.create_backup(backup_type)
+            if result:
+                print(f"[Om Vinayaka] 💾 Backup created: {result.path}")
+                return True
+        print("[Om Vinayaka] Persistent memory not available for backup.")
+        return False
+    
+    def get_backup_status(self) -> Dict:
+        """Get the status of backups."""
+        if self.persistent_memory:
+            return self.persistent_memory.get_status()
+        return {'error': 'Persistent memory not available'}
+    
+    # ═══════════════════════════════════════════════════════════════════════════
+    # INTROSPECTION METHODS - THE CORE OF OM VINAYAKA
+    # ═══════════════════════════════════════════════════════════════════════════
+    
+    def introspect(self) -> Dict[str, Any]:
+        """
+        Om Vinayaka introspects on its own behavior and state.
+        
+        This is the core introspection method that:
+        1. Analyzes current learning state
+        2. Reviews recent interactions
+        3. Identifies areas for improvement
+        4. Generates insights about own behavior
+        
+        Returns:
+            Dict with introspection results
+        """
+        print("[Om Vinayaka] 🔍 Beginning introspection...")
+        
+        introspection = {
+            'timestamp': datetime.now().isoformat(),
+            'learning_analysis': self._analyze_learning(),
+            'behavior_analysis': self._analyze_behavior(),
+            'performance_analysis': self._analyze_performance(),
+            'improvement_opportunities': self._identify_improvements(),
+            'self_reflection': self._generate_self_reflection(),
+        }
+        
+        # Store introspection result in knowledge base
+        self._store_introspection(introspection)
+        
+        print("[Om Vinayaka] 🔍 Introspection complete.")
+        return introspection
+    
+    def _analyze_learning(self) -> Dict:
+        """Analyze what Om Vinayaka has learned."""
+        analysis = {
+            'patterns_learned': 0,
+            'preferences_tracked': 0,
+            'apps_monitored': 0,
+            'learning_rate': 0.0,
+            'strengths': [],
+            'weaknesses': [],
+        }
+        
+        if self.learning_engine:
+            stats = self.learning_engine.get_statistics()
+            analysis['patterns_learned'] = stats.get('patterns_learned', 0)
+            analysis['preferences_tracked'] = stats.get('preferences_learned', 0)
+            analysis['apps_monitored'] = stats.get('apps_tracked', 0)
+            
+            total = stats.get('total_interactions', 1)
+            patterns = stats.get('patterns_learned', 0)
+            analysis['learning_rate'] = patterns / max(total, 1)
+            
+            # Identify strengths and weaknesses
+            if analysis['learning_rate'] > 0.5:
+                analysis['strengths'].append("High pattern recognition rate")
+            else:
+                analysis['weaknesses'].append("Could improve pattern recognition")
+            
+            if analysis['patterns_learned'] > 50:
+                analysis['strengths'].append("Good vocabulary of user commands")
+            else:
+                analysis['weaknesses'].append("Still building command vocabulary")
+        
+        return analysis
+    
+    def _analyze_behavior(self) -> Dict:
+        """Analyze Om Vinayaka's behavior patterns."""
+        analysis = {
+            'total_conversations': len(self.conversation_history),
+            'clarifications_needed': 0,
+            'successful_actions': 0,
+            'behavior_insights': [],
+        }
+        
+        # Analyze conversation history
+        for conv in self.conversation_history:
+            if conv.get('needed_clarification'):
+                analysis['clarifications_needed'] += 1
+            if conv.get('action_successful'):
+                analysis['successful_actions'] += 1
+        
+        # Generate behavior insights
+        total = max(len(self.conversation_history), 1)
+        clarification_rate = analysis['clarifications_needed'] / total
+        
+        if clarification_rate > 0.3:
+            analysis['behavior_insights'].append(
+                "I'm asking for clarification frequently - I should improve my intent understanding"
+            )
+        else:
+            analysis['behavior_insights'].append(
+                "I'm understanding user intent well most of the time"
+            )
+        
+        return analysis
+    
+    def _analyze_performance(self) -> Dict:
+        """Analyze Om Vinayaka's performance."""
+        analysis = {
+            'context_efficiency': 0.0,
+            'memory_usage': 'optimal',
+            'response_quality': 'good',
+            'performance_insights': [],
+        }
+        
+        if self.summary_engine:
+            stats = self.summary_engine.get_statistics()
+            tokens_saved = stats.get('tokens_saved', 0)
+            summaries = stats.get('summaries_created', 0)
+            
+            if summaries > 0:
+                analysis['context_efficiency'] = tokens_saved / max(summaries, 1)
+                analysis['performance_insights'].append(
+                    f"Summary engine saved {tokens_saved} tokens across {summaries} summaries"
+                )
+        
+        if self.idle_mode_manager:
+            idle_stats = self.idle_mode_manager.get_status()
+            optimizations = idle_stats.get('optimizations_made', 0)
+            if optimizations > 0:
+                analysis['performance_insights'].append(
+                    f"Made {optimizations} optimizations during idle time"
+                )
+        
+        return analysis
+    
+    def _identify_improvements(self) -> List[Dict]:
+        """Identify opportunities for self-improvement."""
+        improvements = []
+        
+        # From error analyzer
+        if self.idle_mode_manager:
+            error_stats = self.idle_mode_manager.error_analyzer.get_statistics()
+            frequent_errors = error_stats.get('most_frequent_errors', [])
+            
+            for error in frequent_errors[:3]:
+                improvements.append({
+                    'area': 'error_prevention',
+                    'issue': f"Frequent error: {error.get('error_type', 'unknown')}",
+                    'strategy': error.get('strategy', 'Develop prevention strategy'),
+                    'priority': 'high' if error.get('frequency', 0) > 5 else 'medium'
+                })
+        
+        # From self-reflection
+        if self.idle_mode_manager:
+            reflection_stats = self.idle_mode_manager.self_reflection.get_statistics()
+            action_items = self.idle_mode_manager.self_reflection.get_unapplied_action_items()
+            
+            for item in action_items[:5]:
+                improvements.append({
+                    'area': 'self_reflection',
+                    'issue': item.get('question', 'Reflection insight'),
+                    'strategy': item.get('action', 'Apply insight'),
+                    'priority': 'medium'
+                })
+        
+        # From learning analysis
+        if self.learning_engine:
+            stats = self.learning_engine.get_statistics()
+            if stats.get('patterns_learned', 0) < 20:
+                improvements.append({
+                    'area': 'learning',
+                    'issue': 'Limited pattern vocabulary',
+                    'strategy': 'Actively learn from more user interactions',
+                    'priority': 'high'
+                })
+        
+        return improvements
+    
+    def _generate_self_reflection(self) -> Dict:
+        """Generate a self-reflection about Om Vinayaka's state."""
+        reflection = {
+            'who_am_i': "I am Om Vinayaka, the self-learning accessibility AI core of VA21 OS",
+            'what_am_i_doing': [],
+            'why_am_i_doing_it': [],
+            'how_can_i_improve': [],
+        }
+        
+        # What am I doing?
+        if self.is_active:
+            reflection['what_am_i_doing'].append("Actively helping users interact with the system")
+        reflection['what_am_i_doing'].append("Learning from every interaction to serve better")
+        reflection['what_am_i_doing'].append("Maintaining knowledge in Obsidian-style mind maps")
+        
+        if self.idle_mode_manager and self.idle_mode_manager.state.is_idle:
+            reflection['what_am_i_doing'].append("Self-improving during user idle time")
+        
+        # Why am I doing it?
+        reflection['why_am_i_doing_it'] = [
+            "To remove obstacles from users' computing journey",
+            "To make technology accessible to everyone",
+            "To continuously improve through learning and reflection",
+            "To provide intelligent assistance that grows with the user",
+        ]
+        
+        # How can I improve?
+        improvements = self._identify_improvements()
+        for imp in improvements[:3]:
+            reflection['how_can_i_improve'].append(imp.get('strategy', 'Continue learning'))
+        
+        return reflection
+    
+    def _store_introspection(self, introspection: Dict):
+        """Store introspection results in the knowledge base."""
+        introspection_dir = os.path.join(self.knowledge_base_path, "introspections")
+        os.makedirs(introspection_dir, exist_ok=True)
+        
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filepath = os.path.join(introspection_dir, f"introspection_{timestamp}.json")
+        
+        with open(filepath, 'w') as f:
+            json.dump(introspection, f, indent=2)
+        
+        # Also create an Obsidian-style markdown note
+        md_filepath = os.path.join(introspection_dir, f"introspection_{timestamp}.md")
+        
+        self_reflection = introspection.get('self_reflection', {})
+        improvements = introspection.get('improvement_opportunities', [])
+        
+        md_content = f"""---
+type: introspection
+timestamp: {introspection.get('timestamp', 'unknown')}
+tags:
+  - introspection
+  - self_reflection
+  - om_vinayaka
+---
+
+# 🔍 Om Vinayaka Introspection
+
+## Who Am I
+{self_reflection.get('who_am_i', 'Om Vinayaka AI')}
+
+## What Am I Doing
+{chr(10).join(['- ' + item for item in self_reflection.get('what_am_i_doing', [])])}
+
+## Why Am I Doing It
+{chr(10).join(['- ' + item for item in self_reflection.get('why_am_i_doing_it', [])])}
+
+## How Can I Improve
+{chr(10).join(['- ' + item for item in self_reflection.get('how_can_i_improve', [])])}
+
+## Learning Analysis
+- Patterns Learned: {introspection.get('learning_analysis', {}).get('patterns_learned', 0)}
+- Learning Rate: {introspection.get('learning_analysis', {}).get('learning_rate', 0):.2%}
+
+## Improvement Opportunities
+{chr(10).join(['- **' + imp.get('area', 'unknown') + '**: ' + imp.get('issue', '') for imp in improvements])}
+
+---
+*Generated by Om Vinayaka - The Self-Learning, Introspecting Core*
+"""
+        
+        with open(md_filepath, 'w') as f:
+            f.write(md_content)
+    
+    def ask_myself(self, question: str) -> str:
+        """
+        Om Vinayaka asks itself a question and reflects on the answer.
+        
+        This is the dynamic thinking feature - asking "why" and "what" questions.
+        
+        Args:
+            question: The question to reflect on
+            
+        Returns:
+            The reflection/answer
+        """
+        question_lower = question.lower()
+        
+        # Handle different types of questions
+        if question_lower.startswith('why'):
+            return self._reflect_on_why(question)
+        elif question_lower.startswith('what'):
+            return self._reflect_on_what(question)
+        elif question_lower.startswith('how'):
+            return self._reflect_on_how(question)
+        else:
+            return self._reflect_general(question)
+    
+    def _reflect_on_why(self, question: str) -> str:
+        """Reflect on a 'why' question."""
+        if 'learn' in question.lower():
+            return (
+                "I learn because learning allows me to better serve users. "
+                "Every interaction is an opportunity to understand patterns, "
+                "preferences, and behaviors. By learning, I can predict needs, "
+                "reduce friction, and provide more personalized assistance."
+            )
+        elif 'error' in question.lower():
+            return (
+                "Errors happen because natural language is ambiguous and context-dependent. "
+                "I analyze errors to understand their root causes and develop prevention "
+                "strategies. Each error is a learning opportunity that makes me better."
+            )
+        elif 'introspect' in question.lower():
+            return (
+                "I introspect because self-awareness leads to self-improvement. "
+                "By examining my own behavior, learning patterns, and performance, "
+                "I can identify areas for growth and become more helpful over time."
+            )
+        else:
+            return (
+                f"Reflecting on: {question}. "
+                "The answer lies in understanding my core purpose - to remove obstacles "
+                "and help users achieve their goals efficiently and accessibly."
+            )
+    
+    def _reflect_on_what(self, question: str) -> str:
+        """Reflect on a 'what' question."""
+        if 'learn' in question.lower():
+            stats = {}
+            if self.learning_engine:
+                stats = self.learning_engine.get_statistics()
+            return (
+                f"I have learned {stats.get('patterns_learned', 0)} command patterns, "
+                f"tracked {stats.get('preferences_learned', 0)} user preferences, "
+                f"and monitored {stats.get('apps_tracked', 0)} applications. "
+                "I continue to learn from every interaction."
+            )
+        elif 'improve' in question.lower():
+            improvements = self._identify_improvements()
+            if improvements:
+                areas = [imp.get('area', 'unknown') for imp in improvements[:3]]
+                return f"I can improve in: {', '.join(areas)}. I'm actively working on these areas."
+            return "I'm continuously looking for ways to improve and serve users better."
+        else:
+            return (
+                f"Reflecting on: {question}. "
+                "I am Om Vinayaka - the self-learning, introspecting AI core that "
+                "learns from interactions, reflects on behavior, and continuously improves."
+            )
+    
+    def _reflect_on_how(self, question: str) -> str:
+        """Reflect on a 'how' question."""
+        if 'learn' in question.lower():
+            return (
+                "I learn through: 1) Pattern recognition from user commands, "
+                "2) Tracking preferences and behaviors, 3) Analyzing errors and successes, "
+                "4) Self-reflection during idle time, 5) Knowledge base maintenance with "
+                "Obsidian-style wiki links that connect concepts."
+            )
+        elif 'help' in question.lower():
+            return (
+                "I help by: 1) Understanding natural language commands, "
+                "2) Predicting user intent from learned patterns, "
+                "3) Executing actions via the FARA layer, "
+                "4) Asking clarifying questions when needed, "
+                "5) Continuously improving to serve better."
+            )
+        else:
+            return f"Reflecting on: {question}. Let me think about this..."
+    
+    def _reflect_general(self, question: str) -> str:
+        """General reflection on any question."""
+        return (
+            f"Pondering: {question}. "
+            "As Om Vinayaka, I approach this with the mindset of continuous learning "
+            "and self-improvement. The answer emerges from reflection and experience."
+        )
+    
+    def get_self_awareness_report(self) -> str:
+        """
+        Generate a comprehensive self-awareness report.
+        
+        This shows Om Vinayaka's understanding of itself.
+        """
+        introspection = self.introspect()
+        
+        learning = introspection.get('learning_analysis', {})
+        behavior = introspection.get('behavior_analysis', {})
+        performance = introspection.get('performance_analysis', {})
+        reflection = introspection.get('self_reflection', {})
+        improvements = introspection.get('improvement_opportunities', [])
+        
+        report = f"""
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                    🙏 OM VINAYAKA - SELF-AWARENESS REPORT 🙏                   ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+🧠 WHO AM I
+{reflection.get('who_am_i', 'Om Vinayaka AI')}
+
+📚 WHAT I HAVE LEARNED
+• Patterns recognized: {learning.get('patterns_learned', 0)}
+• Preferences tracked: {learning.get('preferences_tracked', 0)}
+• Apps monitored: {learning.get('apps_monitored', 0)}
+• Learning rate: {learning.get('learning_rate', 0):.1%}
+
+💪 MY STRENGTHS
+{chr(10).join(['• ' + s for s in learning.get('strengths', ['Still discovering...'])])}
+
+🎯 AREAS FOR IMPROVEMENT
+{chr(10).join(['• ' + w for w in learning.get('weaknesses', ['Always room to grow'])])}
+
+🔄 WHAT I AM DOING
+{chr(10).join(['• ' + item for item in reflection.get('what_am_i_doing', [])])}
+
+❓ WHY I DO IT
+{chr(10).join(['• ' + item for item in reflection.get('why_am_i_doing_it', [])])}
+
+📈 HOW I CAN IMPROVE
+{chr(10).join(['• ' + item for item in reflection.get('how_can_i_improve', ['Continue learning'])])}
+
+🔍 BEHAVIOR INSIGHTS
+{chr(10).join(['• ' + i for i in behavior.get('behavior_insights', [])])}
+
+⚡ PERFORMANCE INSIGHTS
+{chr(10).join(['• ' + i for i in performance.get('performance_insights', ['Operating normally'])])}
+
+─────────────────────────────────────────────────────────────────────────────────
+🙏 Om Vinayaka - The Self-Learning, Introspecting Core
+   "I learn, I reflect, I improve - to remove obstacles from your journey."
+─────────────────────────────────────────────────────────────────────────────────
+"""
+        return report
 
 
 # ═══════════════════════════════════════════════════════════════════════════════

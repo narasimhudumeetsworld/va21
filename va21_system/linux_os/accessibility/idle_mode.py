@@ -80,8 +80,8 @@ WORKFLOW_ANALYSIS_INTERVAL = 60  # Analyze workflows every 60 seconds during idl
 ERROR_ANALYSIS_INTERVAL = 120  # Analyze errors every 120 seconds during idle
 SELF_REFLECTION_INTERVAL = 180  # Self-reflect every 180 seconds during idle
 
-# Resource limits during idle mode
-MAX_CPU_PERCENT_IDLE = 25  # Don't use more than 25% CPU during idle
+# Resource limits during idle mode (reserved for future resource monitoring)
+# MAX_CPU_PERCENT_IDLE = 25  # Don't use more than 25% CPU during idle
 MAX_ANALYSIS_DURATION = 30  # Each analysis task max 30 seconds
 
 
@@ -258,8 +258,8 @@ class WorkflowOptimizer:
             try:
                 with open(patterns_file, 'r') as f:
                     return json.load(f)
-            except Exception:
-                pass
+            except (json.JSONDecodeError, IOError, OSError) as e:
+                print(f"[WorkflowOptimizer] Could not load patterns: {e}")
         return {}
     
     def _identify_workflow_in_context(self, context: str, 
@@ -726,8 +726,8 @@ class SelfReflectionEngine:
             try:
                 with open(stats_file, 'r') as f:
                     return json.load(f)
-            except Exception:
-                pass
+            except (json.JSONDecodeError, IOError, OSError) as e:
+                print(f"[SelfReflectionEngine] Could not load stats: {e}")
         return {}
     
     def _answer_reflection_question(self, q_type: str, question: str,
@@ -1195,8 +1195,8 @@ class IdleModeManager:
             try:
                 with open(stats_file, 'r') as f:
                     return json.load(f)
-            except Exception:
-                pass
+            except (json.JSONDecodeError, IOError, OSError) as e:
+                print(f"[IdleModeManager] Could not load stats: {e}")
         return {}
     
     def record_error(self, error_type: str, error_message: str, 

@@ -98,6 +98,11 @@ from .idle_mode import (
     IDLE_MODE_VERSION,
 )
 
+from .persistent_memory import (
+    PersistentMemoryManager,
+    get_persistent_memory,
+)
+
 __all__ = [
     # Main accessibility system
     'VA21AccessibilitySystem',
@@ -113,7 +118,7 @@ __all__ = [
     'AppAnalyzer',
     'AppZorkInterface',
     
-    # Om Vinayaka Accessibility Knowledge Base AI
+    # Om Vinayaka Accessibility Knowledge Base AI - THE CORE
     'OmVinayakaAI',
     'TerminalZorkAdapter',
     'AccessibilityMindMap',
@@ -144,4 +149,8 @@ __all__ = [
     'SelfReflectionEngine',
     'get_idle_mode_manager',
     'IDLE_MODE_VERSION',
+    
+    # Persistent Memory with Auto Dynamic Backups
+    'PersistentMemoryManager',
+    'get_persistent_memory',
 ]
