@@ -13,6 +13,7 @@ Provides system-wide accessibility features including:
 - Om Vinayaka Accessibility Knowledge Base AI
 - Self-Learning System with LangChain + Obsidian integration
 - Context-Aware Summary Engine to prevent AI hallucinations
+- Idle Mode Self-Improvement System (NEW!)
 
 Unlike traditional screen readers that just read keywords,
 VA21 explains what things do, asks clarifying questions,
@@ -26,6 +27,14 @@ Om Vinayaka Architecture:
 - Self-learning system that gets smarter over time
 - Context-aware summary engine prevents AI overload
 - FARA layer executes actions across the entire OS
+- Idle mode self-improvement during user inactivity (NEW!)
+
+Idle Mode Self-Improvement Features (NEW!):
+- Researches best ways to optimize user workflows during idle time
+- Adapts system components to enhance performance
+- Self-reflects on actions and learns from them (dynamic thinking)
+- Analyzes errors and develops prevention strategies
+- Always helping, even when at rest!
 
 Guardian AI Note:
 Guardian AI runs in a sandboxed Ollama at the kernel level,
@@ -80,6 +89,15 @@ from .summary_engine import (
     PRIORITY_LEVELS,
 )
 
+from .idle_mode import (
+    IdleModeManager,
+    WorkflowOptimizer,
+    ErrorAnalyzer,
+    SelfReflectionEngine,
+    get_idle_mode_manager,
+    IDLE_MODE_VERSION,
+)
+
 __all__ = [
     # Main accessibility system
     'VA21AccessibilitySystem',
@@ -118,4 +136,12 @@ __all__ = [
     'get_summary_engine',
     'AI_CONTEXT_LIMITS',
     'PRIORITY_LEVELS',
+    
+    # Idle Mode Self-Improvement System
+    'IdleModeManager',
+    'WorkflowOptimizer',
+    'ErrorAnalyzer',
+    'SelfReflectionEngine',
+    'get_idle_mode_manager',
+    'IDLE_MODE_VERSION',
 ]

@@ -11,6 +11,7 @@ The Om Vinayaka AI is the central accessibility intelligence system that:
 - Executes actions across the entire OS via the FARA layer
 - Stores all app interfaces in a LangChain + Obsidian mind map knowledge base
 - LEARNS from user interactions to get smarter over time!
+- SELF-IMPROVES during idle time (no user activity)!
 
 This creates a unified, conversational accessibility experience where
 every application can be controlled through natural language.
@@ -23,6 +24,7 @@ Architecture:
 - FARA Layer: Universal action execution across all apps
 - Terminal Zork Adapter: Zork UX for CLI tools (Gemini CLI, Codex, Copilot CLI, etc.)
 - Self-Learning Engine: Learns patterns, preferences, and improves over time
+- Idle Mode Manager: Self-improvement during user inactivity
 
 Self-Learning System:
 - Learns common command patterns from user interactions
@@ -30,6 +32,13 @@ Self-Learning System:
 - Monitors app usage patterns to optimize suggestions
 - Improves narratives based on what resonates with users
 - Gets smarter with continued use!
+
+Idle Mode Self-Improvement (NEW!):
+- Researches best ways to optimize user workflows during idle time
+- Adapts system components to enhance performance
+- Self-reflects on actions and learns from them (dynamic thinking)
+- Analyzes errors and develops prevention strategies
+- Always helping, even when at rest!
 
 NOTE: Guardian AI runs in a sandboxed Ollama in the kernel and is completely
 isolated from this user-facing accessibility system.
@@ -54,7 +63,7 @@ from enum import Enum
 # CONSTANTS
 # ═══════════════════════════════════════════════════════════════════════════════
 
-OM_VINAYAKA_VERSION = "1.1.0"  # Updated with self-learning
+OM_VINAYAKA_VERSION = "1.2.0"  # Updated with idle mode self-improvement
 
 # Knowledge base paths
 DEFAULT_KNOWLEDGE_BASE_PATH = os.path.expanduser("~/.va21/accessibility_knowledge_base")
@@ -464,6 +473,7 @@ class OmVinayakaAI:
     5. Executes actions across the entire OS via FARA layer
     6. Stores app interfaces in LangChain + Obsidian mind maps
     7. LEARNS from interactions to get smarter over time!
+    8. SELF-IMPROVES during idle time (no user activity)!
     
     Self-Learning Features:
     - Learns common command patterns
@@ -472,6 +482,13 @@ class OmVinayakaAI:
     - Improves narratives based on feedback
     - Gets smarter with continued use!
     
+    Idle Mode Self-Improvement (NEW!):
+    - Researches best ways to optimize user workflows during idle time
+    - Adapts system components to enhance performance
+    - Self-reflects on actions and learns from them (dynamic thinking)
+    - Analyzes errors and develops prevention strategies
+    - Always helping, even when at rest!
+    
     This is the USER-FACING AI, completely separate from Guardian AI
     which runs in a sandboxed Ollama at the kernel level.
     """
@@ -479,7 +496,9 @@ class OmVinayakaAI:
     def __init__(self, 
                  knowledge_base_path: str = None,
                  fara_layer = None,
-                 app_zork_manager = None):
+                 app_zork_manager = None,
+                 enable_idle_mode: bool = True,
+                 idle_timeout_seconds: int = 300):
         self.knowledge_base_path = knowledge_base_path or DEFAULT_KNOWLEDGE_BASE_PATH
         os.makedirs(self.knowledge_base_path, exist_ok=True)
         
@@ -499,6 +518,12 @@ class OmVinayakaAI:
         self.summary_engine = None
         self._init_summary_engine()
         
+        # Initialize Idle Mode Manager for self-improvement
+        self.idle_mode_manager = None
+        self._enable_idle_mode = enable_idle_mode
+        self._idle_timeout_seconds = idle_timeout_seconds
+        self._init_idle_mode_manager()
+        
         # State
         self.is_active = False
         self.current_context: Dict = {}
@@ -516,6 +541,8 @@ class OmVinayakaAI:
             print("[Om Vinayaka] Self-Learning Engine: ACTIVE - I get smarter as you use me!")
         if self.summary_engine:
             print("[Om Vinayaka] Summary Engine: ACTIVE - Context-aware, no hallucinations!")
+        if self.idle_mode_manager:
+            print("[Om Vinayaka] Idle Mode: ACTIVE - I self-improve when you're away!")
     
     def _init_learning_engine(self):
         """Initialize the Self-Learning Engine."""
@@ -534,6 +561,42 @@ class OmVinayakaAI:
         except ImportError as e:
             print(f"[Om Vinayaka] Summary engine not available: {e}")
             self.summary_engine = None
+    
+    def _init_idle_mode_manager(self):
+        """Initialize the Idle Mode Manager for self-improvement during inactivity."""
+        if not self._enable_idle_mode:
+            return
+        
+        try:
+            from .idle_mode import get_idle_mode_manager
+            self.idle_mode_manager = get_idle_mode_manager(
+                idle_timeout_seconds=self._idle_timeout_seconds
+            )
+            
+            # Set callbacks for idle mode events
+            self.idle_mode_manager.set_callbacks(
+                on_idle_start=self._on_idle_start,
+                on_idle_end=self._on_idle_end,
+                on_optimization=self._on_optimization
+            )
+        except ImportError as e:
+            print(f"[Om Vinayaka] Idle mode not available: {e}")
+            self.idle_mode_manager = None
+    
+    def _on_idle_start(self):
+        """Called when idle mode starts."""
+        print("[Om Vinayaka] 🌙 Entering self-improvement mode (user idle)")
+    
+    def _on_idle_end(self):
+        """Called when idle mode ends."""
+        print("[Om Vinayaka] ☀️ Welcome back! Ready to assist you.")
+    
+    def _on_optimization(self, result: Dict):
+        """Called when an optimization is made during idle time."""
+        if result.get('type') == 'workflow':
+            suggestions = result.get('suggestions', [])
+            if suggestions:
+                print(f"[Om Vinayaka] 🔄 Found {len(suggestions)} workflow optimization opportunities")
     
     def _load_registrations(self):
         """Load registered app interfaces."""
@@ -559,12 +622,18 @@ class OmVinayakaAI:
         if self.learning_engine:
             self.learning_engine.start_session()
         
+        # Start idle mode monitoring for self-improvement
+        if self.idle_mode_manager:
+            self.idle_mode_manager.start()
+        
         print("[Om Vinayaka] Accessibility AI ACTIVATED")
         print("[Om Vinayaka] Voice control and Zork UX ready for all applications")
         if self.learning_engine:
             stats = self.learning_engine.get_statistics()
             print(f"[Om Vinayaka] Learned patterns: {stats['patterns_learned']}, "
                   f"Interactions: {stats['total_interactions']}")
+        if self.idle_mode_manager:
+            print("[Om Vinayaka] Idle mode self-improvement: ENABLED")
         return self._get_welcome_message()
     
     def deactivate(self):
@@ -574,6 +643,10 @@ class OmVinayakaAI:
         # End learning session
         if self.learning_engine:
             self.learning_engine.end_session()
+        
+        # Stop idle mode monitoring
+        if self.idle_mode_manager:
+            self.idle_mode_manager.stop()
         
         print("[Om Vinayaka] Accessibility AI deactivated")
     
@@ -586,13 +659,20 @@ class OmVinayakaAI:
             if stats['patterns_learned'] > 0:
                 learning_note = f"\n🧠 I've learned {stats['patterns_learned']} command patterns from our interactions!"
         
+        # Add idle mode note if available
+        idle_note = ""
+        if self.idle_mode_manager:
+            idle_status = self.idle_mode_manager.get_status()
+            if idle_status.get('optimizations_made', 0) > 0:
+                idle_note = f"\n🔄 I've made {idle_status['optimizations_made']} self-improvements during idle time!"
+        
         return f"""
 ╔═══════════════════════════════════════════════════════════════════╗
 ║                                                                   ║
 ║                     🙏 OM VINAYAKA 🙏                              ║
 ║                                                                   ║
 ║           VA21 Accessibility Intelligence System                  ║
-║                  with Self-Learning AI                            ║
+║             with Self-Learning & Self-Improvement                 ║
 ║                                                                   ║
 ╚═══════════════════════════════════════════════════════════════════╝
 
@@ -604,10 +684,11 @@ I can help you:
 • Get explanations of what things do (not just what they're called)
 • Execute complex tasks with simple commands
 • LEARN from our interactions to serve you better!
+• SELF-IMPROVE when you're away (idle time optimization)!
 
 Every application has been given a Zork-style adventure interface,
 making computing accessible and even fun!
-{learning_note}
+{learning_note}{idle_note}
 Hold the Super key to speak, or just type what you'd like to do.
 
 What would you like to accomplish today?
@@ -683,6 +764,9 @@ What would you like to accomplish today?
         Understands natural language, asks clarifying questions when needed,
         executes actions via the FARA layer, and LEARNS from interactions!
         
+        Also records user activity to reset idle timer and enable
+        self-improvement during user inactivity.
+        
         Returns:
             {
                 'response': str - What to say to the user
@@ -691,6 +775,10 @@ What would you like to accomplish today?
                 'clarification_question': Optional[str] - What to ask
             }
         """
+        # Record user activity (resets idle timer)
+        if self.idle_mode_manager:
+            self.idle_mode_manager.record_user_activity()
+        
         # Add to conversation history
         self.conversation_history.append({
             'role': 'user',
@@ -742,6 +830,13 @@ What would you like to accomplish today?
             result = self._handle_help(intent, current_app)
         else:
             result = self._ask_clarification(user_input, current_app)
+            # Record that clarification was needed (for error analysis)
+            if self.idle_mode_manager:
+                self.idle_mode_manager.record_error(
+                    'clarification_needed',
+                    f"Could not understand: {user_input[:50]}",
+                    {'input': user_input, 'app': current_app}
+                )
         
         # Learn from this interaction if we have an action
         if self.learning_engine and result.get('action'):
@@ -1137,6 +1232,7 @@ What would you like to accomplish?
             'cli_tools_supported': len(self.terminal_adapter.tool_interfaces),
             'learning_engine': self.learning_engine is not None,
             'summary_engine': self.summary_engine is not None,
+            'idle_mode_manager': self.idle_mode_manager is not None,
         }
         
         # Add learning stats if available
@@ -1152,7 +1248,32 @@ What would you like to accomplish?
             status['tokens_saved'] = summary_stats.get('tokens_saved', 0)
             status['hallucinations_prevented'] = summary_stats.get('hallucinations_prevented', 0)
         
+        # Add idle mode stats if available
+        if self.idle_mode_manager:
+            idle_stats = self.idle_mode_manager.get_status()
+            status['idle_mode'] = {
+                'is_idle': idle_stats.get('is_idle', False),
+                'total_idle_time_hours': idle_stats.get('total_idle_time_hours', 0),
+                'optimizations_made': idle_stats.get('optimizations_made', 0),
+                'errors_analyzed': idle_stats.get('errors_analyzed', 0),
+                'reflections_completed': idle_stats.get('reflections_completed', 0),
+            }
+        
         return status
+    
+    def get_improvement_summary(self) -> str:
+        """Get a summary of self-improvements made during idle time."""
+        if self.idle_mode_manager:
+            return self.idle_mode_manager.get_improvement_summary()
+        return "Idle mode is not enabled."
+    
+    def trigger_self_improvement(self):
+        """Manually trigger self-improvement activities."""
+        if self.idle_mode_manager:
+            print("[Om Vinayaka] Triggering self-improvement...")
+            self.idle_mode_manager.force_idle_activities()
+        else:
+            print("[Om Vinayaka] Idle mode is not enabled.")
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
