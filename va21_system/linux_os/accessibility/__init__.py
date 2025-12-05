@@ -128,6 +128,49 @@ from .persistent_memory import (
     get_persistent_memory,
 )
 
+from .fara_compatibility import (
+    AutomaticFARALayerCreator,
+    FARAKnowledgeBase,
+    FARAProfile,
+    FARAAction,
+    UIElementDetector,
+    ActionGenerator,
+    AppFramework,
+    AppCategory,
+    get_fara_creator,
+    FARA_VERSION,
+)
+
+from .performance_optimizer import (
+    PerformanceOptimizer,
+    ModelPreloader,
+    WarmUpEngine,
+    ResponseCache,
+    ModelPriority,
+    ModelState,
+    get_performance_optimizer,
+    OPTIMIZER_VERSION,
+)
+
+from .feature_discovery import (
+    FeatureDiscoveryEngine,
+    FeatureDatabase,
+    Feature,
+    UserProgress,
+    UserExperience,
+    FeatureCategory,
+    get_feature_discovery,
+    DISCOVERY_VERSION,
+)
+
+from .unified_app_knowledge import (
+    UnifiedAppCreator,
+    UnifiedAppKnowledgeBase,
+    UnifiedAppProfile,
+    get_unified_creator,
+    UNIFIED_KNOWLEDGE_VERSION,
+)
+
 __all__ = [
     # Main accessibility system
     'VA21AccessibilitySystem',
@@ -178,4 +221,43 @@ __all__ = [
     # Persistent Memory with Auto Dynamic Backups
     'PersistentMemoryManager',
     'get_persistent_memory',
+    
+    # Automatic FARA Layer Creator (Unique to VA21!)
+    'AutomaticFARALayerCreator',
+    'FARAKnowledgeBase',
+    'FARAProfile',
+    'FARAAction',
+    'UIElementDetector',
+    'ActionGenerator',
+    'AppFramework',
+    'AppCategory',
+    'get_fara_creator',
+    'FARA_VERSION',
+    
+    # Performance Optimizer
+    'PerformanceOptimizer',
+    'ModelPreloader',
+    'WarmUpEngine',
+    'ResponseCache',
+    'ModelPriority',
+    'ModelState',
+    'get_performance_optimizer',
+    'OPTIMIZER_VERSION',
+    
+    # Feature Discovery & User Adoption
+    'FeatureDiscoveryEngine',
+    'FeatureDatabase',
+    'Feature',
+    'UserProgress',
+    'UserExperience',
+    'FeatureCategory',
+    'get_feature_discovery',
+    'DISCOVERY_VERSION',
+    
+    # Unified FARA + Zork Knowledge System
+    'UnifiedAppCreator',
+    'UnifiedAppKnowledgeBase',
+    'UnifiedAppProfile',
+    'get_unified_creator',
+    'UNIFIED_KNOWLEDGE_VERSION',
 ]

@@ -62,11 +62,14 @@ cd va21/va21_system/linux_os
 │  🙏 OM VINAYAKA AI - CORE CONTROLLER (User-facing Ollama - Port 11434) │
 │  ├── CONTROLS ALL SUBSYSTEMS (except Guardian)                         │
 │  ├── Automatic Zork UX for every app when installed                    │
+│  ├── Automatic FARA profiles for voice control of ANY app              │
 │  ├── System-wide voice control for ALL applications                    │
 │  ├── CLI tool wrappers (Gemini, Copilot, Codex, etc.)                  │
 │  ├── LangChain + Obsidian mind maps knowledge base                     │
 │  ├── Self-learning system that improves over time                      │
 │  ├── Clarifying questions to understand user intent                    │
+│  ├── Performance optimizer with model preloading                       │
+│  ├── Feature discovery for new users                                   │
 │  └── FARA layer executes actions across entire OS                      │
 ├─────────────────────────────────────────────────────────────────────────┤
 │  🎤 Voice Intelligence Layer (Controlled by Om Vinayaka)               │

@@ -624,7 +624,10 @@ class OmVinayakaAI:
                  app_zork_manager = None,
                  enable_idle_mode: bool = True,
                  idle_timeout_seconds: int = 300,
-                 enable_auto_backup: bool = True):
+                 enable_auto_backup: bool = True,
+                 enable_performance_optimizer: bool = True,
+                 enable_feature_discovery: bool = True,
+                 enable_auto_fara: bool = True):
         self.knowledge_base_path = knowledge_base_path or DEFAULT_KNOWLEDGE_BASE_PATH
         os.makedirs(self.knowledge_base_path, exist_ok=True)
         
@@ -655,6 +658,29 @@ class OmVinayakaAI:
         self._idle_timeout_seconds = idle_timeout_seconds
         self._init_idle_mode_manager()
         
+        # Initialize Performance Optimizer (NEW!)
+        self.performance_optimizer = None
+        self._enable_performance_optimizer = enable_performance_optimizer
+        self._init_performance_optimizer()
+        
+        # Initialize Feature Discovery Engine (NEW!)
+        self.feature_discovery = None
+        self._enable_feature_discovery = enable_feature_discovery
+        self._init_feature_discovery()
+        
+        # Initialize Automatic FARA Layer Creator (NEW!)
+        self.fara_creator = None
+        self._enable_auto_fara = enable_auto_fara
+        self._init_fara_creator()
+        
+        # Initialize Unified FARA+Zork Knowledge System (NEW!)
+        self.unified_creator = None
+        self._init_unified_creator()
+        
+        # Initialize Security Framework (NEW!)
+        self.security_framework = None
+        self._init_security_framework()
+        
         # State
         self.is_active = False
         self.current_context: Dict = {}
@@ -676,6 +702,16 @@ class OmVinayakaAI:
             print("[Om Vinayaka] 📝 Summary Engine: ACTIVE - Context-aware, no hallucinations!")
         if self.idle_mode_manager:
             print("[Om Vinayaka] 🌙 Idle Mode: ACTIVE - I self-improve when you're away!")
+        if self.performance_optimizer:
+            print("[Om Vinayaka] ⚡ Performance Optimizer: ACTIVE - Fast model loading!")
+        if self.feature_discovery:
+            print("[Om Vinayaka] 🎯 Feature Discovery: ACTIVE - Helping users learn VA21!")
+        if self.fara_creator:
+            print("[Om Vinayaka] 🎮 Auto FARA Creator: ACTIVE - Every app gets voice control!")
+        if self.unified_creator:
+            print("[Om Vinayaka] 📚 Unified Knowledge: ACTIVE - FARA+Zork in Obsidian!")
+        if self.security_framework:
+            print("[Om Vinayaka] 🛡️ Security Framework: ACTIVE - Ephemeral memory & website verification!")
     
     def _init_persistent_memory(self):
         """
@@ -747,6 +783,137 @@ class OmVinayakaAI:
         except ImportError as e:
             print(f"[Om Vinayaka] Idle mode not available: {e}")
             self.idle_mode_manager = None
+    
+    def _init_performance_optimizer(self):
+        """Initialize the Performance Optimizer for faster model loading."""
+        if not self._enable_performance_optimizer:
+            return
+        
+        try:
+            from .performance_optimizer import get_performance_optimizer
+            self.performance_optimizer = get_performance_optimizer()
+            
+            # Set callback for performance events
+            self.performance_optimizer.set_om_vinayaka_callback(
+                self._on_performance_event
+            )
+        except ImportError as e:
+            print(f"[Om Vinayaka] Performance optimizer not available: {e}")
+            self.performance_optimizer = None
+    
+    def _init_feature_discovery(self):
+        """Initialize the Feature Discovery Engine for user adoption."""
+        if not self._enable_feature_discovery:
+            return
+        
+        try:
+            from .feature_discovery import get_feature_discovery
+            self.feature_discovery = get_feature_discovery()
+            
+            # Set callback for discovery events
+            self.feature_discovery.set_om_vinayaka_callback(
+                self._on_feature_discovered
+            )
+        except ImportError as e:
+            print(f"[Om Vinayaka] Feature discovery not available: {e}")
+            self.feature_discovery = None
+    
+    def _init_fara_creator(self):
+        """Initialize the Automatic FARA Layer Creator."""
+        if not self._enable_auto_fara:
+            return
+        
+        try:
+            from .fara_compatibility import get_fara_creator
+            self.fara_creator = get_fara_creator()
+            
+            # Set callback for FARA events
+            self.fara_creator.set_om_vinayaka_callback(
+                self._on_fara_profile_created
+            )
+            
+            # Start monitoring for new app installations
+            self.fara_creator.start_monitoring()
+        except ImportError as e:
+            print(f"[Om Vinayaka] FARA creator not available: {e}")
+            self.fara_creator = None
+    
+    def _init_unified_creator(self):
+        """Initialize the Unified FARA+Zork Knowledge System."""
+        try:
+            from .unified_app_knowledge import get_unified_creator
+            self.unified_creator = get_unified_creator()
+            
+            # Set Om Vinayaka callback
+            self.unified_creator.set_om_vinayaka_callback(
+                self._on_unified_profile_created
+            )
+            
+            # Connect to FARA creator if available
+            if self.fara_creator:
+                self.unified_creator.set_fara_creator(self.fara_creator)
+            
+            # Connect to Zork manager if available
+            if self.app_zork_manager:
+                self.unified_creator.set_zork_manager(self.app_zork_manager)
+                
+        except ImportError as e:
+            print(f"[Om Vinayaka] Unified creator not available: {e}")
+            self.unified_creator = None
+    
+    def _init_security_framework(self):
+        """Initialize the Sensitive Data Protection Framework."""
+        try:
+            from ..security.sensitive_data_protection import get_security_framework
+            self.security_framework = get_security_framework()
+            
+            # Set Om Vinayaka callback
+            self.security_framework.set_om_vinayaka_callback(
+                self._on_security_event
+            )
+        except ImportError as e:
+            print(f"[Om Vinayaka] Security framework not available: {e}")
+            self.security_framework = None
+    
+    def _on_unified_profile_created(self, event: Dict):
+        """Handle unified profile creation events."""
+        app_name = event.get('app_name')
+        if app_name:
+            voice_cmds = event.get('voice_commands', 0)
+            menus = event.get('menus', 0)
+            print(f"[Om Vinayaka] 📚 Unified profile: {app_name} ({voice_cmds} commands, {menus} menus)")
+    
+    def _on_security_event(self, event: Dict):
+        """Handle security framework events."""
+        event_type = event.get('event')
+        if event_type == 'sensitive_data_detected':
+            data_types = event.get('data_types', [])
+            print(f"[Om Vinayaka] 🛡️ Sensitive data detected: {data_types}")
+    
+    def _on_performance_event(self, event: Dict):
+        """Handle performance optimizer events."""
+        event_type = event.get('event')
+        if event_type == 'performance_initialized':
+            boot_time = event.get('boot_time', 0)
+            print(f"[Om Vinayaka] ⚡ Performance: Boot optimized ({boot_time:.2f}s)")
+        elif event_type == 'model_state_change':
+            model_id = event.get('model_id')
+            state = event.get('state')
+            if state == 'ready':
+                print(f"[Om Vinayaka] ⚡ Model {model_id} is warmed up and ready!")
+    
+    def _on_feature_discovered(self, event: Dict):
+        """Handle feature discovery events."""
+        feature_id = event.get('feature_id')
+        if feature_id:
+            print(f"[Om Vinayaka] 🎯 User discovered feature: {feature_id}")
+    
+    def _on_fara_profile_created(self, event: Dict):
+        """Handle FARA profile creation events."""
+        app_name = event.get('app_name')
+        actions_count = event.get('actions_count', 0)
+        if app_name:
+            print(f"[Om Vinayaka] 🎮 FARA profile created for {app_name} ({actions_count} actions)")
     
     def _on_idle_start(self):
         """Called when idle mode starts."""
@@ -931,12 +1098,14 @@ What would you like to accomplish today?
         return 'other'
     
     def process_user_input(self, user_input: str, 
-                           current_app: str = None) -> Dict[str, Any]:
+                           current_app: str = None,
+                           website: str = None) -> Dict[str, Any]:
         """
-        Process user input with context awareness and self-learning.
+        Process user input with context awareness, self-learning, and SECURITY.
         
         Understands natural language, asks clarifying questions when needed,
-        executes actions via the FARA layer, and LEARNS from interactions!
+        executes actions via the FARA layer, LEARNS from interactions,
+        and PROTECTS sensitive data!
         
         Also records user activity to reset idle timer and enable
         self-improvement during user inactivity.
@@ -947,8 +1116,48 @@ What would you like to accomplish today?
                 'action': Optional[str] - Action to execute
                 'needs_clarification': bool - Whether we need more info
                 'clarification_question': Optional[str] - What to ask
+                'security_warnings': List[str] - Any security warnings
             }
         """
+        # SECURITY CHECK: Process input through security framework
+        security_result = None
+        if self.security_framework:
+            security_result = self.security_framework.process_input(user_input, website)
+            
+            # If dangerous website detected, warn immediately
+            if security_result.get('warnings'):
+                # Sanitize warnings to prevent injection
+                safe_warnings = [
+                    w.replace('<', '&lt;').replace('>', '&gt;').replace('\n', ' ')
+                    for w in security_result['warnings']
+                ]
+                return {
+                    'response': "⚠️ SECURITY ALERT!\n\n" + "\n".join(safe_warnings),
+                    'action': None,
+                    'needs_clarification': True,
+                    'clarification_question': "Do you want to proceed despite this warning? (yes/no)",
+                    'security_warnings': safe_warnings
+                }
+            
+            # If sensitive data detected, ask for confirmation
+            if security_result.get('has_sensitive_data'):
+                # Sanitize data types
+                data_types = [dt.replace('<', '').replace('>', '') 
+                             for dt in security_result.get('data_types', [])]
+                return {
+                    'response': f"🔐 I detected sensitive data ({', '.join(data_types)}) in your input.\n\n"
+                               f"This data will be:\n"
+                               f"• Encrypted until you authenticate\n"
+                               f"• Auto-deleted in 25 seconds\n"
+                               f"• Never stored permanently\n\n"
+                               f"Do you want to proceed?",
+                    'action': None,
+                    'needs_clarification': True,
+                    'clarification_question': "Confirm to proceed with sensitive data (yes/no)",
+                    'security_warnings': [],
+                    'safe_text': security_result.get('safe_text')
+                }
+        
         # Record user activity (resets idle timer and triggers dynamic backup check)
         if self.idle_mode_manager:
             self.idle_mode_manager.record_user_activity()
@@ -1419,6 +1628,75 @@ Just tell me what you'd like to do, or ask for help.
 What would you like to accomplish?
 """
     
+    def verify_website(self, url: str) -> Dict:
+        """
+        Verify a website's authenticity before entering sensitive data.
+        
+        Performs:
+        - Homoglyph detection (fake Unicode characters)
+        - WHOIS lookup
+        - New registration warning
+        
+        Returns verification result with warnings.
+        """
+        if not self.security_framework:
+            return {'verified': False, 'error': 'Security framework not available'}
+        
+        verification = self.security_framework.verify_website(url)
+        
+        return {
+            'verified': True,
+            'url': verification.url,
+            'domain': verification.domain,
+            'risk_level': verification.risk_level.value,
+            'has_homoglyphs': verification.has_homoglyphs,
+            'homoglyph_chars': verification.homoglyph_chars,
+            'is_new_registration': verification.is_new_registration,
+            'warnings': verification.warnings,
+            'safe': verification.risk_level.value in ['trusted', 'normal']
+        }
+    
+    def get_clarifying_question(self, context: str, app_name: str = None) -> str:
+        """
+        Get a clarifying question to better understand user intent.
+        
+        Om Vinayaka AI asks questions to be more helpful.
+        """
+        # Get app-specific questions if available
+        if app_name and self.unified_creator:
+            profile = self.unified_creator.get_profile(app_name)
+            if profile and profile.clarifying_questions:
+                return profile.clarifying_questions[0]
+        
+        # Feature discovery questions
+        if self.feature_discovery:
+            hint = self.feature_discovery.get_contextual_hint({
+                'current_app': app_name or '',
+                'action': context
+            })
+            if hint:
+                return hint.get('message', '')
+        
+        # Default clarifying questions based on context
+        context_lower = context.lower()
+        
+        if 'file' in context_lower or 'document' in context_lower:
+            return "Would you like to open an existing file or create a new one?"
+        elif 'search' in context_lower:
+            return "What would you like to search for?"
+        elif 'help' in context_lower:
+            return "What specific task do you need help with?"
+        elif 'setting' in context_lower or 'config' in context_lower:
+            return "Which setting would you like to change?"
+        
+        return "Could you tell me more about what you'd like to do?"
+    
+    def get_security_status(self) -> str:
+        """Get the current security status report."""
+        if self.security_framework:
+            return self.security_framework.get_security_report()
+        return "Security framework not initialized."
+    
     def get_status(self) -> Dict:
         """Get the status of the Om Vinayaka AI."""
         status = {
@@ -1432,6 +1710,8 @@ What would you like to accomplish?
             'summary_engine': self.summary_engine is not None,
             'idle_mode_manager': self.idle_mode_manager is not None,
             'persistent_memory': self.persistent_memory is not None,
+            'unified_creator': self.unified_creator is not None,
+            'security_framework': self.security_framework is not None,
         }
         
         # Add persistent memory stats if available
@@ -1467,6 +1747,51 @@ What would you like to accomplish?
                 'optimizations_made': idle_stats.get('optimizations_made', 0),
                 'errors_analyzed': idle_stats.get('errors_analyzed', 0),
                 'reflections_completed': idle_stats.get('reflections_completed', 0),
+            }
+        
+        # Add performance optimizer stats if available
+        if self.performance_optimizer:
+            perf_stats = self.performance_optimizer.get_status()
+            status['performance'] = {
+                'initialized': perf_stats.get('initialized', False),
+                'cache_stats': perf_stats.get('cache_stats', {}),
+                'models': perf_stats.get('models', {}),
+            }
+        
+        # Add feature discovery stats if available
+        if self.feature_discovery:
+            discovery_stats = self.feature_discovery.get_status()
+            status['feature_discovery'] = {
+                'discovered': discovery_stats.get('discovered', 0),
+                'mastered': discovery_stats.get('mastered', 0),
+                'total_features': discovery_stats.get('total_features', 0),
+            }
+        
+        # Add FARA creator stats if available
+        if self.fara_creator:
+            fara_stats = self.fara_creator.get_status()
+            status['fara_creator'] = {
+                'known_apps': fara_stats.get('known_apps', 0),
+                'profiles_count': fara_stats.get('profiles_count', 0),
+                'wine_profiles': fara_stats.get('wine_profiles', 0),
+                'legacy_profiles': fara_stats.get('legacy_profiles', 0),
+                'monitoring': fara_stats.get('monitoring', False),
+            }
+        
+        # Add unified knowledge stats if available
+        if self.unified_creator:
+            unified_stats = self.unified_creator.get_status()
+            status['unified_knowledge'] = {
+                'profiles_count': unified_stats.get('profiles_count', 0),
+                'knowledge_base_path': unified_stats.get('knowledge_base_path', ''),
+            }
+        
+        # Add security stats if available
+        if self.security_framework:
+            security_stats = self.security_framework.get_status()
+            status['security'] = {
+                'ephemeral_memory': security_stats.get('ephemeral_memory', {}),
+                'statistics': security_stats.get('statistics', {}),
             }
         
         return status
