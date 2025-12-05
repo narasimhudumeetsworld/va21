@@ -20,19 +20,27 @@ VA21 OS is a **full Linux operating system** designed for researchers, writers, 
 
 ### Installation
 
-Download the ISO from the [Releases page](../../releases) and install like any Linux distribution:
+> **📢 Release Status**: VA21 OS is in active development. The OV21-omni prerelease contains the core AI components. Full ISO builds are coming soon - for now, build from source or use the Python modules directly.
 
-| Edition | Description | Size |
-|---------|-------------|------|
-| **VA21 OS Debian** | Full GNU toolkit, maximum compatibility | ~5 GB |
-| **VA21 OS Alpine** | Lightweight, fast boot | ~2 GB |
+Download from the [Releases page](../../releases):
 
+| Edition | Description | Status |
+|---------|-------------|--------|
+| **OV21-omni** | Core AI components prerelease | ✅ Available |
+| **VA21 OS Debian** | Full GNU toolkit ISO | 🚧 Coming Soon |
+| **VA21 OS Alpine** | Lightweight ISO | 🚧 Coming Soon |
+
+**Build from Source** (Recommended for now):
 ```bash
-# Write ISO to USB drive
-sudo dd if=va21-os.iso of=/dev/sdX bs=4M status=progress
+git clone https://github.com/narasimhudumeetsworld/va21.git
+cd va21/va21_system/linux_os
+./scripts/build_iso.sh debian
+# ISO will be in output/ directory
+```
 
-# Or use in VirtualBox/VMware
-# Create VM → Use ISO as boot disk → Install
+**Or Install Components Directly**:
+```bash
+pip install -e va21/va21_system/linux_os/
 ```
 
 ### Quick Start (From Source)
@@ -62,11 +70,14 @@ cd va21/va21_system/linux_os
 │  🙏 OM VINAYAKA AI - CORE CONTROLLER (User-facing Ollama - Port 11434) │
 │  ├── CONTROLS ALL SUBSYSTEMS (except Guardian)                         │
 │  ├── Automatic Zork UX for every app when installed                    │
+│  ├── Automatic FARA profiles for voice control of ANY app              │
 │  ├── System-wide voice control for ALL applications                    │
 │  ├── CLI tool wrappers (Gemini, Copilot, Codex, etc.)                  │
 │  ├── LangChain + Obsidian mind maps knowledge base                     │
 │  ├── Self-learning system that improves over time                      │
 │  ├── Clarifying questions to understand user intent                    │
+│  ├── Performance optimizer with model preloading                       │
+│  ├── Feature discovery for new users                                   │
 │  └── FARA layer executes actions across entire OS                      │
 ├─────────────────────────────────────────────────────────────────────────┤
 │  🎤 Voice Intelligence Layer (Controlled by Om Vinayaka)               │

@@ -624,7 +624,10 @@ class OmVinayakaAI:
                  app_zork_manager = None,
                  enable_idle_mode: bool = True,
                  idle_timeout_seconds: int = 300,
-                 enable_auto_backup: bool = True):
+                 enable_auto_backup: bool = True,
+                 enable_performance_optimizer: bool = True,
+                 enable_feature_discovery: bool = True,
+                 enable_auto_fara: bool = True):
         self.knowledge_base_path = knowledge_base_path or DEFAULT_KNOWLEDGE_BASE_PATH
         os.makedirs(self.knowledge_base_path, exist_ok=True)
         
@@ -655,6 +658,21 @@ class OmVinayakaAI:
         self._idle_timeout_seconds = idle_timeout_seconds
         self._init_idle_mode_manager()
         
+        # Initialize Performance Optimizer (NEW!)
+        self.performance_optimizer = None
+        self._enable_performance_optimizer = enable_performance_optimizer
+        self._init_performance_optimizer()
+        
+        # Initialize Feature Discovery Engine (NEW!)
+        self.feature_discovery = None
+        self._enable_feature_discovery = enable_feature_discovery
+        self._init_feature_discovery()
+        
+        # Initialize Automatic FARA Layer Creator (NEW!)
+        self.fara_creator = None
+        self._enable_auto_fara = enable_auto_fara
+        self._init_fara_creator()
+        
         # State
         self.is_active = False
         self.current_context: Dict = {}
@@ -676,6 +694,12 @@ class OmVinayakaAI:
             print("[Om Vinayaka] 📝 Summary Engine: ACTIVE - Context-aware, no hallucinations!")
         if self.idle_mode_manager:
             print("[Om Vinayaka] 🌙 Idle Mode: ACTIVE - I self-improve when you're away!")
+        if self.performance_optimizer:
+            print("[Om Vinayaka] ⚡ Performance Optimizer: ACTIVE - Fast model loading!")
+        if self.feature_discovery:
+            print("[Om Vinayaka] 🎯 Feature Discovery: ACTIVE - Helping users learn VA21!")
+        if self.fara_creator:
+            print("[Om Vinayaka] 🎮 Auto FARA Creator: ACTIVE - Every app gets voice control!")
     
     def _init_persistent_memory(self):
         """
@@ -747,6 +771,85 @@ class OmVinayakaAI:
         except ImportError as e:
             print(f"[Om Vinayaka] Idle mode not available: {e}")
             self.idle_mode_manager = None
+    
+    def _init_performance_optimizer(self):
+        """Initialize the Performance Optimizer for faster model loading."""
+        if not self._enable_performance_optimizer:
+            return
+        
+        try:
+            from .performance_optimizer import get_performance_optimizer
+            self.performance_optimizer = get_performance_optimizer()
+            
+            # Set callback for performance events
+            self.performance_optimizer.set_om_vinayaka_callback(
+                self._on_performance_event
+            )
+        except ImportError as e:
+            print(f"[Om Vinayaka] Performance optimizer not available: {e}")
+            self.performance_optimizer = None
+    
+    def _init_feature_discovery(self):
+        """Initialize the Feature Discovery Engine for user adoption."""
+        if not self._enable_feature_discovery:
+            return
+        
+        try:
+            from .feature_discovery import get_feature_discovery
+            self.feature_discovery = get_feature_discovery()
+            
+            # Set callback for discovery events
+            self.feature_discovery.set_om_vinayaka_callback(
+                self._on_feature_discovered
+            )
+        except ImportError as e:
+            print(f"[Om Vinayaka] Feature discovery not available: {e}")
+            self.feature_discovery = None
+    
+    def _init_fara_creator(self):
+        """Initialize the Automatic FARA Layer Creator."""
+        if not self._enable_auto_fara:
+            return
+        
+        try:
+            from .fara_compatibility import get_fara_creator
+            self.fara_creator = get_fara_creator()
+            
+            # Set callback for FARA events
+            self.fara_creator.set_om_vinayaka_callback(
+                self._on_fara_profile_created
+            )
+            
+            # Start monitoring for new app installations
+            self.fara_creator.start_monitoring()
+        except ImportError as e:
+            print(f"[Om Vinayaka] FARA creator not available: {e}")
+            self.fara_creator = None
+    
+    def _on_performance_event(self, event: Dict):
+        """Handle performance optimizer events."""
+        event_type = event.get('event')
+        if event_type == 'performance_initialized':
+            boot_time = event.get('boot_time', 0)
+            print(f"[Om Vinayaka] ⚡ Performance: Boot optimized ({boot_time:.2f}s)")
+        elif event_type == 'model_state_change':
+            model_id = event.get('model_id')
+            state = event.get('state')
+            if state == 'ready':
+                print(f"[Om Vinayaka] ⚡ Model {model_id} is warmed up and ready!")
+    
+    def _on_feature_discovered(self, event: Dict):
+        """Handle feature discovery events."""
+        feature_id = event.get('feature_id')
+        if feature_id:
+            print(f"[Om Vinayaka] 🎯 User discovered feature: {feature_id}")
+    
+    def _on_fara_profile_created(self, event: Dict):
+        """Handle FARA profile creation events."""
+        app_name = event.get('app_name')
+        actions_count = event.get('actions_count', 0)
+        if app_name:
+            print(f"[Om Vinayaka] 🎮 FARA profile created for {app_name} ({actions_count} actions)")
     
     def _on_idle_start(self):
         """Called when idle mode starts."""
@@ -1467,6 +1570,35 @@ What would you like to accomplish?
                 'optimizations_made': idle_stats.get('optimizations_made', 0),
                 'errors_analyzed': idle_stats.get('errors_analyzed', 0),
                 'reflections_completed': idle_stats.get('reflections_completed', 0),
+            }
+        
+        # Add performance optimizer stats if available
+        if self.performance_optimizer:
+            perf_stats = self.performance_optimizer.get_status()
+            status['performance'] = {
+                'initialized': perf_stats.get('initialized', False),
+                'cache_stats': perf_stats.get('cache_stats', {}),
+                'models': perf_stats.get('models', {}),
+            }
+        
+        # Add feature discovery stats if available
+        if self.feature_discovery:
+            discovery_stats = self.feature_discovery.get_status()
+            status['feature_discovery'] = {
+                'discovered': discovery_stats.get('discovered', 0),
+                'mastered': discovery_stats.get('mastered', 0),
+                'total_features': discovery_stats.get('total_features', 0),
+            }
+        
+        # Add FARA creator stats if available
+        if self.fara_creator:
+            fara_stats = self.fara_creator.get_status()
+            status['fara_creator'] = {
+                'known_apps': fara_stats.get('known_apps', 0),
+                'profiles_count': fara_stats.get('profiles_count', 0),
+                'wine_profiles': fara_stats.get('wine_profiles', 0),
+                'legacy_profiles': fara_stats.get('legacy_profiles', 0),
+                'monitoring': fara_stats.get('monitoring', False),
             }
         
         return status
