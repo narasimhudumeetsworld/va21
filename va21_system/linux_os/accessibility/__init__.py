@@ -163,6 +163,14 @@ from .feature_discovery import (
     DISCOVERY_VERSION,
 )
 
+from .unified_app_knowledge import (
+    UnifiedAppCreator,
+    UnifiedAppKnowledgeBase,
+    UnifiedAppProfile,
+    get_unified_creator,
+    UNIFIED_KNOWLEDGE_VERSION,
+)
+
 __all__ = [
     # Main accessibility system
     'VA21AccessibilitySystem',
@@ -245,4 +253,11 @@ __all__ = [
     'FeatureCategory',
     'get_feature_discovery',
     'DISCOVERY_VERSION',
+    
+    # Unified FARA + Zork Knowledge System
+    'UnifiedAppCreator',
+    'UnifiedAppKnowledgeBase',
+    'UnifiedAppProfile',
+    'get_unified_creator',
+    'UNIFIED_KNOWLEDGE_VERSION',
 ]
