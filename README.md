@@ -6,13 +6,14 @@
 
 VA21 OS is a **full Linux operating system** designed for researchers, writers, journalists, and security professionals. It's a real OS that you install on your computer - not an app, not a container.
 
-**🙏 Om Vinayaka AI at the CORE** - Controls everything except Guardian AI (sandboxed security)
+**🙏 Om Vinayaka AI at the CORE** - Powers voice-first AND natural language typing because it's LLM-powered!
 
 ### What is VA21 OS?
 
 - **Full Linux OS** based on Debian GNU/Linux
-- **Om Vinayaka AI** at the core - intelligent accessibility controlling all subsystems
+- **Om Vinayaka AI** at the core - LLM-powered natural language understanding (voice AND typing)
 - **Zork-style text adventure interface** for EVERY application
+- **Voice-First + Natural Language Typing** - Works with both! Powered by LLM
 - **Local AI via Ollama** - Privacy-first, your data never leaves your device
 - **1,600+ language support** via Meta Omnilingual ASR
 - **Guardian AI security** powered by IBM Granite 4.0 (sandboxed at kernel level)
@@ -60,7 +61,9 @@ cd va21/va21_system/linux_os
 │  └── Independent threat analysis and blocking                          │
 ├─────────────────────────────────────────────────────────────────────────┤
 │  🙏 OM VINAYAKA AI - CORE CONTROLLER (User-facing Ollama - Port 11434) │
+│  ├── ⭐ LLM-POWERED: Voice AND typing both work! ⭐                     │
 │  ├── CONTROLS ALL SUBSYSTEMS (except Guardian)                         │
+│  ├── Natural language understanding for EVERY input                    │
 │  ├── Automatic Zork UX for every app when installed                    │
 │  ├── Automatic FARA profiles for voice control of ANY app              │
 │  ├── System-wide voice control for ALL applications                    │
@@ -90,6 +93,7 @@ cd va21/va21_system/linux_os
 │  🎮 Zork-Style Interface (Custom Created!)                             │
 │  ├── Text adventure UI for EVERY application                           │
 │  ├── Automatic interface generation on app install                     │
+│  ├── Works with voice AND typing (LLM-powered)                         │
 │  ├── Native tiling window manager                                      │
 │  ├── Obsidian-style Knowledge Vault                                    │
 │  └── Research Command Center                                           │
@@ -121,7 +125,7 @@ cd va21/va21_system/linux_os
 
 ### 🎮 Zork-Style Interface
 
-VA21 OS features a unique text adventure interface inspired by classic Zork:
+VA21 OS features a unique text adventure interface inspired by classic Zork. **Om Vinayaka AI powers this interface**, understanding both voice commands AND natural language typing because it's LLM-powered:
 
 ```
 ========================================
@@ -143,9 +147,15 @@ Exits: NORTH (Research Lab), EAST (Knowledge Vault)
 You enter the RESEARCH LAB...
 ```
 
+**Why Zork-Style?**
+- **Accessible by design**: Natural language commands that ANYONE can understand
+- **Voice-first AND typing**: Om Vinayaka AI understands both equally
+- **LLM-powered understanding**: Not just keywords - real intent understanding
+- **Universal**: Every app gets a Zork interface when installed
+
 ### 🎤 Voice Intelligence Layer (Meta Omnilingual ASR)
 
-Complete multilingual voice processing with **1,600+ language support** including **100+ Indian dialects**:
+Complete multilingual voice processing with **1,600+ language support** including **100+ Indian dialects**. **Om Vinayaka AI processes all input** - whether spoken or typed!
 
 | Component | Technology | License | Purpose |
 |-----------|------------|---------|---------|
@@ -158,9 +168,15 @@ Complete multilingual voice processing with **1,600+ language support** includin
 
 **Indian Language Support:** Hindi, Tamil, Telugu, Kannada, Bengali, Marathi, Gujarati, Malayalam, Punjabi, Odia, Assamese, and **100+ more dialects!**
 
+**Voice OR Typing - Both Work!**
+Om Vinayaka AI is LLM-powered, so it understands natural language whether you:
+- **Speak**: Hold Super key and say "I want to search the internet"
+- **Type**: Just type "I want to search the internet"
+- **Mix**: Use voice for commands, typing for details
+
 ### ♿ Intelligent Accessibility with Om Vinayaka AI (Unique to VA21!)
 
-VA21's accessibility goes **far beyond traditional screen readers**. Powered by the **Om Vinayaka Accessibility Knowledge Base AI**:
+VA21's accessibility goes **far beyond traditional screen readers**. Powered by the **Om Vinayaka Accessibility Knowledge Base AI**, it works with **voice-first AND natural language typing** because it's LLM-powered:
 
 | Traditional Screen Readers | VA21 + Om Vinayaka AI |
 |---------------------------|-------------------------------|
@@ -170,23 +186,26 @@ VA21's accessibility goes **far beyond traditional screen readers**. Powered by 
 | User must know commands | Natural conversation in any language |
 | Single app support | **Zork-style UX for EVERY app** |
 | Limited CLI support | **Wraps CLI tools like Gemini, Copilot, Codex** |
+| Voice OR keyboard only | **Voice AND typing work equally (LLM-powered)** |
 
 **Om Vinayaka AI Features:**
+- **LLM-Powered Understanding**: Voice AND typing both work - it's about understanding INTENT, not keywords
 - **Automatic Zork UX Generation**: Every app gets a text adventure interface when installed
 - **System-Wide Voice Control**: Control ANY application with voice, not just specific apps
 - **CLI Tool Wrapper**: Gemini CLI, GitHub Copilot CLI, Codex, and more - all accessible via Zork interfaces
 - **Knowledge Base**: LangChain + Obsidian mind maps store all app interfaces
 - **Clarifying Questions**: AI asks for details when your intent is unclear
 - **Context-Aware Execution**: Understands what app is active and what you want
+- **Self-Learning**: Gets smarter with every interaction
 
 **How it works:**
-- **Hold Super Key**: Activates voice detection
-- **Speak naturally**: "I want to search the internet" or "Save my document"
+- **Hold Super Key**: Activates voice detection (OR just type!)
+- **Speak or Type naturally**: "I want to search the internet" or "Save my document"
 - **Om Vinayaka AI understands**: Asks clarifying questions if needed
 - **FARA Layer executes**: Performs action in any application
 - **1,600+ languages**: Hindi, Tamil, Telugu, Spanish, French, and more
 
-**Example conversation:**
+**Example conversation (works the same via voice OR typing):**
 ```
 User: "I want to find something on the internet"
 VA21: "I can help you search. What would you like to look up?"
@@ -332,9 +351,11 @@ export GROQ_API_KEY="your-key"        # Groq (fast)
 │  ├── Think → Vet → Act methodology                                     │
 │  └── Independent threat analysis and blocking                          │
 ├─────────────────────────────────────────────────────────────────────────┤
-│  🙏 OM VINAYAKA ACCESSIBILITY AI (User-facing Ollama - Port 11434)     │
+│  🙏 OM VINAYAKA AI (Core Controller - Port 11434) [LLM-Powered]        │
+│  ├── ⭐ VOICE AND TYPING BOTH WORK - LLM understands intent! ⭐        │
 │  ├── Automatic Zork UX for every app when installed                    │
 │  ├── System-wide voice control for ALL applications                    │
+│  ├── Natural language typing for ALL applications                      │
 │  ├── CLI tool wrappers (Gemini, Copilot, Codex, etc.)                  │
 │  ├── LangChain + Obsidian mind maps knowledge base                     │
 │  ├── Self-learning system that improves over time                      │
@@ -358,6 +379,7 @@ export GROQ_API_KEY="your-key"        # Groq (fast)
 │  🎮 Zork-Style Interface (Custom Created!)                             │
 │  ├── Text adventure UI for EVERY application                           │
 │  ├── Automatic interface generation on app install                     │
+│  ├── Works with voice AND typing (LLM-powered)                         │
 │  ├── Native tiling window manager                                      │
 │  ├── Obsidian-style Knowledge Vault                                    │
 │  └── Research Command Center                                           │
@@ -366,7 +388,7 @@ export GROQ_API_KEY="your-key"        # Groq (fast)
 │  ├── Gemini CLI, Codex, GitHub Copilot CLI support                     │
 │  ├── Natural language to CLI command translation                       │
 │  ├── Zork narrative wrapping for all output                            │
-│  └── Voice control for terminal applications                           │
+│  └── Voice AND typing control for terminal applications                │
 ├─────────────────────────────────────────────────────────────────────────┤
 │  🧠 Self-Learning System                                               │
 │  ├── Learns common command patterns                                    │
@@ -400,7 +422,8 @@ export GROQ_API_KEY="your-key"        # Groq (fast)
 │                                                                         │
 │  ════════════════════ ISOLATION BARRIER ════════════════════            │
 │                                                                         │
-│  🙏 OM VINAYAKA AI (Core Controller - Port 11434)                       │
+│  🙏 OM VINAYAKA AI (Core Controller - Port 11434) [LLM-Powered]        │
+│  ├── ⭐ Voice AND typing both work - LLM understands intent! ⭐        │
 │  ├── Controls ALL user-facing subsystems                                │
 │  ├── Intelligent accessibility for 1,600+ languages                     │
 │  ├── Self-learning system                                               │
@@ -414,7 +437,7 @@ export GROQ_API_KEY="your-key"        # Groq (fast)
 ```
 
 - **Guardian AI (Security Core)**: Sandboxed at kernel level - ISOLATED from Om Vinayaka
-- **Om Vinayaka AI (Core Controller)**: Controls all user-facing systems with intelligent accessibility
+- **Om Vinayaka AI (Core Controller)**: Controls all user-facing systems with intelligent accessibility (voice AND typing via LLM)
 - **Multi-Agent System**: Task automation controlled BY Om Vinayaka AI
 - **Air Gap Protection**: Complete isolation between Guardian and user-facing AI
 - **Principle of Least Privilege**: No direct website interactions or form submissions
@@ -578,7 +601,7 @@ VA21 OS is built with privacy-first, local-first technologies:
 | **Shell** | Zork-Style Interface | Apache 2.0 |
 | **Package Manager** | Flatpak + APT | Various |
 
-### 🙏 Om Vinayaka AI Stack (Central Intelligence)
+### 🙏 Om Vinayaka AI Stack (Central Intelligence - LLM-Powered)
 | Component | Technology | License | Purpose |
 |-----------|------------|---------|---------|
 | **Local LLM** | [Ollama](https://ollama.com) | MIT | Privacy-first local AI |
@@ -586,6 +609,7 @@ VA21 OS is built with privacy-first, local-first technologies:
 | **Orchestration** | [LangChain](https://github.com/langchain-ai/langchain) | MIT | AI workflow management |
 | **Knowledge Base** | Obsidian-style Vault | - | Mind maps + Wiki links |
 | **FARA Layer** | Microsoft FARA Integration | MIT | Universal app control |
+| **Input** | Voice AND Typing | - | LLM understands both! |
 
 ### 🎤 Voice Intelligence Layer
 | Component | Technology | License | Purpose |
