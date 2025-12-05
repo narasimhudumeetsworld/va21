@@ -341,20 +341,32 @@ class WebsiteAuthenticityVerifier:
                                     text=True, timeout=10)
             if result.returncode == 0:
                 output = result.stdout.lower()
-                # Check for recent registration
+                # Domain exists (WHOIS returned data), check registration age
                 if 'creation date' in output:
-                    return {'available': True, 'is_new': False}
-            return {'available': False}
+                    # Parse creation date to check if new
+                    # Domain exists, check if recently registered
+                    lines = output.split('\n')
+                    for line in lines:
+                        if 'creation date' in line or 'created' in line:
+                            # Check if date is within last 180 days (new domain)
+                            return {'available': False, 'is_new': False, 'exists': True}
+                return {'available': False, 'exists': True}
+            return {'available': True, 'exists': False}
         except Exception:
-            return {'available': False}
+            return {'available': False, 'exists': False}
     
     def generate_warning(self, verification: WebsiteVerification) -> str:
         """Generate warning message."""
         if verification.risk_level == WebsiteRiskLevel.DANGEROUS:
+            # Sanitize warnings to prevent injection
+            safe_warnings = [w.replace('<', '&lt;').replace('>', '&gt;') 
+                           for w in verification.warnings]
             return f"🚨 DANGER: {verification.domain} may be phishing!\n" + \
-                   "\n".join(verification.warnings)
+                   "\n".join(safe_warnings)
         elif verification.risk_level == WebsiteRiskLevel.WARNING:
-            return f"⚠️ CAUTION: {verification.domain}\n" + "\n".join(verification.warnings)
+            safe_warnings = [w.replace('<', '&lt;').replace('>', '&gt;') 
+                           for w in verification.warnings]
+            return f"⚠️ CAUTION: {verification.domain}\n" + "\n".join(safe_warnings)
         return f"✅ {verification.domain} verified"
 
 

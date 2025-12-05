@@ -1126,17 +1126,24 @@ What would you like to accomplish today?
             
             # If dangerous website detected, warn immediately
             if security_result.get('warnings'):
+                # Sanitize warnings to prevent injection
+                safe_warnings = [
+                    w.replace('<', '&lt;').replace('>', '&gt;').replace('\n', ' ')
+                    for w in security_result['warnings']
+                ]
                 return {
-                    'response': "⚠️ SECURITY ALERT!\n\n" + "\n".join(security_result['warnings']),
+                    'response': "⚠️ SECURITY ALERT!\n\n" + "\n".join(safe_warnings),
                     'action': None,
                     'needs_clarification': True,
                     'clarification_question': "Do you want to proceed despite this warning? (yes/no)",
-                    'security_warnings': security_result['warnings']
+                    'security_warnings': safe_warnings
                 }
             
             # If sensitive data detected, ask for confirmation
             if security_result.get('has_sensitive_data'):
-                data_types = security_result.get('data_types', [])
+                # Sanitize data types
+                data_types = [dt.replace('<', '').replace('>', '') 
+                             for dt in security_result.get('data_types', [])]
                 return {
                     'response': f"🔐 I detected sensitive data ({', '.join(data_types)}) in your input.\n\n"
                                f"This data will be:\n"

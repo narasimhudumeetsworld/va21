@@ -108,7 +108,7 @@ class UserProgress:
     mastered_features: List[str] = field(default_factory=list)
     current_tutorial: Optional[str] = None
     tutorials_completed: List[str] = field(default_factory=list)
-    hints_shown: List[str] = field(default_factory=list)
+    hints_shown: set = field(default_factory=set)  # Use set for O(1) lookup
     last_activity: str = field(default_factory=lambda: datetime.now().isoformat())
 
 
@@ -631,8 +631,8 @@ class FeatureDiscoveryEngine:
         if not feature:
             return None
         
-        # Mark hint as shown
-        self.user_progress.hints_shown.append(hint_key)
+        # Mark hint as shown (using set.add for O(1) operation)
+        self.user_progress.hints_shown.add(hint_key)
         self._save_progress()
         
         return {

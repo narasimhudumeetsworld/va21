@@ -1215,9 +1215,10 @@ class AutomaticFARALayerCreator:
         """Execute a keyboard shortcut."""
         try:
             # Use xdotool on Linux
-            # Convert shortcut format: Ctrl+S -> ctrl+s
-            keys = shortcut.lower().replace('+', ' ').split()
-            xdotool_cmd = ['xdotool', 'key', '+'.join(keys)]
+            # Convert shortcut format: Ctrl+S -> ctrl+s for xdotool
+            # xdotool expects format like 'ctrl+s' (lowercase, joined with +)
+            shortcut_lower = shortcut.lower()
+            xdotool_cmd = ['xdotool', 'key', shortcut_lower]
             
             result = subprocess.run(xdotool_cmd, capture_output=True, timeout=5)
             

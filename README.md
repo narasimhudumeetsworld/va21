@@ -20,27 +20,19 @@ VA21 OS is a **full Linux operating system** designed for researchers, writers, 
 
 ### Installation
 
-> **📢 Release Status**: VA21 OS is in active development. The OV21-omni prerelease contains the core AI components. Full ISO builds are coming soon - for now, build from source or use the Python modules directly.
+Download the ISO from the [Releases page](../../releases) and install like any Linux distribution:
 
-Download from the [Releases page](../../releases):
+| Edition | Description | Size |
+|---------|-------------|------|
+| **VA21 OS Debian** | Full GNU toolkit, maximum compatibility | ~5 GB |
+| **VA21 OS Alpine** | Lightweight, fast boot | ~2 GB |
 
-| Edition | Description | Status |
-|---------|-------------|--------|
-| **OV21-omni** | Core AI components prerelease | ✅ Available |
-| **VA21 OS Debian** | Full GNU toolkit ISO | 🚧 Coming Soon |
-| **VA21 OS Alpine** | Lightweight ISO | 🚧 Coming Soon |
-
-**Build from Source** (Recommended for now):
 ```bash
-git clone https://github.com/narasimhudumeetsworld/va21.git
-cd va21/va21_system/linux_os
-./scripts/build_iso.sh debian
-# ISO will be in output/ directory
-```
+# Write ISO to USB drive
+sudo dd if=va21-os.iso of=/dev/sdX bs=4M status=progress
 
-**Or Install Components Directly**:
-```bash
-pip install -e va21/va21_system/linux_os/
+# Or use in VirtualBox/VMware
+# Create VM → Use ISO as boot disk → Install
 ```
 
 ### Quick Start (From Source)
